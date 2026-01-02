@@ -1,19 +1,18 @@
-# Dotnet
 **/bin/
 **/obj/
 /.vs/
-
-# Node
-**/node_modules/
-**/dist/
-
-# IDE
 /.vscode/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
+*.swp
 *.log
+*.DS_Store
 *.tmp
 *.tmp.*
-*.DS_Store
+*.pubxml
+*.pubxml.user
+**/node_modules/
+**/dist/
+**/logs/

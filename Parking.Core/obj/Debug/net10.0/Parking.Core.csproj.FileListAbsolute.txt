@@ -1,0 +1,11 @@
+D:\ParkingManagementSystem\backend\Parking.Core\bin\Debug\net10.0\Parking.Core.deps.json
+D:\ParkingManagementSystem\backend\Parking.Core\bin\Debug\net10.0\Parking.Core.dll
+D:\ParkingManagementSystem\backend\Parking.Core\bin\Debug\net10.0\Parking.Core.pdb
+D:\ParkingManagementSystem\backend\Parking.Core\obj\Debug\net10.0\Parking.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\ParkingManagementSystem\backend\Parking.Core\obj\Debug\net10.0\Parking.Core.AssemblyInfoInputs.cache
+D:\ParkingManagementSystem\backend\Parking.Core\obj\Debug\net10.0\Parking.Core.AssemblyInfo.cs
+D:\ParkingManagementSystem\backend\Parking.Core\obj\Debug\net10.0\Parking.Core.csproj.CoreCompileInputs.cache
+D:\ParkingManagementSystem\backend\Parking.Core\obj\Debug\net10.0\Parking.Core.dll
+D:\ParkingManagementSystem\backend\Parking.Core\obj\Debug\net10.0\refint\Parking.Core.dll
+D:\ParkingManagementSystem\backend\Parking.Core\obj\Debug\net10.0\Parking.Core.pdb
+D:\ParkingManagementSystem\backend\Parking.Core\obj\Debug\net10.0\ref\Parking.Core.dll

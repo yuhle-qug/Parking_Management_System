@@ -1,0 +1,17 @@
+D:\ParkingManagementSystem\backend\Parking.Services\bin\Debug\net10.0\Parking.Services.deps.json
+D:\ParkingManagementSystem\backend\Parking.Services\bin\Debug\net10.0\Parking.Services.dll
+D:\ParkingManagementSystem\backend\Parking.Services\bin\Debug\net10.0\Parking.Services.pdb
+D:\ParkingManagementSystem\backend\Parking.Services\bin\Debug\net10.0\Parking.Core.dll
+D:\ParkingManagementSystem\backend\Parking.Services\bin\Debug\net10.0\Parking.Infrastructure.dll
+D:\ParkingManagementSystem\backend\Parking.Services\bin\Debug\net10.0\Parking.Core.pdb
+D:\ParkingManagementSystem\backend\Parking.Services\bin\Debug\net10.0\Parking.Infrastructure.pdb
+D:\ParkingManagementSystem\backend\Parking.Services\obj\Debug\net10.0\Parking.Services.csproj.AssemblyReference.cache
+D:\ParkingManagementSystem\backend\Parking.Services\obj\Debug\net10.0\Parking.Services.GeneratedMSBuildEditorConfig.editorconfig
+D:\ParkingManagementSystem\backend\Parking.Services\obj\Debug\net10.0\Parking.Services.AssemblyInfoInputs.cache
+D:\ParkingManagementSystem\backend\Parking.Services\obj\Debug\net10.0\Parking.Services.AssemblyInfo.cs
+D:\ParkingManagementSystem\backend\Parking.Services\obj\Debug\net10.0\Parking.Services.csproj.CoreCompileInputs.cache
+D:\ParkingManagementSystem\backend\Parking.Services\obj\Debug\net10.0\Parking..F2C0B305.Up2Date
+D:\ParkingManagementSystem\backend\Parking.Services\obj\Debug\net10.0\Parking.Services.dll
+D:\ParkingManagementSystem\backend\Parking.Services\obj\Debug\net10.0\refint\Parking.Services.dll
+D:\ParkingManagementSystem\backend\Parking.Services\obj\Debug\net10.0\Parking.Services.pdb
+D:\ParkingManagementSystem\backend\Parking.Services\obj\Debug\net10.0\ref\Parking.Services.dll

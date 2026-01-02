@@ -7,7 +7,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Swagger temporarily disabled due to upstream Swashbuckle binary mismatch on current target framework.
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// CORS cho frontend Vite (http://localhost:5173)
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("frontend", policy =>
+		policy.WithOrigins("http://localhost:5173")
+			  .AllowAnyHeader()
+			  .AllowAnyMethod());
+});
 
 // --- [OOP - DEPENDENCY INJECTION CONFIGURATION] ---
 
@@ -29,9 +39,11 @@ builder.Services.AddSingleton<IPaymentGateway, MockPaymentGatewayAdapter>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-// Swagger UI disabled for now (see note above).
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+app.UseCors("frontend");
 app.UseAuthorization();
 app.MapControllers();
 

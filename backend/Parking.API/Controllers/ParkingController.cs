@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Parking.Core.Interfaces;
 using Parking.Core.Entities;
+using Parking.Core.Interfaces;
+using System.Linq;
 
 namespace Parking.API.Controllers
 {
@@ -10,14 +11,32 @@ namespace Parking.API.Controllers
     {
         private readonly IParkingService _parkingService;
         private readonly IPaymentService _paymentService;
+        // [NEW] Repo để truy vấn danh sách phiên gửi xe
+        private readonly IParkingSessionRepository _sessionRepo;
 
-        public ParkingController(IParkingService parkingService, IPaymentService paymentService)
+        public ParkingController(
+            IParkingService parkingService,
+            IPaymentService paymentService,
+            IParkingSessionRepository sessionRepo)
         {
             _parkingService = parkingService;
             _paymentService = paymentService;
+            _sessionRepo = sessionRepo;
         }
 
-        // POST: api/parking/check-in
+        // [NEW] Danh sách xe đang trong bãi
+        [HttpGet("sessions")]
+        public async Task<IActionResult> GetActiveSessions()
+        {
+            var allSessions = await _sessionRepo.GetAllAsync();
+            var activeSessions = allSessions
+                .Where(s => s.Status != "Completed")
+                .OrderByDescending(s => s.EntryTime)
+                .ToList();
+
+            return Ok(activeSessions);
+        }
+
         [HttpPost("check-in")]
         public async Task<IActionResult> CheckIn([FromBody] CheckInRequest request)
         {
@@ -32,8 +51,6 @@ namespace Parking.API.Controllers
             }
         }
 
-        // POST: api/parking/check-out
-        // Bước 1: Yêu cầu check-out để lấy số tiền cần trả
         [HttpPost("check-out")]
         public async Task<IActionResult> RequestCheckOut([FromBody] CheckOutRequest request)
         {
@@ -54,8 +71,6 @@ namespace Parking.API.Controllers
             }
         }
 
-        // POST: api/parking/pay
-        // Bước 2: Thanh toán và mở cổng
         [HttpPost("pay")]
         public async Task<IActionResult> PayAndExit([FromBody] PaymentRequest request)
         {
@@ -74,11 +89,10 @@ namespace Parking.API.Controllers
         }
     }
 
-    // DTOs (Data Transfer Objects) - Class chứa dữ liệu gửi lên từ Client
     public class CheckInRequest
     {
         public string PlateNumber { get; set; }
-        public string VehicleType { get; set; } // CAR, MOTORBIKE
+        public string VehicleType { get; set; }
         public string GateId { get; set; }
     }
 

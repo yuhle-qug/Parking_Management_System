@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Parking.Core.Entities;
 using Parking.Core.Interfaces;
@@ -13,73 +14,65 @@ namespace Parking.Services.Services
         private readonly IParkingZoneRepository _zoneRepo;
         private readonly ITicketRepository _ticketRepo;
         private readonly IGateDevice _gateDevice; // Giả lập thiết bị phần cứng
+        private readonly IMonthlyTicketRepository _monthlyTicketRepo;
 
         // Constructor Injection
         public ParkingService(
             IParkingSessionRepository sessionRepo,
             IParkingZoneRepository zoneRepo,
             ITicketRepository ticketRepo,
-            IGateDevice gateDevice)
+            IGateDevice gateDevice,
+            IMonthlyTicketRepository monthlyTicketRepo)
         {
             _sessionRepo = sessionRepo;
             _zoneRepo = zoneRepo;
             _ticketRepo = ticketRepo;
             _gateDevice = gateDevice;
+            _monthlyTicketRepo = monthlyTicketRepo;
         }
 
         // --- USE CASE: CHECK IN (Xe vào) ---
         public async Task<ParkingSession> CheckInAsync(string plateNumber, string vehicleType, string gateId)
         {
-            // 1. Kiểm tra xem xe này có đang gửi trong bãi chưa (tránh duplicate)
             var activeSessions = await _sessionRepo.FindActiveByPlateAsync(plateNumber);
-            // Trong thực tế sẽ dùng .Any(), ở đây check null/count
-            foreach (var s in activeSessions)
+            if (activeSessions.Any())
             {
-                // Nếu tìm thấy xe đang gửi -> Báo lỗi hoặc chặn lại
                 throw new InvalidOperationException($"Xe {plateNumber} đang ở trong bãi, không thể check-in lại.");
             }
 
-            // 2. Tạo đối tượng xe (Vehicle) dựa trên loại
             Vehicle vehicle = CreateVehicle(vehicleType, plateNumber);
             bool isElectric = vehicle is ElectricCar || vehicle is ElectricMotorbike || vehicle is ElectricBicycle;
 
-            // 3. Tìm khu vực đỗ xe phù hợp (Zone)
+            var monthlyTicket = await _monthlyTicketRepo.FindActiveByPlateAsync(plateNumber);
+            bool isMonthly = monthlyTicket != null;
+
             var zone = await _zoneRepo.FindSuitableZoneAsync(vehicleType, isElectric);
             if (zone == null)
             {
                 throw new InvalidOperationException("Bãi xe đã hết chỗ hoặc không tìm thấy khu vực phù hợp.");
             }
 
-            // 4. Tạo Vé (Ticket)
-            var ticket = new Ticket
-            {
-                TicketId = Guid.NewGuid().ToString().Substring(0, 8).ToUpper(), // Tạo mã ngắn gọn
-                IssueTime = DateTime.Now,
-                GateId = gateId
-            };
+            var sessionTicket = isMonthly
+                ? new Ticket { TicketId = monthlyTicket.TicketId, IssueTime = DateTime.Now, GateId = gateId }
+                : new Ticket { TicketId = Guid.NewGuid().ToString().Substring(0, 8).ToUpper(), IssueTime = DateTime.Now, GateId = gateId };
 
-            // 5. Tạo Phiên gửi xe (Session)
             var session = new ParkingSession
             {
                 SessionId = Guid.NewGuid().ToString(),
                 EntryTime = DateTime.Now,
                 Vehicle = vehicle,
-                Ticket = ticket,
+                Ticket = sessionTicket,
                 Status = "Active",
-                ParkingZoneId = zone.ZoneId,
-                // Gán tạm Policy của Zone vào session để sau này tính tiền
-                // Lưu ý: Trong thực tế Entity không nên chứa logic phức tạp, nhưng ở đây ta gán để tracking
+                ParkingZoneId = zone.ZoneId
             };
 
-            // 6. Lưu dữ liệu (Transaction)
-            // Cập nhật Zone (giảm chỗ trống - logic này nằm trong Zone.AddSession nhưng cần lưu lại state của Zone)
+            if (!isMonthly)
+            {
+                await _ticketRepo.AddAsync(sessionTicket);
+            }
+
             zone.AddSession(session);
-
-            await _ticketRepo.AddAsync(ticket);
             await _sessionRepo.AddAsync(session);
-            // await _zoneRepo.UpdateAsync(zone); // Cập nhật lại số lượng xe trong Zone (nếu cần tracking persistent)
-
-            // 7. Mở cổng
             await _gateDevice.OpenGateAsync(gateId);
 
             return session;
@@ -88,53 +81,36 @@ namespace Parking.Services.Services
         // --- USE CASE: CHECK OUT (Xe ra - Tính tiền) ---
         public async Task<ParkingSession> CheckOutAsync(string ticketIdOrPlate, string gateId)
         {
-            // 1. Tìm phiên gửi xe
-            // Thử tìm bằng TicketId trước
             var session = await _sessionRepo.FindByTicketIdAsync(ticketIdOrPlate);
-
-            // Nếu không thấy thì tìm bằng biển số
             if (session == null)
             {
                 var sessions = await _sessionRepo.FindActiveByPlateAsync(ticketIdOrPlate);
-                // Lấy phiên gần nhất (thường chỉ có 1 phiên active)
-                var sessionList = new List<ParkingSession>(sessions);
-                if (sessionList.Count > 0)
-                    session = sessionList[0];
+                session = sessions.FirstOrDefault();
             }
-
             if (session == null)
             {
                 throw new KeyNotFoundException("Không tìm thấy thông tin gửi xe.");
             }
 
-            // 2. Xử lý thời gian ra
             session.SetExitTime(DateTime.Now);
 
-            // 3. Tính tiền
-            // Lấy lại Zone để biết chính sách giá (hoặc lấy Default Policy)
+            bool isMonthly = session.Ticket.TicketId.StartsWith("M-");
+
+            if (isMonthly)
+            {
+                session.FeeAmount = 0;
+                session.Status = "Completed";
+                await _sessionRepo.UpdateAsync(session);
+                await _gateDevice.OpenGateAsync(gateId);
+                return session;
+            }
+
             var zone = await _zoneRepo.GetByIdAsync(session.ParkingZoneId);
-
-            PricePolicy policy;
-            if (zone != null && zone.PricePolicy != null)
-            {
-                policy = zone.PricePolicy;
-            }
-            else
-            {
-                // Fallback: Dùng chính sách mặc định nếu Zone chưa config
-                policy = new ParkingFeePolicy { PolicyId = "DEFAULT", Name = "Default Policy" };
-            }
-
-            // [OOP - Polymorphism]: Gọi hàm CalculateFee mà không cần quan tâm nó là Policy gì
+            var policy = zone?.PricePolicy ?? new ParkingFeePolicy { PolicyId = "DEFAULT", Name = "Default Policy" };
             session.FeeAmount = policy.CalculateFee(session);
-            session.Status = "PendingPayment"; // Chờ thanh toán
+            session.Status = "PendingPayment";
 
-            // 4. Lưu cập nhật
             await _sessionRepo.UpdateAsync(session);
-
-            // Lưu ý: Chưa mở cổng (OpenGate) ở đây. 
-            // Cổng chỉ mở khi PaymentController xác nhận đã thanh toán thành công.
-
             return session;
         }
 

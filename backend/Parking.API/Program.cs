@@ -25,10 +25,14 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IParkingSessionRepository, ParkingSessionRepository>();
 builder.Services.AddScoped<IParkingZoneRepository, ParkingZoneRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>(); // Bạn cần tạo file này rỗng kế thừa BaseJsonRepository nếu chưa có
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IMonthlyTicketRepository, MonthlyTicketRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // 2. Services (Logic Layer)
 builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IMembershipService, MembershipService>();
 
 // 3. Infrastructure / External (Device, Payment)
 builder.Services.AddSingleton<IGateDevice, MockGateDevice>(); // Singleton vì thiết bị là duy nhất

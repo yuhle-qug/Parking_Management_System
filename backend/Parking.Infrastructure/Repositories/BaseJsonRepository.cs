@@ -1,59 +1,71 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Parking.Core.Interfaces;
+using Parking.Infrastructure.Data;
 
 namespace Parking.Infrastructure.Repositories
 {
-	// Minimal in-memory base repository; fileName kept for future JSON persistence.
+	// Base repository that persists each operation to a JSON file on disk.
 	public abstract class BaseJsonRepository<T> : IRepository<T> where T : class
 	{
-		private static readonly List<T> Items = new();
-		private readonly string _fileName;
+		protected readonly string _filePath;
 
 		protected BaseJsonRepository(string fileName)
 		{
-			_fileName = fileName;
+			var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+			_filePath = Path.Combine(baseDir, "DataStore", fileName);
 		}
 
-		public virtual Task<IEnumerable<T>> GetAllAsync()
+		protected string? GetId(T entity)
 		{
-			return Task.FromResult<IEnumerable<T>>(Items.ToList());
+			var prop = entity.GetType().GetProperties()
+				.FirstOrDefault(p => p.Name.EndsWith("Id", StringComparison.OrdinalIgnoreCase) && p.Name.Length > 2);
+
+			return prop?.GetValue(entity)?.ToString();
 		}
 
-		public virtual Task<T?> GetByIdAsync(string id)
+		public virtual async Task<IEnumerable<T>> GetAllAsync()
 		{
-			var item = Items.FirstOrDefault(x => GetId(x) == id);
-			return Task.FromResult(item);
+			return await JsonFileHelper.ReadListAsync<T>(_filePath);
 		}
 
-		public virtual Task AddAsync(T entity)
+		public virtual async Task<T?> GetByIdAsync(string id)
 		{
-			Items.Add(entity);
-			return Task.CompletedTask;
+			var list = await GetAllAsync();
+			return list.FirstOrDefault(item => GetId(item) == id);
 		}
 
-		public virtual Task UpdateAsync(T entity)
+		public virtual async Task AddAsync(T entity)
 		{
+			var list = (await GetAllAsync()).ToList();
+			list.Add(entity);
+			await JsonFileHelper.WriteListAsync(_filePath, list);
+		}
+
+		public virtual async Task UpdateAsync(T entity)
+		{
+			var list = (await GetAllAsync()).ToList();
 			var id = GetId(entity);
-			if (id == null) return Task.CompletedTask;
+			var index = list.FindIndex(item => GetId(item) == id);
 
-			var idx = Items.FindIndex(x => GetId(x) == id);
-			if (idx >= 0)
+			if (index != -1)
 			{
-				Items[idx] = entity;
+				list[index] = entity;
+				await JsonFileHelper.WriteListAsync(_filePath, list);
 			}
-			return Task.CompletedTask;
 		}
 
-		private static string? GetId(T entity)
+		public virtual async Task DeleteAsync(string id)
 		{
-			// Look for an Id-like string property (Id, <Type>Id, or ending with "Id").
-			var prop = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
-				.FirstOrDefault(p => p.PropertyType == typeof(string) &&
-									 (p.Name == "Id" || p.Name.EndsWith("Id")));
-			return prop?.GetValue(entity) as string;
+			var list = (await GetAllAsync()).ToList();
+			var removed = list.RemoveAll(item => GetId(item) == id);
+			if (removed > 0)
+			{
+				await JsonFileHelper.WriteListAsync(_filePath, list);
+			}
 		}
 	}
 }

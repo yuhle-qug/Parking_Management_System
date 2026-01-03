@@ -6,48 +6,22 @@ using Parking.Core.Interfaces;
 
 namespace Parking.Infrastructure.Repositories
 {
-	// In-memory implementation for demo/testing purposes.
-	public class ParkingSessionRepository : IParkingSessionRepository
+	// File-backed implementation storing sessions in DataStore/sessions.json.
+	public class ParkingSessionRepository : BaseJsonRepository<ParkingSession>, IParkingSessionRepository
 	{
-		private static readonly List<ParkingSession> Sessions = new();
+		public ParkingSessionRepository() : base("sessions.json") { }
 
-		public Task AddAsync(ParkingSession session)
+		public async Task<IEnumerable<ParkingSession>> FindActiveByPlateAsync(string plateNumber)
 		{
-			Sessions.Add(session);
-			return Task.CompletedTask;
+			var list = await GetAllAsync();
+			var result = list.Where(s => s.Vehicle?.LicensePlate == plateNumber && s.Status == "Active");
+			return result;
 		}
 
-		public Task<IEnumerable<ParkingSession>> GetAllAsync()
+		public async Task<ParkingSession?> FindByTicketIdAsync(string ticketId)
 		{
-			return Task.FromResult<IEnumerable<ParkingSession>>(Sessions);
-		}
-
-		public Task<ParkingSession?> GetByIdAsync(string id)
-		{
-			var session = Sessions.FirstOrDefault(s => s.SessionId == id);
-			return Task.FromResult(session);
-		}
-
-		public Task UpdateAsync(ParkingSession session)
-		{
-			var index = Sessions.FindIndex(s => s.SessionId == session.SessionId);
-			if (index >= 0)
-			{
-				Sessions[index] = session;
-			}
-			return Task.CompletedTask;
-		}
-
-		public Task<IEnumerable<ParkingSession>> FindActiveByPlateAsync(string plateNumber)
-		{
-			var result = Sessions.Where(s => s.Vehicle?.LicensePlate == plateNumber && s.Status == "Active");
-			return Task.FromResult<IEnumerable<ParkingSession>>(result);
-		}
-
-		public Task<ParkingSession?> FindByTicketIdAsync(string ticketId)
-		{
-			var session = Sessions.FirstOrDefault(s => s.Ticket?.TicketId == ticketId);
-			return Task.FromResult(session);
+			var list = await GetAllAsync();
+			return list.FirstOrDefault(s => s.Ticket?.TicketId == ticketId);
 		}
 	}
 }

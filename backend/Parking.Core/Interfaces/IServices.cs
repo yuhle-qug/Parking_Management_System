@@ -14,6 +14,12 @@ namespace Parking.Core.Interfaces
 		Task<bool> ProcessPaymentAsync(string sessionId, double amount, string method);
 	}
 
+	public interface IMembershipService
+	{
+		Task<MonthlyTicket> RegisterMonthlyTicketAsync(Customer customerInfo, Vehicle vehicle, string planId);
+		Task<bool> ExtendMonthlyTicketAsync(string ticketId, int months);
+	}
+
 	// External device abstraction for opening gates.
 	public interface IGateDevice
 	{

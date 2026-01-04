@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Parking.Core.Interfaces;
 using Parking.Infrastructure.Data;
 
@@ -12,6 +13,11 @@ namespace Parking.Infrastructure.Repositories
 	public abstract class BaseJsonRepository<T> : IRepository<T> where T : class
 	{
 		protected readonly string _filePath;
+
+		protected BaseJsonRepository(IHostEnvironment hostEnvironment, string fileName)
+		{
+			_filePath = Path.Combine(hostEnvironment.ContentRootPath, "DataStore", fileName);
+		}
 
 		protected BaseJsonRepository(string fileName)
 		{

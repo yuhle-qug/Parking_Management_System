@@ -1,177 +1,567 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
+import { Toaster, toast } from 'react-hot-toast'
+import {
+  Bar,
+  BarChart,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis
+} from 'recharts'
 import './App.css'
 
-// Base URL chung (bỏ /Parking)
 const API_BASE = 'http://localhost:5166/api'
+const formatCurrency = (n) => (n || 0).toLocaleString('vi-VN')
+const formatTime = (v) => new Date(v).toLocaleTimeString('vi-VN')
 
-function App() {
-  const [logs, setLogs] = useState([])
-  const [sessions, setSessions] = useState([])
+const Spinner = () => <div className="spinner" aria-label="Đang tải" />
 
-  const [plateIn, setPlateIn] = useState('')
-  const [typeIn, setTypeIn] = useState('CAR')
-  const [plateOut, setPlateOut] = useState('')
-  const [checkoutInfo, setCheckoutInfo] = useState(null)
-  const [paymentSessionId, setPaymentSessionId] = useState('')
-  const [amount, setAmount] = useState(0)
-
-  const addLog = (msg) => setLogs((prev) => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev])
-
-  const fetchSessions = async () => {
-    try {
-      const res = await axios.get(`${API_BASE}/Report/active-sessions`)
-      setSessions(res.data)
-    } catch (err) {
-      console.error("Lỗi tải danh sách xe:", err)
-    }
+const InputWithIcon = ({ icon, as = 'input', children, ...rest }) => {
+  if (as === 'select') {
+    return (
+      <div className="input-wrap">
+        <span className="input-icon">{icon}</span>
+        <select className="input" {...rest}>{children}</select>
+      </div>
+    )
   }
-
-  useEffect(() => {
-    fetchSessions();
-    const interval = setInterval(fetchSessions, 2000);
-    return () => clearInterval(interval);
-  }, [])
-
-  const handleCheckIn = async () => {
-    try {
-      const payload = { plateNumber: plateIn, vehicleType: typeIn, gateId: 'GATE-01' }
-      const res = await axios.post(`${API_BASE}/CheckIn`, payload)
-      addLog(`✅ Check-in thành công! Xe: ${plateIn} - Vé: ${res.data.ticketId}`)
-      setPlateIn('')
-      fetchSessions()
-    } catch (err) {
-      addLog(`❌ Lỗi Check-in: ${err.response?.data?.error || err.message}`)
-    }
-  }
-
-  const handleCheckOutRequest = async () => {
-    try {
-      const payload = { ticketIdOrPlate: plateOut, gateId: 'GATE-02' }
-      const res = await axios.post(`${API_BASE}/CheckOut`, payload)
-      setCheckoutInfo(res.data)
-      setPaymentSessionId(res.data.sessionId)
-      setAmount(res.data.amount)
-      addLog(`ℹ️ Xe ${res.data.licensePlate} muốn ra. Phí: ${res.data.amount.toLocaleString()} VNĐ`)
-    } catch (err) {
-      addLog(`❌ Lỗi tìm xe: ${err.response?.data?.error || err.message}`)
-    }
-  }
-
-  const handlePayment = async () => {
-    try {
-      const payload = { sessionId: paymentSessionId, amount: amount }
-      const res = await axios.post(`${API_BASE}/Payment`, payload)
-      addLog(`💰 ${res.data.message}`)
-      setCheckoutInfo(null)
-      setPlateOut('')
-      fetchSessions()
-    } catch (err) {
-      addLog(`❌ Thanh toán thất bại: ${err.response?.data?.message || err.message}`)
-    }
-  }
-
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial', maxWidth: '1200px', margin: '0 auto' }}>
-      <h1 style={{textAlign: 'center', color: '#333'}}>🚗 HỆ THỐNG QUẢN LÝ BÃI XE (MICRO-SERVICES)</h1>
+    <div className="input-wrap">
+      <span className="input-icon">{icon}</span>
+      <input className="input" {...rest} />
+    </div>
+  )
+}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '400px 1fr', gap: '20px' }}>
-        
-        {/* CỘT TRÁI */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          
-          <div style={cardStyle}>
-            <h3 style={{borderBottom: '2px solid #4CAF50', paddingBottom: '10px', marginTop: 0}}>⬇️ Cổng Vào</h3>
-            <div style={{marginBottom: '10px'}}>
-              <label>Biển số:</label>
-              <input style={inputStyle} value={plateIn} onChange={(e) => setPlateIn(e.target.value)} placeholder="VD: 30A-12345" />
-            </div>
-            <div style={{marginBottom: '10px'}}>
-              <label>Loại xe:</label>
-              <select style={inputStyle} value={typeIn} onChange={(e) => setTypeIn(e.target.value)}>
-                <option value="CAR">Ô tô</option>
-                <option value="MOTORBIKE">Xe máy</option>
-                <option value="ELECTRIC_CAR">Ô tô điện</option>
-              </select>
-            </div>
-            <button onClick={handleCheckIn} style={{...btnStyle, background: '#4CAF50', width: '100%'}}>Mở Cổng</button>
-          </div>
+const Breadcrumb = ({ items }) => (
+  <div className="breadcrumb">
+    {items.map((item, idx) => (
+      <span key={item} className={idx === items.length - 1 ? 'breadcrumb-active' : ''}>
+        {item}
+        {idx < items.length - 1 && <span className="crumb-sep">/</span>}
+      </span>
+    ))}
+  </div>
+)
 
-          <div style={cardStyle}>
-            <h3 style={{borderBottom: '2px solid #2196F3', paddingBottom: '10px', marginTop: 0}}>⬆️ Cổng Ra</h3>
-            <div style={{display: 'flex', gap: '5px', marginBottom: '10px'}}>
-              <input style={inputStyle} value={plateOut} onChange={(e) => setPlateOut(e.target.value)} placeholder="Nhập vé / biển số..." />
-              <button onClick={handleCheckOutRequest} style={{...btnStyle, background: '#2196F3'}}>Tìm</button>
-            </div>
-
-            {checkoutInfo && (
-              <div style={{background: '#e3f2fd', padding: '10px', borderRadius: '5px'}}>
-                <p style={{margin: '5px 0'}}>Biển số: <strong>{checkoutInfo.licensePlate}</strong></p>
-                <p style={{margin: '5px 0'}}>Phí: <strong style={{color: 'red', fontSize: '1.2em'}}>{checkoutInfo.amount.toLocaleString()} đ</strong></p>
-                <button onClick={handlePayment} style={{...btnStyle, background: '#ff9800', width: '100%', marginTop: '5px'}}>
-                  💸 Thanh toán & Mở cổng
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div style={{...cardStyle, background: '#222', color: '#0f0', height: '200px', overflowY: 'auto'}}>
-            <strong style={{display: 'block', marginBottom: '10px'}}>📟 System Logs:</strong>
-            {logs.map((log, index) => <div key={index} style={{fontSize: '0.85em', marginBottom: '5px'}}>{log}</div>)}
-          </div>
+const Modal = ({ open, title, onClose, children }) => {
+  if (!open) return null
+  return (
+    <div className="modal-backdrop" role="dialog" aria-modal="true">
+      <div className="modal">
+        <div className="modal-header">
+          <h3>{title}</h3>
+          <button className="btn ghost" onClick={onClose}>✕</button>
         </div>
-
-        {/* CỘT PHẢI */}
-        <div style={cardStyle}>
-          <h3 style={{borderBottom: '2px solid #9c27b0', paddingBottom: '10px', marginTop: 0}}>
-            📋 Danh Sách Xe Trong Bãi ({sessions.length})
-          </h3>
-          <div style={{overflowX: 'auto'}}>
-            <table style={{width: '100%', borderCollapse: 'collapse'}}>
-              <thead>
-                <tr style={{background: '#f5f5f5', textAlign: 'left'}}>
-                  <th style={thStyle}>Biển số</th>
-                  <th style={thStyle}>Loại xe</th>
-                  <th style={thStyle}>Mã Vé</th>
-                  <th style={thStyle}>Giờ vào</th>
-                  <th style={thStyle}>Trạng thái</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sessions.map(s => (
-                  <tr key={s.sessionId} style={{borderBottom: '1px solid #eee'}}>
-                    <td style={tdStyle}><strong>{s.vehicle?.licensePlate}</strong></td>
-                    <td style={tdStyle}>{s.vehicle?.vehicleType || 'Xe'}</td>
-                    <td style={tdStyle}><span style={{fontFamily: 'monospace', background: '#eee', padding: '2px 5px'}}>{s.ticket?.ticketId}</span></td>
-                    <td style={tdStyle}>{new Date(s.entryTime).toLocaleTimeString()}</td>
-                    <td style={tdStyle}>
-                      <span style={{
-                        background: s.status === 'Active' ? '#e8f5e9' : '#fff3e0',
-                        color: s.status === 'Active' ? 'green' : 'orange',
-                        padding: '4px 8px', borderRadius: '12px', fontSize: '0.8em', fontWeight: 'bold'
-                      }}>
-                        {s.status === 'Active' ? 'Đang gửi' : 'Chờ thanh toán'}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-                {sessions.length === 0 && (
-                  <tr><td colSpan="5" style={{padding: '20px', textAlign: 'center', color: '#888'}}>Bãi xe đang trống</td></tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
+        {children}
       </div>
     </div>
   )
 }
 
-const cardStyle = { background: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }
-const inputStyle = { padding: '8px', width: '100%', boxSizing: 'border-box', borderRadius: '4px', border: '1px solid #ccc' }
-const btnStyle = { padding: '8px 15px', border: 'none', borderRadius: '4px', color: 'white', cursor: 'pointer', fontWeight: 'bold' }
-const thStyle = { padding: '12px 8px', borderBottom: '2px solid #ddd' }
-const tdStyle = { padding: '12px 8px' }
+const LoginScreen = ({ onLogin }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async () => {
+    if (!username || !password) return toast.error('Vui lòng nhập đủ thông tin')
+    setLoading(true)
+    try {
+      const res = await axios.post(`${API_BASE}/UserAccount/login`, { username, password })
+      toast.success('Đăng nhập thành công')
+      onLogin(res.data)
+    } catch (err) {
+      const msg = err?.response?.data?.message || err?.response?.data?.Message || err?.message || 'Đăng nhập thất bại'
+      toast.error(msg)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="auth-shell">
+      <div className="glass-card auth-card">
+        <h2>🔐 Đăng nhập hệ thống</h2>
+        <p className="muted">Truy cập bảng điều khiển bãi xe</p>
+        <InputWithIcon icon="👤" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Tài khoản" />
+        <InputWithIcon icon="🔒" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mật khẩu" />
+        <button className="btn primary full" onClick={handleSubmit} disabled={loading}>
+          {loading ? <div className="inline-spinner" /> : 'Đăng nhập'}
+        </button>
+      </div>
+      <Toaster position="top-right" />
+    </div>
+  )
+}
+
+const Dashboard = () => {
+  const [sessions, setSessions] = useState([])
+  const [logs, setLogs] = useState([])
+  const [plateIn, setPlateIn] = useState('')
+  const [typeIn, setTypeIn] = useState('CAR')
+  const [plateOut, setPlateOut] = useState('')
+  const [checkoutInfo, setCheckoutInfo] = useState(null)
+  const [loadingSessions, setLoadingSessions] = useState(false)
+  const [checkingOut, setCheckingOut] = useState(false)
+  const [paying, setPaying] = useState(false)
+
+  const addLog = (msg) => setLogs((prev) => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev].slice(0, 60))
+
+  const fetchSessions = async () => {
+    setLoadingSessions(true)
+    try {
+      const res = await axios.get(`${API_BASE}/Report/active-sessions`)
+      setSessions(res.data)
+    } catch (err) {
+      toast.error('Không tải được danh sách xe')
+    } finally {
+      setLoadingSessions(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchSessions()
+    const interval = setInterval(fetchSessions, 2500)
+    return () => clearInterval(interval)
+  }, [])
+
+  const handleCheckIn = async () => {
+    if (!plateIn) return toast.error('Nhập biển số trước khi vào bến')
+    try {
+      const res = await axios.post(`${API_BASE}/CheckIn`, { plateNumber: plateIn, vehicleType: typeIn, gateId: 'GATE-01' })
+      toast.success(`Vào bến: ${plateIn}`)
+      addLog(`✅ Check-in: ${plateIn} - Vé: ${res.data.ticketId}`)
+      setPlateIn('')
+      fetchSessions()
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Lỗi check-in')
+      addLog('❌ ' + (err.response?.data?.error || 'Check-in lỗi'))
+    }
+  }
+
+  const handleCheckOut = async () => {
+    if (!plateOut) return toast.error('Nhập vé hoặc biển số để kiểm tra')
+    setCheckingOut(true)
+    try {
+      const res = await axios.post(`${API_BASE}/CheckOut`, { ticketIdOrPlate: plateOut, gateId: 'GATE-02' })
+      setCheckoutInfo(res.data)
+      addLog(`ℹ️ Xe ra: ${res.data.licensePlate} - Phí: ${res.data.amount}`)
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Không tìm thấy xe')
+      addLog('❌ ' + (err.response?.data?.error || 'Không tìm thấy xe'))
+    } finally {
+      setCheckingOut(false)
+    }
+  }
+
+  const handlePay = async () => {
+    if (!checkoutInfo) return
+    const confirmed = window.confirm('Xác nhận thanh toán và mở cổng?')
+    if (!confirmed) return
+    setPaying(true)
+    try {
+      await axios.post(`${API_BASE}/Payment`, { sessionId: checkoutInfo.sessionId, amount: checkoutInfo.amount })
+      toast.success('Thanh toán thành công')
+      addLog('💰 Thanh toán thành công')
+      setCheckoutInfo(null)
+      setPlateOut('')
+      fetchSessions()
+    } catch (err) {
+      toast.error('Thanh toán thất bại')
+    } finally {
+      setPaying(false)
+    }
+  }
+
+  return (
+    <div className="grid two-cols">
+      <div className="stack">
+        <div className="card">
+          <div className="card-header">
+            <div>
+              <div className="pill success">Cổng vào</div>
+              <div className="muted">Kiểm soát luồng xe vào</div>
+            </div>
+            <div className="status-dot online">Online</div>
+          </div>
+          <InputWithIcon icon="🚘" value={plateIn} onChange={(e) => setPlateIn(e.target.value)} placeholder="Biển số..." />
+          <InputWithIcon icon="🛵" as="select" value={typeIn} onChange={(e) => setTypeIn(e.target.value)}>
+            <option value="CAR">Ô tô</option>
+            <option value="MOTORBIKE">Xe máy</option>
+          </InputWithIcon>
+          <button className="btn primary" onClick={handleCheckIn}>Vào bến</button>
+        </div>
+
+        <div className="card">
+          <div className="card-header">
+            <div>
+              <div className="pill info">Cổng ra</div>
+              <div className="muted">Kiểm tra & tính phí</div>
+            </div>
+            <div className={`status-dot ${checkingOut ? 'busy' : 'idle'}`}>{checkingOut ? 'Đang kiểm tra' : 'Sẵn sàng'}</div>
+          </div>
+          <InputWithIcon icon="🎫" value={plateOut} onChange={(e) => setPlateOut(e.target.value)} placeholder="Nhập vé hoặc biển số..." />
+          <button className="btn secondary" onClick={handleCheckOut} disabled={checkingOut}>
+            {checkingOut ? <div className="inline-spinner" /> : 'Kiểm tra'}
+          </button>
+          {checkoutInfo && (
+            <div className="checkout-box">
+              <div>Biển số: <b>{checkoutInfo.licensePlate}</b></div>
+              <div>Phí: <b className="price">{formatCurrency(checkoutInfo.amount)} đ</b></div>
+              <button className="btn accent" onClick={handlePay} disabled={paying}>
+                {paying ? <div className="inline-spinner" /> : 'Thanh toán & mở cổng'}
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="card log-card">
+          <div className="card-header">
+            <div className="pill">Logs</div>
+            <div className="muted">Sự kiện gần đây</div>
+          </div>
+          <div className="log-list">
+            {logs.map((l, i) => <div key={i} className="log-item fade-in">{l}</div>)}
+            {logs.length === 0 && <div className="muted">Chưa có log</div>}
+          </div>
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="card-header">
+          <div>
+            <div className="pill">Xe trong bến</div>
+            <div className="muted">{sessions.length} xe đang gửi</div>
+          </div>
+        </div>
+        {loadingSessions ? <div className="skeleton tall" /> : (
+          <div className="table-wrap">
+            <table className="table zebra">
+              <thead>
+                <tr><th>Biển số</th><th>Vé</th><th>Giờ vào</th><th>TT</th></tr>
+              </thead>
+              <tbody>
+                {sessions.map((s) => (
+                  <tr key={s.sessionId}>
+                    <td><b>{s.vehicle?.licensePlate}</b></td>
+                    <td className="mono">{s.ticket?.ticketId}</td>
+                    <td>{formatTime(s.entryTime)}</td>
+                    <td><span className={`chip ${s.status === 'Active' ? 'chip-green' : 'chip-amber'}`}>{s.status}</span></td>
+                  </tr>
+                ))}
+                {sessions.length === 0 && (
+                  <tr><td colSpan="4">
+                    <div className="empty-state">✨ Bãi xe đang trống. Chờ xe vào để hiển thị.</div>
+                  </td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+const Membership = () => {
+  const [form, setForm] = useState({ name: '', phone: '', identityNumber: '', plateNumber: '' })
+  const [loading, setLoading] = useState(false)
+  const benefits = ['Giữ chỗ cố định', 'Ra/vào nhanh không chờ', 'Ưu đãi phí theo tháng', 'Hóa đơn điện tử']
+
+  const handleRegister = async () => {
+    if (!form.name || !form.phone || !form.identityNumber || !form.plateNumber) return toast.error('Điền đủ thông tin')
+    setLoading(true)
+    try {
+      await axios.post(`${API_BASE}/Membership/register`, form)
+      toast.success(`Đăng ký vé tháng cho ${form.plateNumber}`)
+      setForm({ name: '', phone: '', identityNumber: '', plateNumber: '' })
+    } catch (err) {
+      toast.error(err.response?.data?.Error || 'Đăng ký thất bại')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="card">
+      <div className="card-header">
+        <div>
+          <div className="pill accent">Vé tháng</div>
+          <div className="muted">Đăng ký nhanh cho khách hàng</div>
+        </div>
+      </div>
+      <div className="form-grid">
+        <InputWithIcon icon="🙍" placeholder="Họ tên khách hàng" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+        <InputWithIcon icon="📞" placeholder="Số điện thoại" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+        <InputWithIcon icon="🪪" placeholder="CCCD / CMND" value={form.identityNumber} onChange={(e) => setForm({ ...form, identityNumber: e.target.value })} />
+        <InputWithIcon icon="🚗" placeholder="Biển số (VD: 30A-9999)" value={form.plateNumber} onChange={(e) => setForm({ ...form, plateNumber: e.target.value })} />
+      </div>
+      <button className="btn primary" onClick={handleRegister} disabled={loading}>{loading ? <div className="inline-spinner" /> : 'Đăng ký vé tháng'}</button>
+      <div className="benefits">
+        {benefits.map((b) => <div key={b} className="benefit-item">✅ {b}</div>)}
+      </div>
+    </div>
+  )
+}
+
+const Report = () => {
+  const [revenue, setRevenue] = useState(null)
+  const [traffic, setTraffic] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [startDate, setStartDate] = useState(() => new Date().toISOString().slice(0, 10))
+  const [endDate, setEndDate] = useState(() => new Date().toISOString().slice(0, 10))
+
+  const loadData = async () => {
+    setLoading(true)
+    try {
+      const [rev, traf] = await Promise.all([
+        axios.get(`${API_BASE}/Report/revenue`, { params: { startDate, endDate } }),
+        axios.get(`${API_BASE}/Report/traffic`, { params: { startDate, endDate } })
+      ])
+      setRevenue(rev.data)
+      setTraffic(traf.data)
+      toast.success('Đã cập nhật báo cáo')
+    } catch (err) {
+      toast.error('Không tải được báo cáo')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const paymentChartData = useMemo(() => {
+    if (!revenue?.revenueByPaymentMethod) return []
+    return Object.entries(revenue.revenueByPaymentMethod).map(([k, v]) => ({ name: k, value: v }))
+  }, [revenue])
+
+  const vehicleChartData = useMemo(() => {
+    if (!traffic?.vehiclesByType) return []
+    return Object.entries(traffic.vehiclesByType).map(([k, v]) => ({ name: k, value: v }))
+  }, [traffic])
+
+  const trendData = useMemo(() => revenue?.hourlyRevenue || revenue?.dailyRevenue || [], [revenue])
+  const pieColors = ['#0fb5ba', '#f97316', '#2563eb', '#7c3aed', '#0ea5e9']
+
+  return (
+    <div className="stack">
+      <div className="card">
+        <div className="card-header">
+          <div>
+            <div className="pill">Báo cáo</div>
+            <div className="muted">Doanh thu & lưu lượng</div>
+          </div>
+          <div className="form-row">
+            <input type="date" className="input" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+            <input type="date" className="input" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+            <button className="btn primary" onClick={loadData} disabled={loading}>{loading ? <div className="inline-spinner" /> : 'Làm mới'}</button>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid two-cols">
+        <div className="card kpi-card">
+          <h3>💰 Doanh thu</h3>
+          <p className="kpi-number">{formatCurrency(revenue?.totalRevenue || 0)} VNĐ</p>
+          <p className="muted">Giao dịch: {revenue?.totalTransactions || 0}</p>
+          <div className="chart-wrap">
+            {paymentChartData.length === 0 ? <div className="empty-state">Chưa có dữ liệu</div> : (
+              <ResponsiveContainer width="100%" height={240}>
+                <PieChart>
+                  <Pie data={paymentChartData} dataKey="value" nameKey="name" outerRadius={90} label>
+                    {paymentChartData.map((_, i) => (
+                      <Cell key={i} fill={pieColors[i % pieColors.length]} />
+                    ))}
+                  </Pie>
+                  <Legend />
+                  <Tooltip formatter={(v) => formatCurrency(v) + ' đ'} />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+        </div>
+
+        <div className="card kpi-card">
+          <h3>🚗 Lưu lượng</h3>
+          <p className="kpi-number">Vào: {traffic?.totalVehiclesIn || 0} / Ra: {traffic?.totalVehiclesOut || 0}</p>
+          <div className="chart-wrap">
+            {vehicleChartData.length === 0 ? <div className="empty-state">Chưa có dữ liệu</div> : (
+              <ResponsiveContainer width="100%" height={240}>
+                <BarChart data={vehicleChartData}>
+                  <XAxis dataKey="name" />
+                  <YAxis allowDecimals={false} />
+                  <Tooltip />
+                  <Bar dataKey="value" fill="#1a73e8" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="card kpi-card">
+        <h3>📈 Xu hướng doanh thu</h3>
+        <div className="chart-wrap">
+          {trendData.length === 0 ? <div className="empty-state">Chưa có dữ liệu</div> : (
+            <ResponsiveContainer width="100%" height={240}>
+              <LineChart data={trendData}>
+                <XAxis dataKey="label" />
+                <YAxis />
+                <Tooltip formatter={(v) => formatCurrency(v) + ' đ'} />
+                <Line dataKey="value" stroke="#0fb5ba" strokeWidth={3} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const passwordStrength = (pwd) => {
+  let score = 0
+  if (pwd.length >= 6) score += 1
+  if (/[A-Z]/.test(pwd)) score += 1
+  if (/[0-9]/.test(pwd)) score += 1
+  if (/[^A-Za-z0-9]/.test(pwd)) score += 1
+  return score
+}
+
+const AdminPanel = () => {
+  const [userForm, setUserForm] = useState({ username: '', password: '', role: 'ATTENDANT' })
+  const [loading, setLoading] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [recentUsers, setRecentUsers] = useState([])
+
+  const handleCreate = async () => {
+    if (!userForm.username || !userForm.password) return toast.error('Nhập đủ username/password')
+    const confirmed = window.confirm(`Tạo tài khoản ${userForm.username}?`)
+    if (!confirmed) return
+    setLoading(true)
+    try {
+      await axios.post(`${API_BASE}/UserAccount/create`, userForm)
+      toast.success(`Tạo user ${userForm.username} thành công`)
+      setRecentUsers((list) => [{ ...userForm, status: 'Active', id: Date.now() }, ...list].slice(0, 5))
+      setShowModal(false)
+      setUserForm({ username: '', password: '', role: 'ATTENDANT' })
+    } catch (err) {
+      toast.error(err.response?.data?.Error || 'Không tạo được user')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const strength = passwordStrength(userForm.password)
+  const strengthLabel = ['Yếu', 'Trung bình', 'Khá', 'Mạnh'][Math.max(0, strength - 1)] || 'Yếu'
+
+  return (
+    <div className="stack">
+      <div className="card">
+        <div className="card-header">
+          <div>
+            <div className="pill">Quản trị</div>
+            <div className="muted">Tạo tài khoản nhân viên</div>
+          </div>
+          <button className="btn primary" onClick={() => setShowModal(true)}>Tạo user</button>
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="card-header">
+          <div className="pill info">Danh sách mới tạo</div>
+        </div>
+        <div className="table-wrap">
+          <table className="table zebra">
+            <thead><tr><th>User</th><th>Role</th><th>Trạng thái</th></tr></thead>
+            <tbody>
+              {recentUsers.map((u) => (
+                <tr key={u.id}>
+                  <td>{u.username}</td>
+                  <td><span className="chip chip-blue">{u.role}</span></td>
+                  <td><span className="chip chip-green">{u.status}</span></td>
+                </tr>
+              ))}
+              {recentUsers.length === 0 && <tr><td colSpan="3"><div className="empty-state">Chưa có user mới</div></td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <Modal open={showModal} title="Tạo tài khoản" onClose={() => setShowModal(false)}>
+        <div className="stack">
+          <InputWithIcon icon="👤" placeholder="Username" value={userForm.username} onChange={(e) => setUserForm({ ...userForm, username: e.target.value })} />
+          <InputWithIcon icon="🔒" type="password" placeholder="Password" value={userForm.password} onChange={(e) => setUserForm({ ...userForm, password: e.target.value })} />
+          <InputWithIcon icon="🎯" as="select" value={userForm.role} onChange={(e) => setUserForm({ ...userForm, role: e.target.value })}>
+            <option value="ATTENDANT">Nhân viên</option>
+            <option value="ADMIN">Admin</option>
+          </InputWithIcon>
+          <div className="strength">
+            <div>Độ mạnh mật khẩu: <b>{strengthLabel}</b></div>
+            <div className="strength-bar">
+              {[0, 1, 2, 3].map((i) => <span key={i} className={i < strength ? 'on' : ''} />)}
+            </div>
+          </div>
+          <button className="btn primary" onClick={handleCreate} disabled={loading}>{loading ? <div className="inline-spinner" /> : 'Tạo user'}</button>
+        </div>
+      </Modal>
+    </div>
+  )
+}
+
+function App() {
+  const [user, setUser] = useState(null)
+  const [activeTab, setActiveTab] = useState('dashboard')
+
+  const tabs = [
+    { id: 'dashboard', label: 'Dashboard', icon: '🖥️' },
+    { id: 'membership', label: 'Vé tháng', icon: '💎', role: 'ADMIN' },
+    { id: 'report', label: 'Báo cáo', icon: '📊', role: 'ADMIN' },
+    { id: 'admin', label: 'Admin', icon: '🛡️', role: 'ADMIN' }
+  ]
+
+  if (!user) return <LoginScreen onLogin={setUser} />
+
+  const visibleTabs = tabs.filter((t) => !t.role || user.role === t.role)
+  const activeLabel = visibleTabs.find((t) => t.id === activeTab)?.label || ''
+
+  return (
+    <div className="page-shell">
+      <div className="nav-bar glass-card">
+        <div className="brand">🅿️ Parking System Pro</div>
+        <div className="nav-links">
+          {visibleTabs.map((tab) => (
+            <div key={tab.id} className={`nav-item ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id)}>
+              <span className="nav-icon">{tab.icon}</span>{tab.label}
+            </div>
+          ))}
+        </div>
+        <div className="user-chip">
+          <div>
+            <div className="muted">Xin chào</div>
+            <div className="user-name">{user.username} · {user.role}</div>
+          </div>
+          <button className="btn ghost" onClick={() => setUser(null)}>Đăng xuất</button>
+        </div>
+      </div>
+
+      <Breadcrumb items={[`Home`, activeLabel]} />
+
+      <main className="content">
+        {activeTab === 'dashboard' && <Dashboard />}
+        {activeTab === 'membership' && <Membership />}
+        {activeTab === 'report' && <Report />}
+        {activeTab === 'admin' && <AdminPanel />}
+      </main>
+
+      <Toaster position="top-right" />
+    </div>
+  )
+}
 
 export default App

@@ -20,6 +20,7 @@ namespace Parking.Infrastructure.Data
 				PropertyNameCaseInsensitive = true
 			};
 			options.Converters.Add(new VehicleJsonConverter());
+			options.Converters.Add(new PricePolicyJsonConverter());
 			return options;
 		}
 
@@ -95,6 +96,57 @@ namespace Parking.Infrastructure.Data
 				ElectricBicycle => "ELECTRIC_BICYCLE",
 				Bicycle => "BICYCLE",
 				_ => "CAR"
+			};
+		}
+	}
+
+	// Custom converter to persist PricePolicy with a type hint for polymorphic reconstruction.
+	internal class PricePolicyJsonConverter : JsonConverter<PricePolicy>
+	{
+		public override PricePolicy? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+		{
+			if (reader.TokenType == JsonTokenType.Null)
+			{
+				return null;
+			}
+
+			using var doc = JsonDocument.ParseValue(ref reader);
+			var root = doc.RootElement;
+
+			var policyId = root.TryGetProperty("PolicyId", out var pid) ? pid.GetString() : null;
+			var name = root.TryGetProperty("Name", out var nm) ? nm.GetString() : null;
+			var policyType = root.TryGetProperty("PolicyType", out var pt) ? pt.GetString() : null;
+
+			// PricePolicy has required members; initialize with safe defaults first.
+			PricePolicy policy = (policyType ?? string.Empty).ToUpperInvariant() switch
+			{
+				"LOST_TICKET" => new LostTicketFeePolicy { PolicyId = "DEFAULT", Name = "Default Policy" },
+				"PARKING_FEE" => new ParkingFeePolicy { PolicyId = "DEFAULT", Name = "Default Policy" },
+				_ => new ParkingFeePolicy { PolicyId = "DEFAULT", Name = "Default Policy" }
+			};
+
+			// Override defaults from JSON if provided.
+			policy.PolicyId = string.IsNullOrWhiteSpace(policyId) ? policy.PolicyId : policyId;
+			policy.Name = string.IsNullOrWhiteSpace(name) ? policy.Name : name;
+			return policy;
+		}
+
+		public override void Write(Utf8JsonWriter writer, PricePolicy value, JsonSerializerOptions options)
+		{
+			writer.WriteStartObject();
+			writer.WriteString("PolicyType", GetTypeName(value));
+			writer.WriteString("PolicyId", value.PolicyId);
+			writer.WriteString("Name", value.Name);
+			writer.WriteEndObject();
+		}
+
+		private static string GetTypeName(PricePolicy p)
+		{
+			return p switch
+			{
+				LostTicketFeePolicy => "LOST_TICKET",
+				ParkingFeePolicy => "PARKING_FEE",
+				_ => "PARKING_FEE"
 			};
 		}
 	}

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Parking.Core.Entities;
 using Parking.Core.Interfaces;
 
@@ -9,7 +10,7 @@ namespace Parking.Infrastructure.Repositories
 	// File-backed implementation storing sessions in DataStore/sessions.json.
 	public class ParkingSessionRepository : BaseJsonRepository<ParkingSession>, IParkingSessionRepository
 	{
-		public ParkingSessionRepository() : base("sessions.json") { }
+		public ParkingSessionRepository(IHostEnvironment hostEnvironment) : base(hostEnvironment, "sessions.json") { }
 
 		public async Task<IEnumerable<ParkingSession>> FindActiveByPlateAsync(string plateNumber)
 		{

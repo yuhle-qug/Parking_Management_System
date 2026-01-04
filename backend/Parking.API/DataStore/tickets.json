@@ -1,0 +1,62 @@
+[
+  {
+    "TicketId": "A1187F20",
+    "IssueTime": "2026-01-02T23:53:29.0929867+07:00",
+    "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "930F983B",
+    "IssueTime": "2026-01-02T23:56:44.2768909+07:00",
+    "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "8C4873D3",
+    "IssueTime": "2026-01-02T23:59:45.9103552+07:00",
+    "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "40AFBA26",
+    "IssueTime": "2026-01-03T09:33:33.8950978+07:00",
+    "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "FC5A02C9",
+    "IssueTime": "2026-01-03T09:53:20.0123778+07:00",
+    "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "EA604465",
+    "IssueTime": "2026-01-03T10:51:01.3527098+07:00",
+    "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "DB7F4B4D",
+    "IssueTime": "2026-01-03T10:51:07.7508704+07:00",
+    "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "70B58F3C",
+    "IssueTime": "2026-01-03T10:51:13.1421315+07:00",
+    "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "108B3F46",
+    "IssueTime": "2026-01-03T10:51:19.0311234+07:00",
+    "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "39B1FB2E",
+    "IssueTime": "2026-01-03T10:51:27.1356923+07:00",
+    "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "72F03B46",
+    "IssueTime": "2026-01-04T01:25:33.2169767+07:00",
+    "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "8173D113",
+    "IssueTime": "2026-01-04T10:56:46.4706033+07:00",
+    "GateId": "GATE-01"
+  }
+]

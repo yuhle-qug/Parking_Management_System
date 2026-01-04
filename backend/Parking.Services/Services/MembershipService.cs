@@ -9,11 +9,13 @@ namespace Parking.Services.Services
     {
         private readonly ICustomerRepository _customerRepo;
         private readonly IMonthlyTicketRepository _ticketRepo;
+        private readonly IMembershipPolicyRepository _policyRepo;
 
-        public MembershipService(ICustomerRepository customerRepo, IMonthlyTicketRepository ticketRepo)
+        public MembershipService(ICustomerRepository customerRepo, IMonthlyTicketRepository ticketRepo, IMembershipPolicyRepository policyRepo)
         {
             _customerRepo = customerRepo;
             _ticketRepo = ticketRepo;
+            _policyRepo = policyRepo;
         }
 
         public async Task<MonthlyTicket> RegisterMonthlyTicketAsync(Customer customerInfo, Vehicle vehicle, string planId)
@@ -32,16 +34,30 @@ namespace Parking.Services.Services
                 throw new InvalidOperationException($"Xe {vehicle.LicensePlate} đã có vé tháng hiệu lực.");
             }
 
+            var vehicleType = vehicle switch
+            {
+                ElectricCar => "ELECTRIC_CAR",
+                Car => "CAR",
+                ElectricMotorbike => "ELECTRIC_MOTORBIKE",
+                Motorbike => "MOTORBIKE",
+                ElectricBicycle => "ELECTRIC_BICYCLE",
+                Bicycle => "BICYCLE",
+                _ => vehicle.GetType().Name.ToUpperInvariant()
+            };
+
+            var policy = await _policyRepo.GetPolicyAsync(vehicleType);
+            var fee = policy?.MonthlyPrice ?? 2_000_000;
+
             var newTicket = new MonthlyTicket
             {
                 TicketId = "M-" + Guid.NewGuid().ToString().Substring(0, 8).ToUpper(),
                 CustomerId = existingCustomer.CustomerId,
                 VehiclePlate = vehicle.LicensePlate,
-                VehicleType = vehicle.GetType().Name,
+                VehicleType = vehicleType,
                 StartDate = DateTime.Now,
                 ExpiryDate = DateTime.Now.AddDays(30),
                 Status = "Active",
-                MonthlyFee = 1_500_000
+                MonthlyFee = fee
             };
 
             await _ticketRepo.AddAsync(newTicket);

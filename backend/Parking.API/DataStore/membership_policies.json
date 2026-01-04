@@ -1,0 +1,20 @@
+[
+  {
+    "PolicyId": "P-CAR",
+    "Name": "Monthly Car",
+    "VehicleType": "CAR",
+    "MonthlyPrice": 1500000
+  },
+  {
+    "PolicyId": "P-MOTO",
+    "Name": "Monthly Motorbike",
+    "VehicleType": "MOTORBIKE",
+    "MonthlyPrice": 120000
+  },
+  {
+    "PolicyId": "P-ELEC",
+    "Name": "Monthly Electric Car",
+    "VehicleType": "ELECTRIC_CAR",
+    "MonthlyPrice": 1000000
+  }
+]

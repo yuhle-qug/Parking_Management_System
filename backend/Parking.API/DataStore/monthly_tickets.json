@@ -1,0 +1,22 @@
+[
+  {
+    "TicketId": "M-C4D8A436",
+    "CustomerId": "b817c955-8129-4d20-99da-5e6be6fbf070",
+    "VehiclePlate": "30A-8888",
+    "VehicleType": "Car",
+    "StartDate": "2026-01-03T09:55:57.6142533+07:00",
+    "ExpiryDate": "2023-02-02T09:55:57.6146864+07:00",
+    "MonthlyFee": 1500000,
+    "Status": "Expired"
+  },
+  {
+    "TicketId": "M-A578107F",
+    "CustomerId": "3dfb174c-edfd-410c-a395-406d53bd60f1",
+    "VehiclePlate": "30a-k39295",
+    "VehicleType": "Car",
+    "StartDate": "2026-01-04T10:58:28.5424681+07:00",
+    "ExpiryDate": "2026-02-03T10:58:28.5424786+07:00",
+    "MonthlyFee": 1500000,
+    "Status": "Active"
+  }
+]

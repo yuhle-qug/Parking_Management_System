@@ -1,0 +1,38 @@
+[
+  {
+    "ZoneId": "ZONE-A",
+    "Name": "Khu A (\u00D4 t\u00F4)",
+    "VehicleCategory": "CAR",
+    "ElectricOnly": false,
+    "Capacity": 50,
+    "ActiveSessions": [],
+    "PricePolicy": {
+      "PolicyId": "P-CAR",
+      "Name": "Ph\u00ED \u00F4 t\u00F4 ti\u00EAu chu\u1EA9n"
+    }
+  },
+  {
+    "ZoneId": "ZONE-B",
+    "Name": "Khu B (Xe m\u00E1y)",
+    "VehicleCategory": "MOTORBIKE",
+    "ElectricOnly": false,
+    "Capacity": 100,
+    "ActiveSessions": [],
+    "PricePolicy": {
+      "PolicyId": "P-MOTO",
+      "Name": "Ph\u00ED xe m\u00E1y ti\u00EAu chu\u1EA9n"
+    }
+  },
+  {
+    "ZoneId": "ZONE-E",
+    "Name": "Khu E (Xe \u0111i\u1EC7n)",
+    "VehicleCategory": "CAR",
+    "ElectricOnly": true,
+    "Capacity": 20,
+    "ActiveSessions": [],
+    "PricePolicy": {
+      "PolicyId": "P-ELEC",
+      "Name": "Ph\u00ED xe \u0111i\u1EC7n \u01B0u \u0111\u00E3i"
+    }
+  }
+]

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Parking.Core.Entities;
 using Parking.Core.Interfaces;
 
@@ -9,7 +10,7 @@ namespace Parking.Infrastructure.Repositories
 {
     public class CustomerRepository : BaseJsonRepository<Customer>, ICustomerRepository
     {
-        public CustomerRepository() : base("customers.json") { }
+        public CustomerRepository(IHostEnvironment hostEnvironment) : base(hostEnvironment, "customers.json") { }
 
         public async Task<Customer> FindByPhoneAsync(string phone)
         {
@@ -20,7 +21,7 @@ namespace Parking.Infrastructure.Repositories
 
     public class MonthlyTicketRepository : BaseJsonRepository<MonthlyTicket>, IMonthlyTicketRepository
     {
-        public MonthlyTicketRepository() : base("monthly_tickets.json") { }
+        public MonthlyTicketRepository(IHostEnvironment hostEnvironment) : base(hostEnvironment, "monthly_tickets.json") { }
 
         public async Task<MonthlyTicket> FindActiveByPlateAsync(string plate)
         {

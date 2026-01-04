@@ -1,0 +1,272 @@
+[
+  {
+    "SessionId": "c2bca018-4119-45b4-8a1b-35d7b506cd15",
+    "EntryTime": "2026-01-02T23:59:45.9106776+07:00",
+    "ExitTime": "2026-01-03T00:01:11.8261165+07:00",
+    "FeeAmount": 10000,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "CAR",
+      "LicensePlate": "30A-12345"
+    },
+    "Ticket": {
+      "TicketId": "8C4873D3",
+      "IssueTime": "2026-01-02T23:59:45.9103552+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": {
+      "PaymentId": "030fa461-884c-44bc-9074-2e47398b7599",
+      "Amount": 10000,
+      "Time": "2026-01-03T00:01:14.0711751+07:00",
+      "Method": "Cash/QR",
+      "Status": "Completed"
+    },
+    "ParkingZoneId": "Z1"
+  },
+  {
+    "SessionId": "e12e51c4-0afb-4b50-91ee-d2ad44e2c142",
+    "EntryTime": "2026-01-03T09:33:33.895187+07:00",
+    "ExitTime": "2026-01-03T10:51:48.0408908+07:00",
+    "FeeAmount": 10000,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "MOTORBIKE",
+      "LicensePlate": "15A-123456"
+    },
+    "Ticket": {
+      "TicketId": "40AFBA26",
+      "IssueTime": "2026-01-03T09:33:33.8950978+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": {
+      "PaymentId": "5bbeebba-7173-48c6-959f-0ccec4992186",
+      "Amount": 10000,
+      "Time": "2026-01-03T10:51:50.7701629+07:00",
+      "Method": "Cash/QR",
+      "Status": "Completed"
+    },
+    "ParkingZoneId": "Z2"
+  },
+  {
+    "SessionId": "98d5eaf2-7000-4286-88d6-f9200ca4dd42",
+    "EntryTime": "2026-01-03T09:53:20.0124576+07:00",
+    "ExitTime": "2026-01-03T09:53:31.485262+07:00",
+    "FeeAmount": 10000,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "CAR",
+      "LicensePlate": "30A-12345"
+    },
+    "Ticket": {
+      "TicketId": "FC5A02C9",
+      "IssueTime": "2026-01-03T09:53:20.0123778+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": {
+      "PaymentId": "4c4b9802-27e1-45a9-bde6-3d98ca2c8ef6",
+      "Amount": 10000,
+      "Time": "2026-01-03T09:53:34.9514563+07:00",
+      "Method": "Cash/QR",
+      "Status": "Completed"
+    },
+    "ParkingZoneId": "Z1"
+  },
+  {
+    "SessionId": "8c75e4c8-0e6c-4641-bf1a-a86a744b1a53",
+    "EntryTime": "2026-01-03T09:56:57.6650748+07:00",
+    "ExitTime": "2026-01-03T09:57:22.3808985+07:00",
+    "FeeAmount": 0,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "CAR",
+      "LicensePlate": "30A-8888"
+    },
+    "Ticket": {
+      "TicketId": "M-C4D8A436",
+      "IssueTime": "2026-01-03T09:56:57.6650653+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": null,
+    "ParkingZoneId": "Z1"
+  },
+  {
+    "SessionId": "52ac5e64-99ea-46ef-8480-d581158792f7",
+    "EntryTime": "2026-01-03T10:51:01.3527735+07:00",
+    "ExitTime": "2026-01-03T10:51:53.9452752+07:00",
+    "FeeAmount": 10000,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "CAR",
+      "LicensePlate": "30A-11111"
+    },
+    "Ticket": {
+      "TicketId": "EA604465",
+      "IssueTime": "2026-01-03T10:51:01.3527098+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": {
+      "PaymentId": "639dbfe2-ad5b-4395-bfd6-6d8f0a26ddc9",
+      "Amount": 10000,
+      "Time": "2026-01-03T10:51:56.1255868+07:00",
+      "Method": "Cash/QR",
+      "Status": "Completed"
+    },
+    "ParkingZoneId": "Z1"
+  },
+  {
+    "SessionId": "0b901107-c34b-4cca-a5fb-135055e33d62",
+    "EntryTime": "2026-01-03T10:51:07.7508731+07:00",
+    "ExitTime": "2026-01-04T10:57:52.7365069+07:00",
+    "FeeAmount": 125000,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "MOTORBIKE",
+      "LicensePlate": "30A-22222"
+    },
+    "Ticket": {
+      "TicketId": "DB7F4B4D",
+      "IssueTime": "2026-01-03T10:51:07.7508704+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": {
+      "PaymentId": "92798e50-e88d-451d-a1b1-a300ccbf7d43",
+      "Amount": 125000,
+      "Time": "2026-01-04T10:57:59.8400211+07:00",
+      "Method": "Cash/QR",
+      "Status": "Completed"
+    },
+    "ParkingZoneId": "Z2"
+  },
+  {
+    "SessionId": "4ec82552-db3a-4a64-aecd-fefcdcfdb9d4",
+    "EntryTime": "2026-01-03T10:51:13.1421347+07:00",
+    "ExitTime": null,
+    "FeeAmount": 0,
+    "Status": "Active",
+    "Vehicle": {
+      "VehicleType": "MOTORBIKE",
+      "LicensePlate": "30A-4444444"
+    },
+    "Ticket": {
+      "TicketId": "70B58F3C",
+      "IssueTime": "2026-01-03T10:51:13.1421315+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": null,
+    "ParkingZoneId": "Z2"
+  },
+  {
+    "SessionId": "d46962b6-1db0-4607-8eac-b205dc90d243",
+    "EntryTime": "2026-01-03T10:51:19.0311253+07:00",
+    "ExitTime": "2026-01-04T16:42:46.3431623+07:00",
+    "FeeAmount": 150000,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "MOTORBIKE",
+      "LicensePlate": "14A-123456"
+    },
+    "Ticket": {
+      "TicketId": "108B3F46",
+      "IssueTime": "2026-01-03T10:51:19.0311234+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": {
+      "PaymentId": "30a634ce-fbe3-47b6-b76b-f5ddf8048746",
+      "Amount": 150000,
+      "Time": "2026-01-04T16:42:50.3441698+07:00",
+      "Method": "Cash/QR",
+      "Status": "Completed"
+    },
+    "ParkingZoneId": "Z2"
+  },
+  {
+    "SessionId": "d94e83eb-4c4d-4458-93f9-f7865c2b0a96",
+    "EntryTime": "2026-01-03T10:51:27.1356951+07:00",
+    "ExitTime": "2026-01-03T10:51:41.9668342+07:00",
+    "FeeAmount": 5000,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "MOTORBIKE",
+      "LicensePlate": "50A-12347"
+    },
+    "Ticket": {
+      "TicketId": "39B1FB2E",
+      "IssueTime": "2026-01-03T10:51:27.1356923+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": {
+      "PaymentId": "055c85b7-ed7a-4aca-b6fd-b8095bbc3d26",
+      "Amount": 5000,
+      "Time": "2026-01-03T10:51:44.3019067+07:00",
+      "Method": "Cash/QR",
+      "Status": "Completed"
+    },
+    "ParkingZoneId": "Z2"
+  },
+  {
+    "SessionId": "d95954ca-da62-4ef9-8f26-6846c7e56b4b",
+    "EntryTime": "2026-01-04T01:25:33.2172604+07:00",
+    "ExitTime": "2026-01-04T01:25:43.9872575+07:00",
+    "FeeAmount": 10000,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "CAR",
+      "LicensePlate": "30A12345"
+    },
+    "Ticket": {
+      "TicketId": "72F03B46",
+      "IssueTime": "2026-01-04T01:25:33.2169767+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": {
+      "PaymentId": "14be0e51-3f97-4c5a-8203-952bbadaa707",
+      "Amount": 10000,
+      "Time": "2026-01-04T01:25:50.1216988+07:00",
+      "Method": "Cash/QR",
+      "Status": "Completed"
+    },
+    "ParkingZoneId": "Z1"
+  },
+  {
+    "SessionId": "5830560a-1c7b-4ff7-9b20-1c07eb3a3657",
+    "EntryTime": "2026-01-04T10:56:46.4707384+07:00",
+    "ExitTime": "2026-01-04T10:57:29.0292035+07:00",
+    "FeeAmount": 10000,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "CAR",
+      "LicensePlate": "30A-56421"
+    },
+    "Ticket": {
+      "TicketId": "8173D113",
+      "IssueTime": "2026-01-04T10:56:46.4706033+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": {
+      "PaymentId": "a1807fe4-87cb-4a37-b791-c168c037d2f3",
+      "Amount": 10000,
+      "Time": "2026-01-04T10:57:34.3109968+07:00",
+      "Method": "Cash/QR",
+      "Status": "Completed"
+    },
+    "ParkingZoneId": "ZONE-A"
+  },
+  {
+    "SessionId": "8a64cebd-b34f-443e-bc84-b45662ad612a",
+    "EntryTime": "2026-01-04T10:58:40.4943225+07:00",
+    "ExitTime": "2026-01-04T10:59:01.9626458+07:00",
+    "FeeAmount": 0,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "CAR",
+      "LicensePlate": "30a-k39295"
+    },
+    "Ticket": {
+      "TicketId": "M-A578107F",
+      "IssueTime": "2026-01-04T10:58:40.4943164+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": null,
+    "ParkingZoneId": "ZONE-A"
+  }
+]

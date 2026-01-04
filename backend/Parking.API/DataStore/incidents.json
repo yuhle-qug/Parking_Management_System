@@ -1,0 +1,22 @@
+[
+  {
+    "IncidentId": "INC-F9914B17",
+    "ReportedDate": "2026-01-04T12:07:21.4444506+07:00",
+    "Title": "Barrier kh\u00F4ng m\u1EDF",
+    "Description": "Gate G1 kh\u00F4ng m\u1EDF khi qu\u00E9t v\u00E9",
+    "Status": "Resolved",
+    "ReportedBy": "admin",
+    "ReferenceId": "G1",
+    "ResolutionNotes": "\u0110\u00E3 ki\u1EC3m tra, barrier k\u1EB9t c\u01A1 kh\u00ED. \u0110\u00E3 b\u1EA3o tr\u00EC."
+  },
+  {
+    "IncidentId": "INC-9D3CB77E",
+    "ReportedDate": "2026-01-04T16:43:32.5412619+07:00",
+    "Title": "M\u1EA5t v\u00E9 xe",
+    "Description": "Kh\u00E1ch l\u00E0m r\u01A1i v\u00E9, bi\u1EC3n s\u1ED1 29A-99999",
+    "Status": "Open",
+    "ReportedBy": "admin",
+    "ReferenceId": "29A-99999",
+    "ResolutionNotes": null
+  }
+]

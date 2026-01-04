@@ -15,4 +15,9 @@ namespace Parking.Core.Interfaces
 		Task<MonthlyTicket> FindActiveByPlateAsync(string plate);
 		Task<IEnumerable<MonthlyTicket>> FindExpiredTicketsAsync(DateTime date);
 	}
+
+	public interface IMembershipPolicyRepository : IRepository<MembershipPolicy>
+	{
+		Task<MembershipPolicy?> GetPolicyAsync(string vehicleType);
+	}
 }

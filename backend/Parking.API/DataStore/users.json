@@ -1,0 +1,18 @@
+[
+  {
+    "$type": "admin",
+    "Role": "ADMIN",
+    "UserId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
+    "Username": "admin",
+    "PasswordHash": "123",
+    "Status": "Active"
+  },
+  {
+    "$type": "attendant",
+    "Role": "ATTENDANT",
+    "UserId": "7530d031-539a-4ad5-a67d-d4d3962d405e",
+    "Username": "admin1",
+    "PasswordHash": "456",
+    "Status": "Active"
+  }
+]

@@ -140,9 +140,9 @@
   {
     "SessionId": "4ec82552-db3a-4a64-aecd-fefcdcfdb9d4",
     "EntryTime": "2026-01-03T10:51:13.1421347+07:00",
-    "ExitTime": null,
-    "FeeAmount": 0,
-    "Status": "Active",
+    "ExitTime": "2026-01-05T15:44:21.179227+07:00",
+    "FeeAmount": 265000,
+    "Status": "Completed",
     "Vehicle": {
       "VehicleType": "MOTORBIKE",
       "LicensePlate": "30A-4444444"
@@ -152,7 +152,13 @@
       "IssueTime": "2026-01-03T10:51:13.1421315+07:00",
       "GateId": "GATE-01"
     },
-    "Payment": null,
+    "Payment": {
+      "PaymentId": "f7f8b809-513c-49c6-968d-addb3eb1c4ad",
+      "Amount": 265000,
+      "Time": "2026-01-05T15:44:25.8967765+07:00",
+      "Method": "Cash/QR",
+      "Status": "Completed"
+    },
     "ParkingZoneId": "Z2"
   },
   {
@@ -272,9 +278,9 @@
   {
     "SessionId": "0b0fefe3-d12b-43ce-ab2a-668b5f70a64f",
     "EntryTime": "2026-01-05T14:45:16.4241204+07:00",
-    "ExitTime": null,
-    "FeeAmount": 0,
-    "Status": "Active",
+    "ExitTime": "2026-01-05T15:43:09.8840244+07:00",
+    "FeeAmount": 5000,
+    "Status": "Completed",
     "Vehicle": {
       "VehicleType": "MOTORBIKE",
       "LicensePlate": "30A-12345"
@@ -282,6 +288,30 @@
     "Ticket": {
       "TicketId": "F9FCDF5B",
       "IssueTime": "2026-01-05T14:45:16.4241128+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": {
+      "PaymentId": "987e33fe-6948-41c1-9dfd-1a3c4f5f5a65",
+      "Amount": 5000,
+      "Time": "2026-01-05T15:43:31.6593025+07:00",
+      "Method": "Cash/QR",
+      "Status": "Completed"
+    },
+    "ParkingZoneId": "ZONE-B"
+  },
+  {
+    "SessionId": "2ad8feb5-e241-432f-8922-acc0bcbec581",
+    "EntryTime": "2026-01-05T15:46:52.46406+07:00",
+    "ExitTime": "2026-01-05T15:47:22.9346397+07:00",
+    "FeeAmount": 0,
+    "Status": "Completed",
+    "Vehicle": {
+      "VehicleType": "MOTORBIKE",
+      "LicensePlate": "15A-123456"
+    },
+    "Ticket": {
+      "TicketId": "M-27DBC725",
+      "IssueTime": "2026-01-05T15:46:52.4640449+07:00",
       "GateId": "GATE-01"
     },
     "Payment": null,

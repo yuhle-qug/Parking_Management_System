@@ -63,6 +63,22 @@ namespace Parking.API.Controllers
             await _userRepo.AddAsync(newUser);
             return Ok(new { Message = "Tạo user thành công", UserId = newUser.UserId, Role = newUser.Role });
         }
+
+        // [NEW] GET: api/UserAccount
+        // API lấy danh sách nhân viên để hiển thị lên bảng Admin
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userRepo.GetAllAsync();
+            // Ẩn mật khẩu trước khi trả về frontend vì lý do bảo mật
+            var safeUsers = users.Select(u => new { 
+                u.UserId, 
+                u.Username, 
+                u.Role, 
+                u.Status 
+            });
+            return Ok(safeUsers);
+        }
     }
 
     public class LoginRequest

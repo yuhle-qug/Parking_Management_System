@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Parking.Core.Entities;
 using Parking.Core.Interfaces;
@@ -72,6 +73,18 @@ namespace Parking.Services.Services
             ticket.ExpiryDate = ticket.ExpiryDate.AddMonths(months);
             await _ticketRepo.UpdateAsync(ticket);
             return true;
+        }
+
+        // [NEW] Implement hàm lấy danh sách vé
+        public async Task<IEnumerable<MonthlyTicket>> GetAllTicketsAsync()
+        {
+            return await _ticketRepo.GetAllAsync();
+        }
+
+        // [NEW] Implement hàm lấy bảng giá
+        public async Task<IEnumerable<MembershipPolicy>> GetAllPoliciesAsync()
+        {
+            return await _policyRepo.GetAllAsync();
         }
     }
 }

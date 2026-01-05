@@ -32,6 +32,22 @@ namespace Parking.API.Controllers
                 return BadRequest(new { Error = ex.Message });
             }
         }
+
+        // [NEW] GET: api/Membership/tickets
+        [HttpGet("tickets")]
+        public async Task<IActionResult> GetAllTickets()
+        {
+            var tickets = await _membershipService.GetAllTicketsAsync();
+            return Ok(tickets);
+        }
+
+        // [NEW] GET: api/Membership/policies
+        [HttpGet("policies")]
+        public async Task<IActionResult> GetAllPolicies()
+        {
+            var policies = await _membershipService.GetAllPoliciesAsync();
+            return Ok(policies);
+        }
     }
 
     public class RegisterRequest

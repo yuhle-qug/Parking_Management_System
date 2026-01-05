@@ -9,7 +9,7 @@ export default function Admin() {
   const [loading, setLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [editUser, setEditUser] = useState(null)
-  const [form, setForm] = useState({ username: '', password: '', fullName: '', role: 'Operator' })
+  const [form, setForm] = useState({ username: '', password: '', fullName: '', role: 'ATTENDANT' })
 
   const fetchUsers = async () => {
     setLoading(true)
@@ -20,8 +20,8 @@ export default function Admin() {
     } else {
       // Mock data ban đầu
       const defaultUsers = [
-        { userId: 'U001', username: 'admin', fullName: 'Administrator', role: 'Admin', isActive: true },
-        { userId: 'U002', username: 'operator1', fullName: 'Nguyễn Văn A', role: 'Operator', isActive: true }
+        { userId: 'U001', username: 'admin', fullName: 'Administrator', role: 'ADMIN', isActive: true },
+        { userId: 'U002', username: 'operator1', fullName: 'Nguyễn Văn A', role: 'ATTENDANT', isActive: true }
       ]
       setUsers(defaultUsers)
       localStorage.setItem('adminUsers', JSON.stringify(defaultUsers))
@@ -100,9 +100,8 @@ export default function Admin() {
   }
 
   const roleColors = {
-    Admin: 'bg-purple-100 text-purple-700',
-    Manager: 'bg-blue-100 text-blue-700',
-    Operator: 'bg-green-100 text-green-700'
+    ADMIN: 'bg-purple-100 text-purple-700',
+    ATTENDANT: 'bg-green-100 text-green-700'
   }
 
   return (
@@ -152,7 +151,7 @@ export default function Admin() {
               <Shield className="text-purple-600" size={24} />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-800">{users.filter(u => u.role === 'Admin').length}</p>
+              <p className="text-2xl font-bold text-gray-800">{users.filter(u => u.role === 'ADMIN').length}</p>
               <p className="text-sm text-gray-500">Quản trị viên</p>
             </div>
           </div>
@@ -284,9 +283,8 @@ export default function Admin() {
                   value={form.role}
                   onChange={(e) => setForm({ ...form, role: e.target.value })}
                 >
-                  <option value="Admin">Admin - Toàn quyền</option>
-                  <option value="Manager">Manager - Quản lý</option>
-                  <option value="Operator">Operator - Vận hành</option>
+                  <option value="ADMIN">Admin - Toàn quyền</option>
+                  <option value="ATTENDANT">Attendant - Nhân viên</option>
                 </select>
               </div>
               <div className="flex gap-3 pt-2">

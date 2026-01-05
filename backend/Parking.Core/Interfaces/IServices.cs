@@ -18,6 +18,10 @@ namespace Parking.Core.Interfaces
 	{
 		Task<MonthlyTicket> RegisterMonthlyTicketAsync(Customer customerInfo, Vehicle vehicle, string planId);
 		Task<bool> ExtendMonthlyTicketAsync(string ticketId, int months);
+		
+		// [NEW] Thêm 2 hàm lấy dữ liệu
+		Task<IEnumerable<MonthlyTicket>> GetAllTicketsAsync();
+		Task<IEnumerable<MembershipPolicy>> GetAllPoliciesAsync();
 	}
 
 	// External device abstraction for opening gates.

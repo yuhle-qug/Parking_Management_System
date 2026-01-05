@@ -18,5 +18,15 @@
     "ExpiryDate": "2026-02-03T10:58:28.5424786+07:00",
     "MonthlyFee": 1500000,
     "Status": "Active"
+  },
+  {
+    "TicketId": "M-27DBC725",
+    "CustomerId": "e3474d67-4572-4bf5-9524-3cdb552e048c",
+    "VehiclePlate": "15A-123456",
+    "VehicleType": "CAR",
+    "StartDate": "2026-01-05T15:46:34.3688492+07:00",
+    "ExpiryDate": "2026-02-04T15:46:34.3688534+07:00",
+    "MonthlyFee": 1500000,
+    "Status": "Active"
   }
 ]

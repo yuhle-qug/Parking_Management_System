@@ -10,14 +10,13 @@ export default function MainLayout({ user, onLogout }) {
     navigate('/')
   }
 
+  const isAdmin = user?.role?.toUpperCase() === 'ADMIN'
   const menuItems = [
     { path: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
-    ...(user?.role === 'ADMIN'
-      ? [
-          { path: '/membership', label: 'Vé Tháng', icon: <CreditCard size={20} /> },
-          { path: '/report', label: 'Báo Cáo', icon: <BarChart3 size={20} /> },
-          { path: '/admin', label: 'Quản Trị', icon: <Shield size={20} /> },
-        ]
+    { path: '/membership', label: 'Vé Tháng', icon: <CreditCard size={20} /> },
+    { path: '/report', label: 'Báo Cáo', icon: <BarChart3 size={20} /> },
+    ...(isAdmin
+      ? [{ path: '/admin', label: 'Quản Trị', icon: <Shield size={20} /> }]
       : []),
   ]
 

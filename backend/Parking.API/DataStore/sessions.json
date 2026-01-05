@@ -268,5 +268,23 @@
     },
     "Payment": null,
     "ParkingZoneId": "ZONE-A"
+  },
+  {
+    "SessionId": "0b0fefe3-d12b-43ce-ab2a-668b5f70a64f",
+    "EntryTime": "2026-01-05T14:45:16.4241204+07:00",
+    "ExitTime": null,
+    "FeeAmount": 0,
+    "Status": "Active",
+    "Vehicle": {
+      "VehicleType": "MOTORBIKE",
+      "LicensePlate": "30A-12345"
+    },
+    "Ticket": {
+      "TicketId": "F9FCDF5B",
+      "IssueTime": "2026-01-05T14:45:16.4241128+07:00",
+      "GateId": "GATE-01"
+    },
+    "Payment": null,
+    "ParkingZoneId": "ZONE-B"
   }
 ]

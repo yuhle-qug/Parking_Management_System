@@ -37,12 +37,10 @@ function App() {
           <Route element={<MainLayout user={user} onLogout={handleLogout} />}>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            {user.role === 'ADMIN' && (
-              <>
-                <Route path="/membership" element={<Membership />} />
-                <Route path="/report" element={<Report />} />
-                <Route path="/admin" element={<Admin />} />
-              </>
+            <Route path="/membership" element={<Membership />} />
+            <Route path="/report" element={<Report />} />
+            {user.role?.toUpperCase() === 'ADMIN' && (
+              <Route path="/admin" element={<Admin />} />
             )}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>

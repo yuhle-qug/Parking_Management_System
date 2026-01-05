@@ -58,5 +58,10 @@
     "TicketId": "8173D113",
     "IssueTime": "2026-01-04T10:56:46.4706033+07:00",
     "GateId": "GATE-01"
+  },
+  {
+    "TicketId": "F9FCDF5B",
+    "IssueTime": "2026-01-05T14:45:16.4241128+07:00",
+    "GateId": "GATE-01"
   }
 ]

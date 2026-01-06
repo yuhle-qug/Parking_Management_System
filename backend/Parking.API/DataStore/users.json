@@ -22,13 +22,5 @@
     "Username": "admin123",
     "PasswordHash": "123",
     "Status": "Active"
-  },
-  {
-    "$type": "attendant",
-    "Role": "ATTENDANT",
-    "UserId": "c68ca957-4db4-44b9-9091-19e3e41cd872",
-    "Username": "admin1234m",
-    "PasswordHash": "123",
-    "Status": "Active"
   }
 ]

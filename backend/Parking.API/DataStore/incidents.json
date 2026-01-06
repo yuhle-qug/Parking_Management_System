@@ -1,22 +1,252 @@
-[
-  {
-    "IncidentId": "INC-F9914B17",
-    "ReportedDate": "2026-01-04T12:07:21.4444506+07:00",
-    "Title": "Barrier kh\u00F4ng m\u1EDF",
-    "Description": "Gate G1 kh\u00F4ng m\u1EDF khi qu\u00E9t v\u00E9",
-    "Status": "Resolved",
-    "ReportedBy": "admin",
-    "ReferenceId": "G1",
-    "ResolutionNotes": "\u0110\u00E3 ki\u1EC3m tra, barrier k\u1EB9t c\u01A1 kh\u00ED. \u0110\u00E3 b\u1EA3o tr\u00EC."
-  },
-  {
-    "IncidentId": "INC-9D3CB77E",
-    "ReportedDate": "2026-01-04T16:43:32.5412619+07:00",
-    "Title": "M\u1EA5t v\u00E9 xe",
-    "Description": "Kh\u00E1ch l\u00E0m r\u01A1i v\u00E9, bi\u1EC3n s\u1ED1 29A-99999",
-    "Status": "Open",
-    "ReportedBy": "admin",
-    "ReferenceId": "29A-99999",
-    "ResolutionNotes": null
-  }
+﻿[
+    {
+        "IncidentId":  "INC-D6568AA1",
+        "ReportedDate":  "2026-01-02T11:42:02.3340684+07:00",
+        "Title":  "Ket cong ra",
+        "Description":  "Su co phat sinh, ref: BE6AEFFA",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "BE6AEFFA",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-85C5BED6",
+        "ReportedDate":  "2025-12-24T15:44:02.3340684+07:00",
+        "Title":  "Mat ve xe",
+        "Description":  "Khach bao mat ve, ref: 38N-589138",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "38N-589138",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-98A24D53",
+        "ReportedDate":  "2025-12-25T15:30:02.3340684+07:00",
+        "Title":  "Loi tinh phi",
+        "Description":  "Su co phat sinh, ref: 81V-67871103",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "81V-67871103",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-37340D7B",
+        "ReportedDate":  "2025-12-28T12:26:02.3340684+07:00",
+        "Title":  "Barrier khong mo",
+        "Description":  "Barrier khong mo khi quet ve.",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "34H-54522504",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-97AB4AC2",
+        "ReportedDate":  "2025-12-27T14:01:02.3340684+07:00",
+        "Title":  "Barrier khong mo",
+        "Description":  "Barrier khong mo khi quet ve.",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "75L-9881466",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-1CB23BAB",
+        "ReportedDate":  "2025-12-27T09:06:02.3340684+07:00",
+        "Title":  "Barrier khong mo",
+        "Description":  "Barrier khong mo khi quet ve.",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "D82FF40B",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-53B80DC0",
+        "ReportedDate":  "2025-12-24T14:18:02.3340684+07:00",
+        "Title":  "Barrier khong mo",
+        "Description":  "Barrier khong mo khi quet ve.",
+        "Status":  "Open",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "29M-6336184",
+        "ResolutionNotes":  null
+    },
+    {
+        "IncidentId":  "INC-E021E2E3",
+        "ReportedDate":  "2026-01-02T08:33:02.3340684+07:00",
+        "Title":  "Barrier khong mo",
+        "Description":  "Barrier khong mo khi quet ve.",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "AFE8A550",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-D96EA307",
+        "ReportedDate":  "2026-01-06T17:29:02.3340684+07:00",
+        "Title":  "Khong quet duoc QR",
+        "Description":  "Su co phat sinh, ref: 31D-62649381",
+        "Status":  "Open",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "31D-62649381",
+        "ResolutionNotes":  null
+    },
+    {
+        "IncidentId":  "INC-F16117F5",
+        "ReportedDate":  "2025-12-29T10:52:02.3340684+07:00",
+        "Title":  "Barrier khong mo",
+        "Description":  "Barrier khong mo khi quet ve.",
+        "Status":  "Open",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "9135D7CA",
+        "ResolutionNotes":  null
+    },
+    {
+        "IncidentId":  "INC-5D727DA4",
+        "ReportedDate":  "2025-12-31T09:11:02.3340684+07:00",
+        "Title":  "Khong quet duoc QR",
+        "Description":  "Su co phat sinh, ref: 72N-9278361",
+        "Status":  "Open",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "72N-9278361",
+        "ResolutionNotes":  null
+    },
+    {
+        "IncidentId":  "INC-420A2540",
+        "ReportedDate":  "2025-12-27T12:12:02.3340684+07:00",
+        "Title":  "Ket cong ra",
+        "Description":  "Su co phat sinh, ref: 721B01CD",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "721B01CD",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-7469188C",
+        "ReportedDate":  "2026-01-01T17:42:02.3340684+07:00",
+        "Title":  "Mat ve xe",
+        "Description":  "Khach bao mat ve, ref: 68N-4064365",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "68N-4064365",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-2C8A15B1",
+        "ReportedDate":  "2025-12-26T10:13:02.3340684+07:00",
+        "Title":  "Khong quet duoc QR",
+        "Description":  "Su co phat sinh, ref: 65Z-53727561",
+        "Status":  "Open",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "65Z-53727561",
+        "ResolutionNotes":  null
+    },
+    {
+        "IncidentId":  "INC-EE308BD6",
+        "ReportedDate":  "2025-12-25T08:10:02.3340684+07:00",
+        "Title":  "Khong quet duoc QR",
+        "Description":  "Su co phat sinh, ref: 68N-4064365",
+        "Status":  "Open",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "68N-4064365",
+        "ResolutionNotes":  null
+    },
+    {
+        "IncidentId":  "INC-AF0C6143",
+        "ReportedDate":  "2025-12-28T14:47:02.3340684+07:00",
+        "Title":  "Loi tinh phi",
+        "Description":  "Su co phat sinh, ref: 05149F64",
+        "Status":  "Open",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "05149F64",
+        "ResolutionNotes":  null
+    },
+    {
+        "IncidentId":  "INC-5469C4E6",
+        "ReportedDate":  "2025-12-26T19:18:02.3340684+07:00",
+        "Title":  "Barrier khong mo",
+        "Description":  "Barrier khong mo khi quet ve.",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "86G-9467577",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-15C3CC43",
+        "ReportedDate":  "2025-12-27T08:08:02.3340684+07:00",
+        "Title":  "Barrier khong mo",
+        "Description":  "Barrier khong mo khi quet ve.",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "B7C8FD42",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-F823CFFD",
+        "ReportedDate":  "2025-12-26T11:08:02.3340684+07:00",
+        "Title":  "Mat ve xe",
+        "Description":  "Khach bao mat ve, ref: 82X-24120839",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "82X-24120839",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-7E577D86",
+        "ReportedDate":  "2026-01-03T09:31:02.3340684+07:00",
+        "Title":  "Mat ve xe",
+        "Description":  "Khach bao mat ve, ref: 75L-9881466",
+        "Status":  "Open",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "75L-9881466",
+        "ResolutionNotes":  null
+    },
+    {
+        "IncidentId":  "INC-1B3FB0EF",
+        "ReportedDate":  "2026-01-01T10:15:02.3340684+07:00",
+        "Title":  "Loi tinh phi",
+        "Description":  "Su co phat sinh, ref: 7193918E",
+        "Status":  "Open",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "7193918E",
+        "ResolutionNotes":  null
+    },
+    {
+        "IncidentId":  "INC-34CDC12E",
+        "ReportedDate":  "2025-12-29T16:20:02.3340684+07:00",
+        "Title":  "Loi tinh phi",
+        "Description":  "Su co phat sinh, ref: 43393FC7",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "43393FC7",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-880C5D20",
+        "ReportedDate":  "2026-01-05T16:10:02.3340684+07:00",
+        "Title":  "Loi tinh phi",
+        "Description":  "Su co phat sinh, ref: 67V-8352632",
+        "Status":  "Open",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "67V-8352632",
+        "ResolutionNotes":  null
+    },
+    {
+        "IncidentId":  "INC-1EB4C9DE",
+        "ReportedDate":  "2026-01-01T18:15:02.3340684+07:00",
+        "Title":  "Barrier khong mo",
+        "Description":  "Barrier khong mo khi quet ve.",
+        "Status":  "Resolved",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "DD6A2FCF",
+        "ResolutionNotes":  "Da kiem tra va xu ly."
+    },
+    {
+        "IncidentId":  "INC-37013411",
+        "ReportedDate":  "2025-12-26T11:34:02.3340684+07:00",
+        "Title":  "Mat ve xe",
+        "Description":  "Khach bao mat ve, ref: 62P-8258208",
+        "Status":  "Open",
+        "ReportedBy":  "admin",
+        "ReferenceId":  "62P-8258208",
+        "ResolutionNotes":  null
+    }
 ]

@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { BarChart3, TrendingUp, DollarSign, Car, Calendar, RefreshCw } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts'
-
-const API_BASE = 'http://localhost:5166/api'
+import { API_BASE } from '../config/api'
 const formatCurrency = (n) => (n || 0).toLocaleString('vi-VN')
 
 const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Car, Ticket, Clock, LogIn, LogOut as LogOutIcon } from 'lucide-react'
-
-const API_BASE = 'http://localhost:5166/api'
+import { API_BASE } from '../config/api'
 const formatCurrency = (n) => (n || 0).toLocaleString('vi-VN')
 const formatTime = (v) => new Date(v).toLocaleTimeString('vi-VN')
 

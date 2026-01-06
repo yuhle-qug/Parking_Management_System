@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
-
-const API_BASE = 'http://localhost:5166/api'
+import { API_BASE } from '../config/api'
 
 export default function Login({ onLogin }) {
   const [username, setUsername] = useState('')
@@ -10,18 +9,22 @@ export default function Login({ onLogin }) {
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
-    if (!username || !password) {
+    const uname = username.trim()
+    const pwd = password.trim()
+
+    if (!uname || !pwd) {
       setError('Vui lòng nhập đủ thông tin')
       return
     }
     setError('')
     setLoading(true)
     try {
-      const res = await axios.post(`${API_BASE}/UserAccount/login`, { username, password })
+      const res = await axios.post(`${API_BASE}/UserAccount/login`, { username: uname, password: pwd })
       localStorage.setItem('user', JSON.stringify(res.data))
       onLogin(res.data)
     } catch (err) {
-      setError('Đăng nhập thất bại: ' + (err.response?.data?.Message || err.message))
+      const apiMessage = err.response?.data?.message || err.response?.data?.Message
+      setError('Đăng nhập thất bại: ' + (apiMessage || err.message))
     } finally {
       setLoading(false)
     }

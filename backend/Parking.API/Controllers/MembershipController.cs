@@ -10,10 +10,12 @@ namespace Parking.API.Controllers
     public class MembershipController : ControllerBase
     {
         private readonly IMembershipService _membershipService;
+        private readonly IMonthlyTicketRepository _monthlyTicketRepo;
 
-        public MembershipController(IMembershipService membershipService)
+        public MembershipController(IMembershipService membershipService, IMonthlyTicketRepository monthlyTicketRepo)
         {
             _membershipService = membershipService;
+            _monthlyTicketRepo = monthlyTicketRepo;
         }
 
         [HttpPost("register")]
@@ -22,7 +24,7 @@ namespace Parking.API.Controllers
             try
             {
                 var customer = new Customer { Name = request.Name, Phone = request.Phone, IdentityNumber = request.IdentityNumber };
-                var vehicle = new Car(request.PlateNumber);
+                var vehicle = CreateVehicle(request.VehicleType, request.PlateNumber);
 
                 var ticket = await _membershipService.RegisterMonthlyTicketAsync(customer, vehicle, "MONTHLY_PLAN");
                 return Ok(ticket);
@@ -31,6 +33,14 @@ namespace Parking.API.Controllers
             {
                 return BadRequest(new { Error = ex.Message });
             }
+        }
+
+        // DELETE: api/Membership/tickets/{ticketId}
+        [HttpDelete("tickets/{ticketId}")]
+        public async Task<IActionResult> DeleteTicket(string ticketId)
+        {
+            await _monthlyTicketRepo.DeleteAsync(ticketId);
+            return Ok(new { Message = "Deleted" });
         }
 
         // [NEW] GET: api/Membership/tickets
@@ -48,6 +58,21 @@ namespace Parking.API.Controllers
             var policies = await _membershipService.GetAllPoliciesAsync();
             return Ok(policies);
         }
+
+        private static Vehicle CreateVehicle(string type, string plate)
+        {
+            var t = (type ?? string.Empty).Trim().ToUpperInvariant();
+            var p = (plate ?? string.Empty).Trim().ToUpperInvariant();
+            return t switch
+            {
+                "CAR" => new Car(p),
+                "ELECTRIC_CAR" => new ElectricCar(p),
+                "MOTORBIKE" => new Motorbike(p),
+                "ELECTRIC_MOTORBIKE" => new ElectricMotorbike(p),
+                "BICYCLE" => new Bicycle(p),
+                _ => new Car(p)
+            };
+        }
     }
 
     public class RegisterRequest
@@ -56,5 +81,6 @@ namespace Parking.API.Controllers
         public string Phone { get; set; }
         public string IdentityNumber { get; set; }
         public string PlateNumber { get; set; }
+        public string VehicleType { get; set; }
     }
 }

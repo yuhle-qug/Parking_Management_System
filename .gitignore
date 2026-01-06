@@ -17,3 +17,9 @@
 *.tmp
 *.tmp.*
 *.DS_Store
+
+# Local runtime/generated data
+/backend/Parking.API/DataStore/_backup/
+
+# Local tunnel config (may contain authtokens)
+/ngrok.yml

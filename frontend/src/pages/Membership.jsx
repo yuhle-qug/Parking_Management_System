@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { CreditCard, User, Car, Calendar, CheckCircle, Clock, Trash2 } from 'lucide-react'
-
-const API_BASE = 'http://localhost:5166/api'
+import { API_BASE } from '../config/api'
 const formatCurrency = (n) => (n || 0).toLocaleString('vi-VN')
 const formatDate = (v) => new Date(v).toLocaleDateString('vi-VN')
 
@@ -19,26 +18,70 @@ export default function Membership() {
     policyId: ''
   })
 
-  // Mock policies - backend chưa có endpoint này
   const defaultPolicies = [
-    { policyId: 'MONTHLY_CAR', policyName: 'Vé tháng Ô tô', monthlyPrice: 1500000 },
-    { policyId: 'MONTHLY_MOTORBIKE', policyName: 'Vé tháng Xe máy', monthlyPrice: 300000 },
-    { policyId: 'MONTHLY_ELECTRIC', policyName: 'Vé tháng Xe điện', monthlyPrice: 1200000 }
+    { policyId: 'P-CAR', policyName: 'Vé tháng Ô tô', monthlyPrice: 1500000, vehicleType: 'CAR' },
+    { policyId: 'P-MOTO', policyName: 'Vé tháng Xe máy', monthlyPrice: 120000, vehicleType: 'MOTORBIKE' },
+    { policyId: 'P-ELEC', policyName: 'Vé tháng Xe điện', monthlyPrice: 1000000, vehicleType: 'ELECTRIC_CAR' }
   ]
 
   const fetchData = async () => {
     setLoading(true)
-    // Sử dụng mock data vì backend chưa có endpoints /tickets và /policies
-    setPolicies(defaultPolicies)
-    if (!form.policyId) {
-      setForm(prev => ({ ...prev, policyId: defaultPolicies[0].policyId }))
+
+    try {
+      const [polRes, ticketRes] = await Promise.all([
+        axios.get(`${API_BASE}/Membership/policies`),
+        axios.get(`${API_BASE}/Membership/tickets`)
+      ])
+
+      const pol = Array.isArray(polRes.data) ? polRes.data : []
+      const mappedPolicies = pol.map(p => ({
+        policyId: p.policyId ?? p.PolicyId,
+        policyName: p.policyName ?? p.Name,
+        monthlyPrice: p.monthlyPrice ?? p.MonthlyPrice ?? 0,
+        vehicleType: (p.vehicleType ?? p.VehicleType ?? '').toString()
+      })).filter(p => !!p.policyId)
+
+      const finalPolicies = mappedPolicies.length ? mappedPolicies : defaultPolicies
+      setPolicies(finalPolicies)
+      if (!form.policyId && finalPolicies[0]?.policyId) {
+        setForm(prev => ({ ...prev, policyId: finalPolicies[0].policyId }))
+      }
+
+      const rawTickets = Array.isArray(ticketRes.data) ? ticketRes.data : []
+      const now = new Date()
+      const mappedTickets = rawTickets.map(t => {
+        const ticketId = t.ticketId ?? t.TicketId
+        const startDate = t.startDate ?? t.StartDate
+        const endDate = t.endDate ?? t.ExpiryDate
+        const status = (t.status ?? t.Status ?? '').toString()
+        const end = endDate ? new Date(endDate) : null
+        const isActive = status.toLowerCase() === 'active' && end && end >= now
+
+        return {
+          ticketId,
+          ownerName: t.ownerName ?? t.OwnerName ?? t.customerName ?? t.CustomerName ?? (t.customerId ?? t.CustomerId ?? '').toString(),
+          phone: t.phone ?? t.Phone ?? '',
+          licensePlate: t.licensePlate ?? t.VehiclePlate ?? '',
+          startDate,
+          endDate,
+          isActive,
+          vehicleType: t.vehicleType ?? t.VehicleType ?? '',
+          monthlyFee: t.monthlyFee ?? t.MonthlyFee ?? 0,
+          status
+        }
+      }).filter(t => !!t.ticketId)
+
+      setTickets(mappedTickets)
+    } catch (err) {
+      // fallback: at least show something (no localStorage anymore)
+      setPolicies(defaultPolicies)
+      if (!form.policyId) {
+        setForm(prev => ({ ...prev, policyId: defaultPolicies[0].policyId }))
+      }
+      setTickets([])
+    } finally {
+      setLoading(false)
     }
-    // Mock tickets từ localStorage
-    const savedTickets = localStorage.getItem('membershipTickets')
-    if (savedTickets) {
-      setTickets(JSON.parse(savedTickets))
-    }
-    setLoading(false)
   }
 
   useEffect(() => { fetchData() }, [])
@@ -52,41 +95,32 @@ export default function Membership() {
       return alert('Vui lòng điền đầy đủ thông tin')
     }
     try {
-      // Gọi API backend với format đúng: name, phone, identityNumber, plateNumber
+      // Gọi API backend: name, phone, identityNumber, plateNumber, vehicleType
       const res = await axios.post(`${API_BASE}/Membership/register`, {
         name: form.ownerName,
         phone: form.phone,
         identityNumber: '',
-        plateNumber: form.licensePlate.toUpperCase()
+        plateNumber: form.licensePlate.toUpperCase(),
+        vehicleType: form.vehicleType
       })
-      
-      // Lưu ticket vào localStorage (mock)
-      const newTicket = {
-        ticketId: res.data?.ticketId || `VT-${Date.now()}`,
-        ownerName: form.ownerName,
-        phone: form.phone,
-        licensePlate: form.licensePlate.toUpperCase(),
-        startDate: new Date().toISOString(),
-        endDate: new Date(Date.now() + form.months * 30 * 24 * 60 * 60 * 1000).toISOString(),
-        isActive: true
-      }
-      const updatedTickets = [...tickets, newTicket]
-      setTickets(updatedTickets)
-      localStorage.setItem('membershipTickets', JSON.stringify(updatedTickets))
-      
+
       alert('Đăng ký thành công!')
       setForm({ ownerName: '', phone: '', licensePlate: '', vehicleType: 'CAR', months: 1, policyId: policies[0]?.policyId || '' })
+      await fetchData()
     } catch (err) {
-      alert(err.response?.data?.error || 'Lỗi đăng ký')
+      alert(err.response?.data?.error || err.response?.data?.Error || 'Lỗi đăng ký')
     }
   }
 
   const handleCancel = async (ticketId) => {
     if (!window.confirm('Bạn có chắc muốn hủy vé này?')) return
-    // Xóa từ localStorage vì backend chưa có endpoint này
-    const updatedTickets = tickets.filter(t => t.ticketId !== ticketId)
-    setTickets(updatedTickets)
-    localStorage.setItem('membershipTickets', JSON.stringify(updatedTickets))
+
+    try {
+      await axios.delete(`${API_BASE}/Membership/tickets/${ticketId}`)
+      await fetchData()
+    } catch (err) {
+      alert(err.response?.data?.error || err.response?.data?.Error || 'Backend chưa hỗ trợ hủy vé tháng')
+    }
   }
 
   return (
@@ -247,6 +281,10 @@ export default function Membership() {
                       <Clock size={14} />
                       <span>Còn {Math.max(0, Math.ceil((new Date(ticket.endDate) - new Date()) / (1000 * 60 * 60 * 24)))} ngày</span>
                     </div>
+                      <div className="flex items-center justify-between text-gray-600">
+                        <span className="text-xs">Phí/tháng:</span>
+                        <span className="text-xs font-semibold">{formatCurrency(ticket.monthlyFee)} đ</span>
+                      </div>
                   </div>
                   {ticket.isActive && (
                     <button

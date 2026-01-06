@@ -23,7 +23,14 @@ builder.Services.AddCors(options =>
 				.SetIsOriginAllowed(origin =>
 				{
 					if (string.IsNullOrWhiteSpace(origin)) return false;
-					return Uri.TryCreate(origin, UriKind.Absolute, out var uri) && uri.IsLoopback;
+					if (!Uri.TryCreate(origin, UriKind.Absolute, out var uri)) return false;
+
+					// Allow local dev (localhost/127.0.0.1) + external dev tunnels.
+					if (uri.IsLoopback) return true;
+					if (uri.Host.EndsWith(".loca.lt", StringComparison.OrdinalIgnoreCase)) return true;
+					if (uri.Host.EndsWith(".ngrok-free.dev", StringComparison.OrdinalIgnoreCase)) return true;
+
+					return false;
 				})
 				.AllowAnyHeader()
 				.AllowAnyMethod();

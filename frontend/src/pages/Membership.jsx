@@ -3,7 +3,26 @@ import axios from 'axios'
 import { CreditCard, User, Car, Calendar, CheckCircle, Clock, Trash2 } from 'lucide-react'
 import { API_BASE } from '../config/api'
 const formatCurrency = (n) => (n || 0).toLocaleString('vi-VN')
-const formatDate = (v) => new Date(v).toLocaleDateString('vi-VN')
+
+const normalizeDotNetIso = (value) => {
+  if (!value || typeof value !== 'string') return value
+  // .NET can emit 7 fractional digits: 2026-01-27T... .3340684+07:00
+  // Some browsers parse only up to milliseconds reliably.
+  return value.replace(/\.(\d{3})\d+(?=([zZ]|[+-]\d{2}:\d{2})$)/, '.$1')
+}
+
+const parseDate = (value) => {
+  if (!value) return null
+  if (value instanceof Date) return isNaN(value.getTime()) ? null : value
+  const normalized = normalizeDotNetIso(value)
+  const d = new Date(normalized)
+  return isNaN(d.getTime()) ? null : d
+}
+
+const formatDate = (v) => {
+  const d = parseDate(v)
+  return d ? d.toLocaleDateString('vi-VN') : ''
+}
 
 export default function Membership() {
   const [tickets, setTickets] = useState([])
@@ -54,8 +73,8 @@ export default function Membership() {
         const startDate = t.startDate ?? t.StartDate
         const endDate = t.endDate ?? t.ExpiryDate
         const status = (t.status ?? t.Status ?? '').toString()
-        const end = endDate ? new Date(endDate) : null
-        const isActive = status.toLowerCase() === 'active' && end && end >= now
+        const end = parseDate(endDate)
+        const isActive = status.trim().toLowerCase() === 'active' && !!end && end >= now
 
         return {
           ticketId,
@@ -71,7 +90,8 @@ export default function Membership() {
         }
       }).filter(t => !!t.ticketId)
 
-      setTickets(mappedTickets)
+      // Chỉ giữ các vé còn hiệu lực để hiển thị
+      setTickets(mappedTickets.filter(t => t.isActive))
     } catch (err) {
       // fallback: at least show something (no localStorage anymore)
       setPolicies(defaultPolicies)
@@ -279,7 +299,10 @@ export default function Membership() {
                     </div>
                     <div className="flex items-center gap-2 text-gray-600">
                       <Clock size={14} />
-                      <span>Còn {Math.max(0, Math.ceil((new Date(ticket.endDate) - new Date()) / (1000 * 60 * 60 * 24)))} ngày</span>
+
+                      <span>
+                        Còn {Math.max(0, Math.ceil(((parseDate(ticket.endDate)?.getTime() ?? 0) - Date.now()) / (1000 * 60 * 60 * 24)))} ngày
+                      </span>
                     </div>
                       <div className="flex items-center justify-between text-gray-600">
                         <span className="text-xs">Phí/tháng:</span>

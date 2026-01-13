@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Parking.Core.Entities;
 using Parking.Core.Interfaces;
@@ -78,7 +79,11 @@ namespace Parking.Services.Services
         // [NEW] Implement hàm lấy danh sách vé
         public async Task<IEnumerable<MonthlyTicket>> GetAllTicketsAsync()
         {
-            return await _ticketRepo.GetAllAsync();
+            var tickets = await _ticketRepo.GetAllAsync();
+            var now = DateTime.Now;
+
+            // Chỉ trả về vé còn hiệu lực tại thời điểm gọi API
+            return tickets.Where(t => t.Status == "Active" && t.ExpiryDate >= now);
         }
 
         // [NEW] Implement hàm lấy bảng giá

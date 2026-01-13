@@ -17,7 +17,7 @@
     "StartDate": "2025-12-13T23:43:02.3340684+07:00",
     "ExpiryDate": "2026-01-12T23:43:02.3340684+07:00",
     "MonthlyFee": 1000000,
-    "Status": "Active"
+    "Status": "Expired"
   },
   {
     "TicketId": "M-BB833E1E",
@@ -87,7 +87,7 @@
     "StartDate": "2025-12-13T13:43:02.3340684+07:00",
     "ExpiryDate": "2026-01-12T13:43:02.3340684+07:00",
     "MonthlyFee": 1500000,
-    "Status": "Active"
+    "Status": "Expired"
   },
   {
     "TicketId": "M-57347BEB",
@@ -206,6 +206,36 @@
     "VehicleType": "CAR",
     "StartDate": "2026-01-06T19:53:25.3587023+07:00",
     "ExpiryDate": "2026-02-05T19:53:25.3587046+07:00",
+    "MonthlyFee": 1500000,
+    "Status": "Active"
+  },
+  {
+    "TicketId": "M-D637F2E8",
+    "CustomerId": "68a2c776-f458-456c-91a9-d37b9fb7ab10",
+    "VehiclePlate": "30A-K39295",
+    "VehicleType": "MOTORBIKE",
+    "StartDate": "2026-01-06T21:33:58.2120234+07:00",
+    "ExpiryDate": "2026-02-05T21:33:58.2120256+07:00",
+    "MonthlyFee": 120000,
+    "Status": "Active"
+  },
+  {
+    "TicketId": "M-D4BFCFF9",
+    "CustomerId": "2ee545e9-3fbd-463a-b753-527a5bb1aa35",
+    "VehiclePlate": "30A-1111111",
+    "VehicleType": "CAR",
+    "StartDate": "2026-01-09T10:01:40.7993659+07:00",
+    "ExpiryDate": "2026-02-08T10:01:40.799368+07:00",
+    "MonthlyFee": 1500000,
+    "Status": "Active"
+  },
+  {
+    "TicketId": "M-8CAFA834",
+    "CustomerId": "315850c9-c13f-44c2-a03d-b6fabb4b156f",
+    "VehiclePlate": "1231231",
+    "VehicleType": "CAR",
+    "StartDate": "2026-01-10T10:42:17.4709997+07:00",
+    "ExpiryDate": "2026-02-09T10:42:17.4710007+07:00",
     "MonthlyFee": 1500000,
     "Status": "Active"
   }

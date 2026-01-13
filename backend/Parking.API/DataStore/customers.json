@@ -304,5 +304,23 @@
     "Name": "Pham Ba Tuan Kiet",
     "Phone": "123456789",
     "IdentityNumber": ""
+  },
+  {
+    "CustomerId": "68a2c776-f458-456c-91a9-d37b9fb7ab10",
+    "Name": "le quang huy",
+    "Phone": "0392687956",
+    "IdentityNumber": ""
+  },
+  {
+    "CustomerId": "2ee545e9-3fbd-463a-b753-527a5bb1aa35",
+    "Name": "le qang huy",
+    "Phone": "\u006012\u006012\u006012\u006012\u006012",
+    "IdentityNumber": ""
+  },
+  {
+    "CustomerId": "315850c9-c13f-44c2-a03d-b6fabb4b156f",
+    "Name": "le quang huy",
+    "Phone": "1231",
+    "IdentityNumber": ""
   }
 ]

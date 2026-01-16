@@ -23,3 +23,5 @@
 
 # Local tunnel config (may contain authtokens)
 /ngrok.yml
+# Không commit các file cấu hình chứa secret
+backend/Parking.API/appsettings*.json

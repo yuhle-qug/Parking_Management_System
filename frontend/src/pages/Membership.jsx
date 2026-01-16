@@ -1,7 +1,8 @@
 import { useEffect, useState, useMemo } from 'react'
 import axios from 'axios'
-import { CreditCard, User, Car, Calendar, CheckCircle, Clock, Trash2, Search, X, History, XCircle, CalendarPlus } from 'lucide-react'
+import { CreditCard, User, Car, Calendar, CheckCircle, Clock, Trash2, Search, X, History, XCircle, CalendarPlus, Phone } from 'lucide-react'
 import { API_BASE } from '../config/api'
+
 const formatCurrency = (n) => (n || 0).toLocaleString('vi-VN')
 
 const normalizeDotNetIso = (value) => {
@@ -42,6 +43,7 @@ export default function Membership() {
   const [renewModal, setRenewModal] = useState(null)
   const [historyModal, setHistoryModal] = useState(null)
   const [confirmModal, setConfirmModal] = useState(null)
+  const [detailModal, setDetailModal] = useState(null)
   const [history, setHistory] = useState([])
 
   const defaultPolicies = [
@@ -100,8 +102,10 @@ export default function Membership() {
 
         return {
           ticketId,
+          customerId: t.customerId ?? t.CustomerId ?? '',
           ownerName: t.ownerName ?? t.OwnerName ?? t.customerName ?? t.CustomerName ?? (t.customerId ?? t.CustomerId ?? '').toString(),
           phone: t.phone ?? t.Phone ?? '',
+          identityNumber: t.identityNumber ?? t.IdentityNumber ?? '',
           licensePlate: t.licensePlate ?? t.VehiclePlate ?? t.vehiclePlate ?? '',
           startDate,
           endDate,
@@ -437,12 +441,71 @@ export default function Membership() {
     )
   }
 
+  const renderDetailModal = () => {
+    if (!detailModal) return null
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="bg-white rounded-xl shadow-2xl p-6 w-[400px] space-y-4 border border-gray-100">
+           <div className="flex items-start justify-between gap-3 border-b border-gray-100 pb-3">
+             <div>
+                <h3 className="text-lg font-bold text-gray-800">Thông tin khách hàng</h3>
+                <div className="flex gap-3 text-xs text-gray-500">
+                    <span>Mã vé: {detailModal.ticketId}</span>
+                    <span className="text-gray-300">|</span>
+                    <span>Mã KH: {detailModal.customerId}</span>
+                </div>
+             </div>
+             <button onClick={() => setDetailModal(null)} className="text-gray-500 hover:text-gray-800"><X size={18} /></button>
+           </div>
+           
+           <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                 <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
+                    <User size={20} />
+                 </div>
+                 <div>
+                    <div className="text-sm text-gray-500">Họ và tên</div>
+                    <div className="font-semibold text-gray-800 text-lg">{detailModal.ownerName}</div>
+                 </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                 <div className="bg-gray-50 p-3 rounded-lg">
+                    <div className="text-xs text-gray-500 mb-1">Số điện thoại</div>
+                    <div className="font-mono font-medium text-gray-800">{detailModal.phone || '---'}</div>
+                 </div>
+                 <div className="bg-gray-50 p-3 rounded-lg">
+                    <div className="text-xs text-gray-500 mb-1">CMND/CCCD</div>
+                    <div className="font-mono font-medium text-gray-800">{detailModal.identityNumber || '---'}</div>
+                 </div>
+              </div>
+
+              <div className="bg-blue-50 p-3 rounded-lg flex justify-between items-center">
+                 <div>
+                    <div className="text-xs text-blue-600 mb-1">Xe đăng ký</div>
+                    <div className="font-bold text-blue-800">{detailModal.licensePlate}</div>
+                 </div>
+                 <div className="text-xs font-mono bg-white px-2 py-1 rounded text-blue-600 border border-blue-100">
+                    {detailModal.vehicleType}
+                 </div>
+              </div>
+           </div>
+
+           <button onClick={() => setDetailModal(null)} className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 rounded-lg transition mt-2">
+              Đóng
+           </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="grid lg:grid-cols-3 gap-6 relative">
       {renderQrModal()}
       {renderRenewModal()}
       {renderHistoryModal()}
       {renderConfirmModal()}
+      {renderDetailModal()}
       {/* Registration Form */}
       <div className="lg:col-span-1">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -623,7 +686,10 @@ export default function Membership() {
                       
                       <div className="text-center py-2">
                          <div className="text-2xl font-bold text-gray-800 tracking-tight">{t.licensePlate || '---'}</div>
-                         <div className="text-sm text-gray-500 truncate">{t.ownerName}</div>
+                         <div className="text-sm font-semibold text-gray-800 truncate mt-1">{t.ownerName}</div>
+                         <div className="text-xs text-gray-500 flex items-center justify-center gap-1 mt-0.5">
+                             <Phone size={10} /> {t.phone || '---'}
+                         </div>
                       </div>
 
                       <div className="mt-2 space-y-2 text-xs text-gray-600 bg-gray-50 p-2 rounded-lg">
@@ -662,8 +728,11 @@ export default function Membership() {
                           </button>
                       )}
 
-                      <button onClick={() => handleViewHistory(t.ticketId)} className="col-span-2 flex items-center justify-center gap-1 text-xs font-semibold py-1 text-gray-400 hover:text-gray-600 transition">
-                         <History size={12} /> Lịch sử
+                      <button onClick={() => handleViewHistory(t.ticketId)} className="flex items-center justify-center gap-1 text-xs font-semibold py-1.5 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100 transition">
+                         <History size={14} /> Lịch sử
+                      </button>
+                      <button onClick={() => setDetailModal(t)} className="flex items-center justify-center gap-1 text-xs font-semibold py-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition">
+                         <User size={14} /> Chi tiết
                       </button>
                    </div>
                 </div>

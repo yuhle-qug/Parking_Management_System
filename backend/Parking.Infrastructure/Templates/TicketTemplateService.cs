@@ -118,11 +118,15 @@ namespace Parking.Infrastructure.Templates
         </div>
 
         <div class=""section"">
-            <div class=""highlight"">ENTRY</div>
+            <div class=""highlight"">ENTRY TICKET</div>
+            <div style=""text-align: center; margin-top: 10px;"">
+                <!-- QR Code representing TicketId for scanning -->
+                <img src=""https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{TicketId}}"" style=""width: 150px; height: 150px;"" alt=""QR Code"" />
+            </div>
             <div class=""barcode"">{{TicketId}}</div>
         </div>
 
-        <div class=""footer"">Thank you for parking with us.</div>
+        <div class=""footer"">Please keep this ticket for checkout.</div>
     </div>
 </body>
 </html>";

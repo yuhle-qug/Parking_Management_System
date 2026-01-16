@@ -27,10 +27,17 @@ namespace Parking.Services.Services
 
         public async Task<MonthlyTicket> RegisterMonthlyTicketAsync(Customer customerInfo, Vehicle vehicle, string planId, int months = 1)
         {
+            // [REAL-WORLD] Customer Code: KH-[OneTimeRandom] or Sequential
+            if (string.IsNullOrWhiteSpace(customerInfo.CustomerId))
+            {
+                // Simple random numeric ID for demo: KH-839210
+                var randomId = new Random().Next(100000, 999999);
+                customerInfo.CustomerId = $"KH-{randomId}";
+            }
+
             var existingCustomer = await _customerRepo.FindByPhoneAsync(customerInfo.Phone);
             if (existingCustomer == null)
             {
-                customerInfo.CustomerId = Guid.NewGuid().ToString();
                 await _customerRepo.AddAsync(customerInfo);
                 existingCustomer = customerInfo;
             }
@@ -60,9 +67,16 @@ namespace Parking.Services.Services
             if (months <= 0) months = 1;
             double fee = await CalculateFeeAsync(vehicleType, months, policy);
 
+            // [REAL-WORLD] TicketId meant to be the Card UID (RFID)
+            // Simulation: Generate a realistic RFID Hex (e.g., E004015091F66324) if manual card ID isn't implemented yet.
+            var r = new Random();
+            var buf = new byte[8];
+            r.NextBytes(buf);
+            var simulatedCardUid = BitConverter.ToString(buf).Replace("-", ""); // 16 chars HEX
+
             var newTicket = new MonthlyTicket
             {
-                TicketId = "M-" + Guid.NewGuid().ToString().Substring(0, 8).ToUpper(),
+                TicketId = simulatedCardUid, // Acts as the Physical Card UID
                 CustomerId = existingCustomer.CustomerId,
                 VehiclePlate = vehicle.LicensePlate,
                 VehicleType = vehicleType,
@@ -88,7 +102,7 @@ namespace Parking.Services.Services
                 Amount = fee,
                 PerformedBy = GetActor(customerInfo),
                 Time = DateTime.Now,
-                Note = $"Plan {planId}"
+                Note = $"Plan {planId} - Generated Card: {simulatedCardUid}"
             });
             return newTicket;
         }

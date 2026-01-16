@@ -9,6 +9,19 @@ namespace Parking.Core.Entities
         public DateTime IssueTime { get; set; }
         public string GateId { get; set; }
         public string? CardId { get; set; }
+        public string TicketType { get; set; } = "Daily"; // "Daily" or "Monthly"
+
+        // [Domain Logic] Check if the ticket is valid based on issuance time
+        public bool IsValid()
+        {
+            // Example Rule: Ticket cannot be from the future
+            if (IssueTime > DateTime.Now) return false;
+            
+            // Example Rule: Ticket ID must be present
+            if (string.IsNullOrWhiteSpace(TicketId)) return false;
+
+            return true;
+        }
     }
 
     // Thanh toán

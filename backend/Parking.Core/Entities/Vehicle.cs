@@ -3,13 +3,13 @@
     // [OOP - Abstraction]: Lớp trừu tượng định nghĩa khung sườn cho mọi xe
     public abstract class Vehicle
     {
-        public string LicensePlate { get; set; } = string.Empty;
+        public ValueObjects.LicensePlate LicensePlate { get; set; }
 
         protected Vehicle() { }
 
         protected Vehicle(string licensePlate)
         {
-            LicensePlate = licensePlate;
+            LicensePlate = ValueObjects.LicensePlate.Create(licensePlate);
         }
 
         // [OOP - Polymorphism]: Mỗi loại xe sẽ tự định nghĩa hệ số phí riêng

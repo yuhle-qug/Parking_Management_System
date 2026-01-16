@@ -644,7 +644,33 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {sessions.map((s) => (
-                  <tr key={s.sessionId} className="border-b border-gray-50 hover:bg-gray-50">
+                  <tr 
+                    key={s.sessionId} 
+                    className="border-b border-gray-50 hover:bg-blue-50 cursor-pointer transition-colors"
+                    onClick={() => {
+                        setPlateOut(s.vehicle?.licensePlate || '')
+                        const tId = s.ticket?.ticketId || ''
+                        const card = s.ticket?.cardId || s.cardId || ''
+                        
+                        // Smart auto-detect mode
+                        const isMonthly = s.ticket?.ticketType === 'Monthly' || tId.startsWith('M-') || (tId.length === 16 && !tId.includes('-')) // Hex RFID
+                        
+                        if (isMonthly) {
+                            setIsMonthlyCheckout(true)
+                            setCardOut(card || tId) // Use ticketId as card if card is missing (for RFID simulation)
+                            setTicketIdOut('')
+                        } else {
+                            setIsMonthlyCheckout(false)
+                            setTicketIdOut(tId)
+                            setCardOut('')
+                        }
+                        setIsLostTicket(false)
+                        
+                        // Highlight UI feedback
+                        addLog(`👉 Đã chọn xe: ${s.vehicle?.licensePlate}`)
+                    }}
+                    title="Click để điền nhanh vào form Checkout"
+                  >
                     <td className="py-3 font-semibold text-gray-800">{s.vehicle?.licensePlate}</td>
                     <td className="py-3 font-mono text-gray-600">{s.ticket?.ticketId}</td>
                     <td className="py-3 text-gray-600">{formatTime(s.entryTime)}</td>

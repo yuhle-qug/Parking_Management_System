@@ -163,7 +163,7 @@ namespace Parking.Infrastructure.Data
 		{
 			writer.WriteStartObject();
 			writer.WriteString("VehicleType", GetTypeName(value));
-			writer.WriteString("LicensePlate", value.LicensePlate);
+			writer.WriteString("LicensePlate", value.LicensePlate.Value);
 			writer.WriteEndObject();
 		}
 

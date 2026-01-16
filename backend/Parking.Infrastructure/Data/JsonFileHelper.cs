@@ -1,8 +1,10 @@
-																																																																																																																																																																																																																																																																																																																																																																																							   using System;
+																																																																																																																																																																																																																																																																																																																																																																																							using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 using Parking.Core.Entities;
 
@@ -12,6 +14,8 @@ namespace Parking.Infrastructure.Data
 	public static class JsonFileHelper
 	{
 		private static readonly JsonSerializerOptions _options = CreateOptions();
+		// Dictionary to hold a lock for each file path to ensure thread safety per file
+		private static readonly ConcurrentDictionary<string, SemaphoreSlim> _fileLocks = new();
 
 		private static JsonSerializerOptions CreateOptions()
 		{
@@ -22,28 +26,61 @@ namespace Parking.Infrastructure.Data
 			};
 			options.Converters.Add(new VehicleJsonConverter());
 			options.Converters.Add(new PricePolicyJsonConverter());
+			options.Converters.Add(new UserJsonConverter());
 			return options;
+		}
+
+		private static SemaphoreSlim GetLockForFile(string filePath)
+		{
+			// Get or add a semaphore for the specific file path
+			// Initial count 1 (mutex behavior)
+			return _fileLocks.GetOrAdd(filePath, _ => new SemaphoreSlim(1, 1));
 		}
 
 		public static async Task<List<T>> ReadListAsync<T>(string filePath)
 		{
-			if (!File.Exists(filePath))
-			{
-				return new List<T>();
-			}
-
+			var fileLock = GetLockForFile(filePath);
+			await fileLock.WaitAsync();
 			try
 			{
+				if (!File.Exists(filePath))
+				{
+					Console.WriteLine($"[DEBUG] File not found: {filePath}");
+					return new List<T>();
+				}
+
 				using var stream = File.OpenRead(filePath);
-				return await JsonSerializer.DeserializeAsync<List<T>>(stream, _options) ?? new List<T>();
+				var result = await JsonSerializer.DeserializeAsync<List<T>>(stream, _options) ?? new List<T>();
+				Console.WriteLine($"[DEBUG] Read {result.Count} items from {filePath}");
+				return result;
 			}
-			catch
+			catch (Exception ex)
 			{
+				Console.WriteLine($"[DEBUG] ERROR reading {filePath}: {ex.Message}");
 				return new List<T>();
+			}
+			finally
+			{
+				fileLock.Release();
 			}
 		}
 
 		public static async Task WriteListAsync<T>(string filePath, List<T> data)
+		{
+			var fileLock = GetLockForFile(filePath);
+			await fileLock.WaitAsync();
+			try
+			{
+				await WriteListInternalAsync(filePath, data);
+			}
+			finally
+			{
+				fileLock.Release();
+			}
+		}
+
+		// Internal write method to be used when lock is already held
+		private static async Task WriteListInternalAsync<T>(string filePath, List<T> data)
 		{
 			var directory = Path.GetDirectoryName(filePath);
 			if (directory != null && !Directory.Exists(directory))
@@ -51,8 +88,53 @@ namespace Parking.Infrastructure.Data
 				Directory.CreateDirectory(directory);
 			}
 
+			// Create/Overwrite file
 			using var stream = File.Create(filePath);
 			await JsonSerializer.SerializeAsync(stream, data, _options);
+		}
+
+		/// <summary>
+		/// Executes a read-modify-write cycle atomically for a specific file.
+		/// </summary>
+		/// <typeparam name="T">Entity Type</typeparam>
+		/// <param name="filePath">Path to JSON file</param>
+		/// <param name="action">Action to modify the list. Returns true if changes should be saved.</param>
+		public static async Task ExecuteInTransactionAsync<T>(string filePath, Func<List<T>, bool> action)
+		{
+			var fileLock = GetLockForFile(filePath);
+			await fileLock.WaitAsync();
+			try
+			{
+				List<T> list;
+				if (File.Exists(filePath))
+				{
+					try
+					{
+						using var stream = File.OpenRead(filePath);
+						list = await JsonSerializer.DeserializeAsync<List<T>>(stream, _options) ?? new List<T>();
+					}
+					catch
+					{
+						list = new List<T>();
+					}
+				}
+				else
+				{
+					list = new List<T>();
+				}
+
+				// Execute the modification logic
+				bool shouldSave = action(list);
+
+				if (shouldSave)
+				{
+					await WriteListInternalAsync(filePath, list);
+				}
+			}
+			finally
+			{
+				fileLock.Release();
+			}
 		}
 	}
 
@@ -200,6 +282,51 @@ namespace Parking.Infrastructure.Data
 			}
 			writer.WriteEndArray();
 
+			writer.WriteEndObject();
+		}
+	}
+
+
+	// Custom converter for UserAccount polymorphism
+	internal class UserJsonConverter : JsonConverter<UserAccount>
+	{
+		public override UserAccount Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+		{
+			if (reader.TokenType == JsonTokenType.Null) return null;
+
+			using var doc = JsonDocument.ParseValue(ref reader);
+			var root = doc.RootElement;
+			
+			string GetString(string propName) => 
+				root.TryGetProperty(propName, out var val) || root.TryGetProperty(propName.ToLower(), out val) 
+				? (val.GetString() ?? "") : "";
+
+			var role = GetString("Role").ToUpperInvariant();
+			UserAccount user = role == "ADMIN" ? new AdminAccount() : new AttendantAccount();
+
+			user.UserId = GetString("UserId");
+			if (string.IsNullOrEmpty(user.UserId)) user.UserId = GetString("userId");
+			
+			user.Username = GetString("Username");
+			if (string.IsNullOrEmpty(user.Username)) user.Username = GetString("username");
+
+			user.PasswordHash = GetString("PasswordHash");
+			if (string.IsNullOrEmpty(user.PasswordHash)) user.PasswordHash = GetString("passwordHash");
+
+			user.Status = GetString("Status");
+			if (string.IsNullOrEmpty(user.Status)) user.Status = GetString("status");
+
+			return user;
+		}
+
+		public override void Write(Utf8JsonWriter writer, UserAccount value, JsonSerializerOptions options)
+		{
+			writer.WriteStartObject();
+			writer.WriteString("userId", value.UserId);
+			writer.WriteString("username", value.Username);
+			writer.WriteString("passwordHash", value.PasswordHash);
+			writer.WriteString("role", value.Role);
+			writer.WriteString("status", value.Status);
 			writer.WriteEndObject();
 		}
 	}

@@ -557,14 +557,20 @@ export default function Admin() {
                 <div className="space-y-2">
                   {(priceModal.data.peakRanges || []).map((r, idx) => (
                     <div key={idx} className="grid grid-cols-4 gap-2 items-center">
-                      <input type="number" className="border border-gray-200 rounded-lg px-2 py-1 text-sm" value={r.startHour} onChange={(e) => {
+                      <input type="number" min="0" max="24" className="border border-gray-200 rounded-lg px-2 py-1 text-sm" value={r.startHour} onChange={(e) => {
+                        let val = Number(e.target.value);
+                        if (val < 0) val = 0;
+                        if (val > 24) val = 24;
                         const next = [...priceModal.data.peakRanges];
-                        next[idx] = { ...next[idx], startHour: Number(e.target.value) };
+                        next[idx] = { ...next[idx], startHour: val };
                         setPriceModal({ ...priceModal, data: { ...priceModal.data, peakRanges: next } });
                       }} placeholder="Start" />
-                      <input type="number" className="border border-gray-200 rounded-lg px-2 py-1 text-sm" value={r.endHour} onChange={(e) => {
+                      <input type="number" min="0" max="24" className="border border-gray-200 rounded-lg px-2 py-1 text-sm" value={r.endHour} onChange={(e) => {
+                        let val = Number(e.target.value);
+                        if (val < 0) val = 0;
+                        if (val > 24) val = 24;
                         const next = [...priceModal.data.peakRanges];
-                        next[idx] = { ...next[idx], endHour: Number(e.target.value) };
+                        next[idx] = { ...next[idx], endHour: val };
                         setPriceModal({ ...priceModal, data: { ...priceModal.data, peakRanges: next } });
                       }} placeholder="End" />
                       <input type="number" className="border border-gray-200 rounded-lg px-2 py-1 text-sm" value={r.multiplier} onChange={(e) => {

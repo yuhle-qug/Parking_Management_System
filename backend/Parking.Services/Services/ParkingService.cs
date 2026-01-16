@@ -159,7 +159,6 @@ namespace Parking.Services.Services
                 }
             }
 
-            session.ExitGateId = gateId;
             session.SetExitTime(DateTime.Now);
 
             bool isMonthly = session.Ticket.TicketId.StartsWith("M-");

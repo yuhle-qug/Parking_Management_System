@@ -70,5 +70,203 @@
     "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
     "Details": "Login success",
     "Success": true
+  },
+  {
+    "LogId": "6fdabe00-c11c-49f1-b041-25b992246c79",
+    "Timestamp": "2026-01-16T15:28:41.0356134+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "615ee4fd-2586-49c1-a112-6b84a468ade8",
+    "Timestamp": "2026-01-16T15:28:44.411915+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "e91a55f1-f820-4b7f-98e0-0430501408f0",
+    "Timestamp": "2026-01-16T15:30:37.5125575+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "e5c22d80-1409-470d-9dd3-f9022cbbf4f5",
+    "Timestamp": "2026-01-16T15:30:59.8036091+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "2a300131-4db8-44ef-b999-5278942746ae",
+    "Timestamp": "2026-01-16T15:31:00.8097001+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "96343008-41d6-422a-b1db-0c8ea27a05ec",
+    "Timestamp": "2026-01-16T15:31:30.1199282+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "f50b0d48-a1dd-429a-97cb-cbd29323a982",
+    "Timestamp": "2026-01-16T15:31:34.9818314+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "e07a0c3a-3409-4d2d-9e6f-80426adef760",
+    "Timestamp": "2026-01-16T15:31:55.7866345+07:00",
+    "Action": "Login",
+    "Username": "staff01",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "20a9ddd5-46b5-4432-ab2d-4955dc918bf3",
+    "Timestamp": "2026-01-16T15:37:36.879476+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "0d4468c5-0138-4857-889e-66308447b9bf",
+    "Timestamp": "2026-01-16T15:37:42.1282656+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "63848506-bdc0-4d77-b32a-0e25d7d31f4d",
+    "Timestamp": "2026-01-16T15:38:07.0381752+07:00",
+    "Action": "Login",
+    "Username": "staff01",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "83cc862f-d0e8-48ed-81b0-5f858014e53d",
+    "Timestamp": "2026-01-16T15:38:08.2584344+07:00",
+    "Action": "Login",
+    "Username": "staff01",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "887700ad-7d55-40f8-a95c-bf3ea6313fc8",
+    "Timestamp": "2026-01-16T15:38:47.0601249+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "e3a10cce-c0c7-4f90-825d-4553041f9f6b",
+    "Timestamp": "2026-01-16T15:41:19.5563062+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "4a1de933-1821-4ce4-b04b-32c0dc13c162",
+    "Timestamp": "2026-01-16T15:41:37.1213534+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "ed66fb8d-fa1a-4438-8e13-246e7922f468",
+    "Timestamp": "2026-01-16T15:41:40.823688+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "e802d023-1786-4d34-a876-7c297a37e363",
+    "Timestamp": "2026-01-16T15:42:53.1962903+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "18c72cda-fd6d-477a-ace4-766a008b5227",
+    "Timestamp": "2026-01-16T15:43:04.5447296+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "bf01175c-0f16-4d47-8250-158ace226d03",
+    "Timestamp": "2026-01-16T15:43:05.6540952+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "62c0fe7c-f4b7-4e27-ac2f-c1c2e728cff7",
+    "Timestamp": "2026-01-16T15:43:06.0704119+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "9c0b702f-9902-4247-9a24-e488cc3bfd89",
+    "Timestamp": "2026-01-16T15:43:06.270369+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": null,
+    "Details": "Failed login attempt",
+    "Success": false
+  },
+  {
+    "LogId": "202cb66b-a93b-4340-a4f9-72b8881da477",
+    "Timestamp": "2026-01-16T15:44:28.7908669+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
   }
 ]

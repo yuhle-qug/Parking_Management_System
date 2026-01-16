@@ -1,18 +1,18 @@
-[
-  {
-    "$type": "admin",
-    "Role": "ADMIN",
-    "UserId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
-    "Username": "admin",
-    "PasswordHash": "123",
-    "Status": "Active"
-  },
-  {
-    "$type": "attendant",
-    "Role": "ATTENDANT",
-    "UserId": "ec01439b-e68c-4287-bef1-4a134ce0cac5",
-    "Username": "NV1",
-    "PasswordHash": "123",
-    "Status": "Active"
-  }
+﻿[
+    {
+        "UserId": "USER001",
+        "Username": "admin",
+        "PasswordHash": "123",
+        "FullName": "System Administrator",
+        "Role": "ADMIN",
+        "Status": "Active"
+    },
+    {
+        "UserId": "USER002",
+        "Username": "staff01",
+        "PasswordHash": "123",
+        "FullName": "Staff Member 01",
+        "Role": "ATTENDANT",
+        "Status": "Active"
+    }
 ]

@@ -1,3 +1,123 @@
 [
-  
+  {
+    "IncidentId": "INC-451119",
+    "ReportedDate": "2026-01-16T05:13:57.6115583+07:00",
+    "Type": null,
+    "Title": "Lost Ticket",
+    "Description": "Lost Ticket detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-C7F5B1",
+    "ReportedDate": "2026-01-16T09:13:57.6115583+07:00",
+    "Type": null,
+    "Title": "Lost Ticket",
+    "Description": "Lost Ticket detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-D02C45",
+    "ReportedDate": "2026-01-14T19:13:57.6115583+07:00",
+    "Type": null,
+    "Title": "Payment Error",
+    "Description": "Payment Error detected at gate.",
+    "Status": "Resolved",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-BD6832",
+    "ReportedDate": "2026-01-16T07:13:57.6115583+07:00",
+    "Type": null,
+    "Title": "Lost Ticket",
+    "Description": "Lost Ticket detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-0F4CD4",
+    "ReportedDate": "2026-01-16T08:13:57.6115583+07:00",
+    "Type": null,
+    "Title": "Barrier Fail",
+    "Description": "Barrier Fail detected at gate.",
+    "Status": "Resolved",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-3CBDB2",
+    "ReportedDate": "2026-01-16T09:13:57.6115583+07:00",
+    "Type": null,
+    "Title": "Barrier Fail",
+    "Description": "Barrier Fail detected at gate.",
+    "Status": "Resolved",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-E36C76",
+    "ReportedDate": "2026-01-16T10:13:57.6115583+07:00",
+    "Type": null,
+    "Title": "Lost Ticket",
+    "Description": "Lost Ticket detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-60094B",
+    "ReportedDate": "2026-01-15T08:13:57.6115583+07:00",
+    "Type": null,
+    "Title": "Barrier Fail",
+    "Description": "Barrier Fail detected at gate.",
+    "Status": "Resolved",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-F3A4C2",
+    "ReportedDate": "2026-01-15T13:13:57.6115583+07:00",
+    "Type": null,
+    "Title": "Lost Ticket",
+    "Description": "Lost Ticket detected at gate.",
+    "Status": "Resolved",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-79D99C",
+    "ReportedDate": "2026-01-15T04:13:57.6115583+07:00",
+    "Type": null,
+    "Title": "Barrier Fail",
+    "Description": "Barrier Fail detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-D09513A3",
+    "ReportedDate": "2026-01-16T15:45:06.0605837+07:00",
+    "Type": null,
+    "Title": "M\u1EA5t v\u00E9 - 50A-2678728",
+    "Description": "Gate GATE-OUT-01, lo\u1EA1i xe CAR, ph\u00ED c\u01A1 b\u1EA3n 12000, ph\u1EE5 thu m\u1EA5t v\u00E9 200000, t\u1ED5ng 212000. ",
+    "Status": "Open",
+    "ReportedBy": "GATE-OUT-01",
+    "ReferenceId": "200FF66F",
+    "ResolutionNotes": null
+  }
 ]

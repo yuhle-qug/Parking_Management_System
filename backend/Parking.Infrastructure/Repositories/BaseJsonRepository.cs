@@ -54,6 +54,7 @@ namespace Parking.Infrastructure.Repositories
 			return prop?.GetValue(entity)?.ToString();
 		}
 
+
 		public virtual async Task<IEnumerable<T>> GetAllAsync()
 		{
 			return await JsonFileHelper.ReadListAsync<T>(_filePath);
@@ -61,38 +62,45 @@ namespace Parking.Infrastructure.Repositories
 
 		public virtual async Task<T?> GetByIdAsync(string id)
 		{
+			// Read is also locked inside ReadListAsync, so it's safe from partial writes,
+			// though it might see slightly stale data if a write is pending (standard behavior).
 			var list = await GetAllAsync();
 			return list.FirstOrDefault(item => GetId(item) == id);
 		}
 
 		public virtual async Task AddAsync(T entity)
 		{
-			var list = (await GetAllAsync()).ToList();
-			list.Add(entity);
-			await JsonFileHelper.WriteListAsync(_filePath, list);
+			await JsonFileHelper.ExecuteInTransactionAsync<T>(_filePath, list =>
+			{
+				list.Add(entity);
+				return true; // Save changes
+			});
 		}
 
 		public virtual async Task UpdateAsync(T entity)
 		{
-			var list = (await GetAllAsync()).ToList();
-			var id = GetId(entity);
-			var index = list.FindIndex(item => GetId(item) == id);
-
-			if (index != -1)
+			await JsonFileHelper.ExecuteInTransactionAsync<T>(_filePath, list =>
 			{
-				list[index] = entity;
-				await JsonFileHelper.WriteListAsync(_filePath, list);
-			}
+				var id = GetId(entity);
+				var index = list.FindIndex(item => GetId(item) == id);
+
+				if (index != -1)
+				{
+					list[index] = entity;
+					return true; // Save changes
+				}
+				return false; // No changes
+			});
 		}
 
 		public virtual async Task DeleteAsync(string id)
 		{
-			var list = (await GetAllAsync()).ToList();
-			var removed = list.RemoveAll(item => GetId(item) == id);
-			if (removed > 0)
+			await JsonFileHelper.ExecuteInTransactionAsync<T>(_filePath, list =>
 			{
-				await JsonFileHelper.WriteListAsync(_filePath, list);
-			}
+				var removed = list.RemoveAll(item => GetId(item) == id);
+				return removed > 0; // Save if anything was removed
+			});
 		}
 	}
 }
+

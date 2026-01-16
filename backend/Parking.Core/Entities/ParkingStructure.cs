@@ -34,6 +34,30 @@ namespace Parking.Core.Entities
         {
             ActiveSessions.Remove(session);
         }
+
+        // [OOP - Encapsulation]: Logic checking if a vehicle fits in this zone
+        public bool CanAccept(Vehicle vehicle)
+        {
+             if (IsFull()) return false;
+
+             // Map Vehicle Type to Category String (this could also be an Enum)
+             string vehicleCat = GetVehicleCategory(vehicle);
+             if (vehicleCat != VehicleCategory) return false;
+
+             if (ElectricOnly && !IsElectric(vehicle)) return false;
+
+             return true;
+        }
+
+        private bool IsElectric(Vehicle v) => v is ElectricCar || v is ElectricMotorbike;
+        
+        private string GetVehicleCategory(Vehicle vehicle)
+        {
+            if (vehicle is Car) return "CAR";
+            if (vehicle is Motorbike) return "MOTORBIKE";
+            if (vehicle is Bicycle) return "BICYCLE";
+            return "UNKNOWN";
+        }
     }
 
     public class ParkingLot
@@ -46,23 +70,8 @@ namespace Parking.Core.Entities
         {
             // Logic đơn giản: Tìm khu vực khớp loại xe và còn chỗ
             // (Trong thực tế có thể phức tạp hơn dựa trên gateId)
-
-            bool isElectric = vehicle is ElectricCar || vehicle is ElectricMotorbike;
-            string category = GetVehicleCategory(vehicle);
-
-            return Zones.FirstOrDefault(z =>
-                z.VehicleCategory == category &&
-                (!z.ElectricOnly || isElectric) && // Nếu khu vực chỉ cho xe điện thì xe phải là điện
-                !z.IsFull()
-            );
-        }
-
-        private string GetVehicleCategory(Vehicle vehicle)
-        {
-            if (vehicle is Car) return "CAR";
-            if (vehicle is Motorbike) return "MOTORBIKE";
-            if (vehicle is Bicycle) return "BICYCLE";
-            return "UNKNOWN";
+            return Zones.FirstOrDefault(z => z.CanAccept(vehicle));
         }
     }
+
 }

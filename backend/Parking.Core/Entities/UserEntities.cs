@@ -3,8 +3,6 @@ using System.Text.Json.Serialization;
 namespace Parking.Core.Entities
 {
     // [OOP] Polymorphic user accounts stored together with type discriminator
-    [JsonDerivedType(typeof(AdminAccount), typeDiscriminator: "admin")]
-    [JsonDerivedType(typeof(AttendantAccount), typeDiscriminator: "attendant")]
     public abstract class UserAccount
     {
         public string UserId { get; set; }

@@ -32,10 +32,18 @@ namespace Parking.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
+            Console.WriteLine($"[DEBUG] Login attempt for username: '{request.Username}' with password: '{request.Password}'");
             var user = await _userRepo.FindByUsernameAsync(request.Username);
+
+            if (user == null) {
+                 Console.WriteLine($"[DEBUG] User '{request.Username}' NOT FOUND in repository.");
+            } else {
+                 Console.WriteLine($"[DEBUG] User '{request.Username}' FOUND. Hash: '{user.PasswordHash}', Role: '{user.Role}'");
+            }
 
             if (user == null || !_hasher.VerifyPassword(request.Password, user.PasswordHash))
             {
+                Console.WriteLine("[DEBUG] Password verification failed.");
                 await _auditService.LogAsync("Login", request.Username, null, "Failed login attempt", success: false);
                 return Unauthorized(new { Message = "Sai tài khoản hoặc mật khẩu" });
             }

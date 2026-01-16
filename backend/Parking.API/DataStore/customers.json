@@ -1,8 +1,122 @@
-[
-  {
-    "CustomerId": "c9036866-efd8-4930-9d59-a1d6e3b4febd",
-    "Name": "L\u00EA Quang Huy",
-    "Phone": "0392687956",
-    "IdentityNumber": "02250012345"
-  }
+﻿[
+    {
+        "CustomerId":  "78fef687-4825-4119-aaf2-406718e2be9d",
+        "Name":  "Nguyen Binh",
+        "Phone":  "0835600252",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "3a16d636-dd84-44c9-8f7a-df286f1f7261",
+        "Name":  "Ho Thao",
+        "Phone":  "0437625174",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "794c6ace-5fa3-484b-8ab4-88508a7227dc",
+        "Name":  "Pham Minh",
+        "Phone":  "0474484263",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "380a2d54-cd55-4f65-acb7-57347966e3ae",
+        "Name":  "Pham An",
+        "Phone":  "0417667484",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "74a4ceb3-d68e-4ffc-a1a1-2ccc0fffa9f5",
+        "Name":  "Le Tuan",
+        "Phone":  "0894229785",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "3e1d32a1-37ed-4f31-8258-2864508b154c",
+        "Name":  "Tran Nam",
+        "Phone":  "0567367548",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "8f4acfdc-12bf-4ed4-9d90-41940ff983c3",
+        "Name":  "Dang Nga",
+        "Phone":  "0817730943",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "93ae19a1-2717-4b8a-b69c-917e33b9d80c",
+        "Name":  "Vu Ha",
+        "Phone":  "0772894915",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "7d8018b7-b959-45d9-b9a3-3bbd4163ae7a",
+        "Name":  "Vuong Minh",
+        "Phone":  "0487937008",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "3ee9af05-8688-4232-b95d-190a32a36f1a",
+        "Name":  "Nguyen Minh",
+        "Phone":  "0625378143",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "2116e45b-d9cd-443e-af06-0be2cb4f574e",
+        "Name":  "Bui Linh",
+        "Phone":  "0503547364",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "a1479be2-e2bb-4956-bbaa-f350b3a68b74",
+        "Name":  "Dang Hung",
+        "Phone":  "0568674125",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "39e40dc9-82a5-4497-adb9-a72ae8bbe211",
+        "Name":  "Le Trang",
+        "Phone":  "0756542500",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "d5371e10-107e-47f9-9d0f-29871bce8711",
+        "Name":  "Phan Minh",
+        "Phone":  "0345834474",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "57444217-1692-4277-9bbf-767b289a1294",
+        "Name":  "Bui Binh",
+        "Phone":  "0942592479",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "cab6b320-86a4-4ad4-b3a5-cdc03d4017dd",
+        "Name":  "Tran Lan",
+        "Phone":  "0541134632",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "16a68e23-6646-4ebf-99bf-45dbd3115a2a",
+        "Name":  "Ho An",
+        "Phone":  "0907575306",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "4ec70c53-731a-4121-a626-82bcab798c5f",
+        "Name":  "Do Khanh",
+        "Phone":  "0817400609",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "5e12a48f-f098-4e4f-b0ff-7e032dbbff9b",
+        "Name":  "Phan Khanh",
+        "Phone":  "0756872090",
+        "IdentityNumber":  ""
+    },
+    {
+        "CustomerId":  "b9efec67-df08-42de-8677-41d1a9767eec",
+        "Name":  "Pham Binh",
+        "Phone":  "0363571265",
+        "IdentityNumber":  ""
+    }
 ]

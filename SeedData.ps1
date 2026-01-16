@@ -3,9 +3,9 @@ param(
 	[int]$CustomerCount = 20,
 	[int]$MonthlyTicketCount = 10,
 	[int]$SessionCount = 60,
-	[int]$ActiveSessionCount = 8,
+	[int]$ActiveSessionCount = 15,
 	[int]$IncidentCount = 10,
-	[int]$Seed = 42,
+	[int]$Seed = 12345,
 	[switch]$NoBackup,
 	[string]$OutDir = ""
 )
@@ -34,22 +34,6 @@ function Ensure-Dir([string]$path) {
 	}
 }
 
-function Read-JsonArrayOrEmpty([string]$path) {
-	if (-not (Test-Path -LiteralPath $path)) { return @() }
-	try {
-		$raw = Get-Content -LiteralPath $path -Raw -Encoding UTF8
-		if ([string]::IsNullOrWhiteSpace($raw)) { return @() }
-		$parsed = $raw | ConvertFrom-Json
-		if ($null -eq $parsed) { return @() }
-		if ($parsed -is [System.Array]) { return @($parsed) }
-		# If someone accidentally stored an object, wrap it.
-		return @($parsed)
-	}
-	catch {
-		return @()
-	}
-}
-
 function Write-JsonArray([string]$path, [object[]]$data) {
 	$dir = Split-Path -Parent $path
 	Ensure-Dir $dir
@@ -60,7 +44,6 @@ function Write-JsonArray([string]$path, [object[]]$data) {
 function New-HexId([System.Random]$rng, [int]$length = 8) {
 	$bytes = New-Object byte[] ($length)
 	$rng.NextBytes($bytes)
-	# hex string length = 2*bytes; slice to requested chars
 	$hex = -join ($bytes | ForEach-Object { $_.ToString('X2') })
 	return $hex.Substring(0, $length)
 }
@@ -70,11 +53,10 @@ function Pick([System.Random]$rng, [object[]]$items) {
 }
 
 function New-VietnamPlate([System.Random]$rng, [string]$vehicleType) {
-	$province = Pick $rng @('11','12','14','15','18','29','30','31','32','33','34','36','37','38','43','47','50','51','59','60','61','62','63','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','81','82','83','84','85','86','88','89','90','92')
-	$letter = Pick $rng @('A','B','C','D','E','F','G','H','K','L','M','N','P','S','T','U','V','X','Y','Z')
+	$province = Pick $rng @('29','30','50','51','59','60','61')
+	$letter = Pick $rng @('A','B','C','D','E','F','G','H','K','L')
 	$digits1 = $rng.Next(10, 99)
 	$digits2 = $rng.Next(1000, 99999)
-	# Motorbike plates are often longer; keep it flexible.
 	if ($vehicleType -like '*MOTORBIKE*') {
 		$digits2 = $rng.Next(10000, 999999)
 	}
@@ -82,7 +64,6 @@ function New-VietnamPlate([System.Random]$rng, [string]$vehicleType) {
 }
 
 function To-LocalOffset([datetime]$dt) {
-	# Force +07:00 to match existing DataStore files.
 	return ([DateTimeOffset]$dt).ToOffset([TimeSpan]::FromHours(7))
 }
 
@@ -94,18 +75,20 @@ if ([string]::IsNullOrWhiteSpace($OutDir)) {
 Ensure-Dir $OutDir
 
 $paths = [ordered]@{
+	users = Join-Path $OutDir 'users.json'
+	pricePolicies = Join-Path $OutDir 'price_policies.json'
+	zones = Join-Path $OutDir 'zones.json'
 	customers = Join-Path $OutDir 'customers.json'
 	monthlyTickets = Join-Path $OutDir 'monthly_tickets.json'
 	sessions = Join-Path $OutDir 'sessions.json'
 	tickets = Join-Path $OutDir 'tickets.json'
 	incidents = Join-Path $OutDir 'incidents.json'
-	zones = Join-Path $OutDir 'zones.json'
 }
 
 if (-not $NoBackup) {
 	$backupDir = Join-Path $OutDir (Join-Path '_backup' (Get-Date -Format 'yyyyMMdd-HHmmss'))
 	Ensure-Dir $backupDir
-	foreach ($k in @('customers','monthlyTickets','sessions','tickets','incidents')) {
+	foreach ($k in $paths.Keys) {
 		$p = $paths[$k]
 		if (Test-Path -LiteralPath $p) {
 			Copy-Item -LiteralPath $p -Destination (Join-Path $backupDir (Split-Path -Leaf $p)) -Force
@@ -113,67 +96,101 @@ if (-not $NoBackup) {
 	}
 }
 
-$zones = Read-JsonArrayOrEmpty $paths.zones
-if ($zones.Count -eq 0) {
-	# Fallback to the default zones used by the repo.
-	$zones = @(
-		[pscustomobject]@{ ZoneId = 'ZONE-A'; VehicleCategory = 'CAR'; ElectricOnly = $false },
-		[pscustomobject]@{ ZoneId = 'ZONE-B'; VehicleCategory = 'MOTORBIKE'; ElectricOnly = $false },
-		[pscustomobject]@{ ZoneId = 'ZONE-E'; VehicleCategory = 'CAR'; ElectricOnly = $true }
-	)
-}
-
 $rng = [System.Random]::new($Seed)
 
-# --- Customers ---
+# --- 1. Users ---
+$users = @(
+    [pscustomobject]@{ UserId = "USER001"; Username = "admin"; PasswordHash = "admin123"; FullName = "System Administrator"; Role = "Admin" },
+    [pscustomobject]@{ UserId = "USER002"; Username = "staff01"; PasswordHash = "staff123"; FullName = "Nguyen Van A"; Role = "Staff" },
+    [pscustomobject]@{ UserId = "USER003"; Username = "staff02"; PasswordHash = "staff123"; FullName = "Tran Thi B"; Role = "Staff" }
+)
+
+# --- 2. Price Policies ---
+$pricePolicies = @(
+    [pscustomobject]@{
+        PolicyId = "POLICY-CAR-STD"
+        Name = "O to Tieu chuan"
+        VehicleType = "CAR"
+        RatePerHour = 20000
+        OvernightSurcharge = 50000
+        DailyMax = 300000
+        LostTicketFee = 500000
+        PeakRanges = @(
+            [pscustomobject]@{ StartHour = 17; EndHour = 20; Multiplier = 1.2 }
+        )
+    },
+    [pscustomobject]@{
+        PolicyId = "POLICY-MOTO-STD"
+        Name = "Xe may Tieu chuan"
+        VehicleType = "MOTORBIKE"
+        RatePerHour = 5000
+        OvernightSurcharge = 10000
+        DailyMax = 50000
+        LostTicketFee = 100000
+        PeakRanges = @()
+    },
+    [pscustomobject]@{
+        PolicyId = "POLICY-VIP"
+        Name = "Khu VIP"
+        VehicleType = "CAR"
+        RatePerHour = 50000
+        OvernightSurcharge = 100000
+        DailyMax = 1000000
+        LostTicketFee = 500000
+        PeakRanges = @()
+    }
+)
+
+# --- 3. Zones ---
+$zones = @(
+    [pscustomobject]@{ ZoneId = 'ZONE-A'; Name = 'Khu A (O to)'; VehicleCategory = 'CAR'; ElectricOnly = $false; Capacity = 50; PricePolicyId = "POLICY-CAR-STD"; ActiveSessions = @(); GateIds = @("GATE-01") },
+    [pscustomobject]@{ ZoneId = 'ZONE-B'; Name = 'Khu B (Xe may)'; VehicleCategory = 'MOTORBIKE'; ElectricOnly = $false; Capacity = 100; PricePolicyId = "POLICY-MOTO-STD"; ActiveSessions = @(); GateIds = @("GATE-02") },
+    [pscustomobject]@{ ZoneId = 'ZONE-VIP'; Name = 'Khu VIP'; VehicleCategory = 'CAR'; ElectricOnly = $false; Capacity = 10; PricePolicyId = "POLICY-VIP"; ActiveSessions = @(); GateIds = @("GATE-03") },
+    [pscustomobject]@{ ZoneId = 'ZONE-E'; Name = 'Tram Sac Xe Dien'; VehicleCategory = 'CAR'; ElectricOnly = $true; Capacity = 20; PricePolicyId = "POLICY-CAR-STD"; ActiveSessions = @(); GateIds = @("GATE-01") }
+)
+
+# --- 4. Customers ---
 $firstNames = @('An','Binh','Chi','Dang','Duy','Giang','Ha','Hung','Huy','Khanh','Lan','Linh','Minh','Nam','Ngan','Nga','Phuc','Phuong','Quang','Son','Thao','Trang','Tuan','Viet','Yen')
 $lastNames = @('Nguyen','Tran','Le','Pham','Hoang','Vu','Phan','Vuong','Dang','Bui','Do','Ho','Ngo','Duong')
-
 $customers = @()
 for ($i = 0; $i -lt $CustomerCount; $i++) {
 	$cid = [Guid]::NewGuid().ToString()
 	$name = "$(Pick $rng $lastNames) $(Pick $rng $firstNames)"
 	$phone = "0$($rng.Next(32, 99))$($rng.Next(1000000, 9999999))"
-	$identity = "" # existing data uses empty string often
 	$customers += [pscustomobject]@{
 		CustomerId = $cid
 		Name = $name
 		Phone = $phone
-		IdentityNumber = $identity
+		IdentityNumber = ""
 	}
 }
 
-# --- Monthly tickets ---
+# --- 5. Monthly Tickets ---
 $monthlyTickets = @()
-$monthlyVehicleTypes = @('CAR','MOTORBIKE','ELECTRIC_CAR','ELECTRIC_MOTORBIKE')
+$monthlyVehicleTypes = @('CAR','MOTORBIKE','ELECTRIC_CAR')
 $usedMonthlyPlates = New-Object 'System.Collections.Generic.HashSet[string]'
-
 $now = Get-Date
+
 for ($i = 0; $i -lt $MonthlyTicketCount; $i++) {
 	$customer = Pick $rng $customers
 	$vt = Pick $rng $monthlyVehicleTypes
 	$plate = New-VietnamPlate $rng $vt
-	# ensure plate uniqueness among monthly tickets for nicer demo data
-	$attempts = 0
+    
+    $attempts = 0
 	while ($usedMonthlyPlates.Contains($plate) -and $attempts -lt 10) {
-		$plate = New-VietnamPlate $rng $vt
-		$attempts++
+		$plate = New-VietnamPlate $rng $vt; $attempts++
 	}
 	$usedMonthlyPlates.Add($plate) | Out-Null
 
 	$ticketId = "M-$(New-HexId $rng 8)"
-	$start = $now.AddDays(-1 * $rng.Next(0, 25)).AddHours(-1 * $rng.Next(0, 24))
+	$start = $now.AddDays(-1 * $rng.Next(0, 25))
 	$expiry = $start.AddDays(30)
-	$status = if ($rng.NextDouble() -lt 0.2) { 'Expired' } else { 'Active' }
-	if ($status -eq 'Expired') {
-		$expiry = $now.AddDays(-1 * $rng.Next(1, 10))
-	}
+	$status = if ($rng.NextDouble() -lt 0.8) { 'Active' } else { 'Expired' } # 80% active
 
-	$monthlyFee = switch ($vt.ToUpperInvariant()) {
-		'ELECTRIC_CAR' { 1000000; break }
-		'ELECTRIC_MOTORBIKE' { 100000; break }
-		'MOTORBIKE' { 120000; break }
-		default { 1500000; break }
+	$monthlyFee = switch ($vt) {
+		'CAR' { 1500000 }
+		'MOTORBIKE' { 120000 }
+		default { 1000000 }
 	}
 
 	$monthlyTickets += [pscustomobject]@{
@@ -188,87 +205,44 @@ for ($i = 0; $i -lt $MonthlyTicketCount; $i++) {
 	}
 }
 
-# --- Sessions & tickets ---
+# --- 6. Sessions & Tickets ---
 $sessions = @()
 $tickets = @()
 $usedTicketIds = New-Object 'System.Collections.Generic.HashSet[string]'
 
-$gateIds = @('GATE-01','GATE-02')
-$vehicleTypes = @('CAR','MOTORBIKE','ELECTRIC_CAR','ELECTRIC_MOTORBIKE')
-
-function Pick-ZoneId([System.Random]$rng, [object[]]$zones, [string]$vehicleType) {
-	$vt = $vehicleType
-	if ($null -eq $vt) { $vt = '' }
-	$vt = $vt.ToUpperInvariant()
-	$isElectric = $vt -like 'ELECTRIC*'
-	if ($vt.Contains('CAR')) {
-		if ($isElectric) {
-			$z = $zones | Where-Object {
-				$cat = $_.VehicleCategory
-				if ($null -eq $cat) { $cat = '' }
-				$_.ElectricOnly -eq $true -and $cat.ToUpperInvariant() -eq 'CAR'
-			} | Select-Object -First 1
-			if ($null -ne $z) { return $z.ZoneId }
-		}
-		$z = $zones | Where-Object {
-			$cat = $_.VehicleCategory
-			if ($null -eq $cat) { $cat = '' }
-			$_.ElectricOnly -ne $true -and $cat.ToUpperInvariant() -eq 'CAR'
-		} | Select-Object -First 1
-		if ($null -ne $z -and -not [string]::IsNullOrWhiteSpace($z.ZoneId)) { return $z.ZoneId }
-		return 'ZONE-A'
-	}
-	if ($vt.Contains('MOTORBIKE')) {
-		$z = $zones | Where-Object {
-			$cat = $_.VehicleCategory
-			if ($null -eq $cat) { $cat = '' }
-			$_.ElectricOnly -ne $true -and $cat.ToUpperInvariant() -eq 'MOTORBIKE'
-		} | Select-Object -First 1
-		if ($null -ne $z -and -not [string]::IsNullOrWhiteSpace($z.ZoneId)) { return $z.ZoneId }
-		return 'ZONE-B'
-	}
-	return (Pick $rng ($zones | ForEach-Object { $_.ZoneId }))
+function Get-SuitableZone($vType, $isElectric) {
+    if ($vType -match 'CAR') {
+        if ($isElectric) { return $zones | Where-Object { $_.ZoneId -eq 'ZONE-E' } | Select-Object -First 1 }
+        # Chance for VIP
+        if ($rng.NextDouble() -lt 0.1) { return $zones | Where-Object { $_.ZoneId -eq 'ZONE-VIP' } | Select-Object -First 1 }
+        return $zones | Where-Object { $_.ZoneId -eq 'ZONE-A' } | Select-Object -First 1
+    }
+    return $zones | Where-Object { $_.ZoneId -eq 'ZONE-B' } | Select-Object -First 1
 }
 
-function New-UniqueTicketId([System.Random]$rng, [System.Collections.Generic.HashSet[string]]$used, [string]$prefix = '') {
-	for ($i = 0; $i -lt 50; $i++) {
-		$id = "${prefix}$(New-HexId $rng 8)"
-		if (-not $used.Contains($id)) {
-			$used.Add($id) | Out-Null
-			return $id
-		}
-	}
-	throw 'Failed to generate unique TicketId'
-}
+$vehicleTypes = @('CAR','MOTORBIKE','ELECTRIC_CAR')
 
-# Create some active sessions first (no ExitTime/Payment)
+# Create Active Sessions
 for ($i = 0; $i -lt $ActiveSessionCount; $i++) {
 	$vt = Pick $rng $vehicleTypes
-	$zoneId = Pick-ZoneId $rng $zones $vt
+    $isElectric = $vt -eq 'ELECTRIC_CAR'
+	$zone = Get-SuitableZone $vt $isElectric
+    $zoneId = $zone.ZoneId
+    
+	$entry = $now.AddMinutes(-1 * $rng.Next(5, 300))
 	$plate = New-VietnamPlate $rng $vt
-	$entry = $now.AddMinutes(-1 * $rng.Next(1, 360)).AddSeconds(-1 * $rng.Next(0, 59))
-	$gateId = Pick $rng $gateIds
+    $gateId = $zone.GateIds[0]
 
-	# 20% chance this is a monthly ticket (free entry)
-	$monthly = $monthlyTickets | Where-Object { $_.VehiclePlate -eq $plate -and $_.Status -eq 'Active' } | Select-Object -First 1
-	$useMonthly = $false
-	if ($null -ne $monthly -and $rng.NextDouble() -lt 0.8) { $useMonthly = $true }
-	if (-not $useMonthly -and $rng.NextDouble() -lt 0.2 -and $monthlyTickets.Count -gt 0) {
-		$monthly = Pick $rng $monthlyTickets
-		if ($monthly.Status -eq 'Active') {
-			$plate = $monthly.VehiclePlate
-			$vt = $monthly.VehicleType
-			$zoneId = Pick-ZoneId $rng $zones $vt
-			$useMonthly = $true
-		}
-	}
-
-	$ticketId = if ($useMonthly -and $null -ne $monthly) { $monthly.TicketId } else { New-UniqueTicketId $rng $usedTicketIds '' }
+    # Check if monthly
+    $monthlyIndex = $monthlyTickets | Where-Object { $_.VehiclePlate -eq $plate } | Select-Object -First 1
+    $isMonthly = $monthlyIndex -ne $null
+    $ticketId = if ($isMonthly) { $monthlyIndex.TicketId } else { New-HexId $rng 8 }
 
 	$ticketObj = [pscustomobject]@{
 		TicketId = $ticketId
 		IssueTime = (To-LocalOffset $entry).ToString('o')
 		GateId = $gateId
+        CardId = if ($isMonthly) { $ticketId } else { $null }
 	}
 	$tickets += $ticketObj
 
@@ -282,34 +256,25 @@ for ($i = 0; $i -lt $ActiveSessionCount; $i++) {
 		Ticket = $ticketObj
 		Payment = $null
 		ParkingZoneId = $zoneId
+        CardId = $ticketObj.CardId
 	}
 }
 
-# Completed sessions
-for ($i = 0; $i -lt ($SessionCount - $ActiveSessionCount); $i++) {
+# Create Completed Sessions
+for ($i = 0; $i -lt ($SessionCount); $i++) {
 	$vt = Pick $rng $vehicleTypes
-	$zoneId = Pick-ZoneId $rng $zones $vt
+    $isElectric = $vt -eq 'ELECTRIC_CAR'
+	$zone = Get-SuitableZone $vt $isElectric
+    $zoneId = $zone.ZoneId
+
+	$entry = $now.AddDays(-1 * $rng.Next(0, 3)).AddMinutes(-1 * $rng.Next(10, 600))
+	$duration = $rng.Next(30, 600)
+    $exit = $entry.AddMinutes($duration)
 	$plate = New-VietnamPlate $rng $vt
-	$entry = $now.AddDays(-1 * $rng.Next(0, 7)).AddMinutes(-1 * $rng.Next(10, 12 * 60))
-	$durationMinutes = $rng.Next(2, 8 * 60)
-	$exit = $entry.AddMinutes($durationMinutes).AddSeconds($rng.Next(0, 59))
-	$gateId = Pick $rng $gateIds
+    $gateId = $zone.GateIds[0]
 
-	# 25% chance this is a monthly ticket (no payment, fee 0)
-	$useMonthly = $false
-	$monthly = $null
-	if ($rng.NextDouble() -lt 0.25 -and $monthlyTickets.Count -gt 0) {
-		$monthly = Pick $rng $monthlyTickets
-		if ($monthly.Status -eq 'Active') {
-			$useMonthly = $true
-			$plate = $monthly.VehiclePlate
-			$vt = $monthly.VehicleType
-			$zoneId = Pick-ZoneId $rng $zones $vt
-		}
-	}
-
-	$ticketId = if ($useMonthly -and $null -ne $monthly) { $monthly.TicketId } else { New-UniqueTicketId $rng $usedTicketIds '' }
-
+	$ticketId = New-HexId $rng 8
+    
 	$ticketObj = [pscustomobject]@{
 		TicketId = $ticketId
 		IssueTime = (To-LocalOffset $entry).ToString('o')
@@ -317,25 +282,16 @@ for ($i = 0; $i -lt ($SessionCount - $ActiveSessionCount); $i++) {
 	}
 	$tickets += $ticketObj
 
-	$feeBasePerHour = if ($vt.ToUpperInvariant().Contains('MOTORBIKE')) { 10000 } else { 20000 }
-	$factor = switch ($vt.ToUpperInvariant()) {
-		'ELECTRIC_CAR' { 0.8 }
-		'ELECTRIC_MOTORBIKE' { 0.8 }
-		default { 1.0 }
-	}
-	$hours = [Math]::Ceiling($durationMinutes / 60.0)
-	$fee = [int]([Math]::Round($feeBasePerHour * $hours * $factor))
-	if ($useMonthly) { $fee = 0 }
-
-	$paymentObj = $null
-	if (-not $useMonthly -and $fee -gt 0) {
-		$paymentObj = [pscustomobject]@{
-			PaymentId = [Guid]::NewGuid().ToString()
-			Amount = $fee
-			Time = (To-LocalOffset $exit.AddSeconds($rng.Next(5, 60))).ToString('o')
-			Method = 'Cash/QR'
-			Status = 'Completed'
-		}
+    # Simple Fee Calc
+    $rate = if ($vt -match 'CAR') { 20000 } else { 5000 }
+    $fee = [Math]::Ceiling($duration / 60.0) * $rate
+    
+	$paymentObj = [pscustomobject]@{
+		PaymentId = [Guid]::NewGuid().ToString()
+		Amount = $fee
+		Time = (To-LocalOffset $exit).ToString('o')
+		Method = 'QR'
+		Status = 'Completed'
 	}
 
 	$sessions += [pscustomobject]@{
@@ -351,54 +307,27 @@ for ($i = 0; $i -lt ($SessionCount - $ActiveSessionCount); $i++) {
 	}
 }
 
-# De-dupe tickets (same monthly ticket can appear multiple times)
-$tickets = $tickets | Group-Object TicketId | ForEach-Object { $_.Group | Select-Object -First 1 }
-
-# --- Incidents ---
-$incidentTitles = @(
-	'Barrier khong mo',
-	'Mat ve xe',
-	'Khong quet duoc QR',
-	'Loi tinh phi',
-	'Sai khu vuc do',
-	'Ket cong ra'
-)
-
+# --- 7. Incidents ---
 $incidents = @()
 for ($i = 0; $i -lt $IncidentCount; $i++) {
-	$id = "INC-$(New-HexId $rng 8)"
-	$reportedDate = $now.AddDays(-1 * $rng.Next(0, 14)).AddMinutes(-1 * $rng.Next(0, 12 * 60))
-	$title = Pick $rng $incidentTitles
-	$status = if ($rng.NextDouble() -lt 0.55) { 'Resolved' } else { 'Open' }
-	$ref = if ($rng.NextDouble() -lt 0.5 -and $tickets.Count -gt 0) { (Pick $rng $tickets).TicketId } else { (Pick $rng $sessions).Vehicle.LicensePlate }
-	$desc = switch ($title) {
-		'Barrier khong mo' { 'Barrier khong mo khi quet ve.' }
-		'Mat ve xe' { "Khach bao mat ve, ref: $ref" }
-		default { "Su co phat sinh, ref: $ref" }
-	}
-	$resNotes = if ($status -eq 'Resolved') { 'Da kiem tra va xu ly.' } else { $null }
-
-	$incidents += [pscustomobject]@{
-		IncidentId = $id
-		ReportedDate = (To-LocalOffset $reportedDate).ToString('o')
-		Title = $title
-		Description = $desc
-		Status = $status
-		ReportedBy = 'admin'
-		ReferenceId = $ref
-		ResolutionNotes = $resNotes
-	}
+    $title = Pick $rng @("Barrier Fail", "Lost Ticket", "Payment Error")
+    $incidents += [pscustomobject]@{
+        IncidentId = "INC-$(New-HexId $rng 6)"
+        ReportedDate = (To-LocalOffset $now.AddHours(-1*$rng.Next(1,48))).ToString('o')
+        Title = $title
+        Status = if ($rng.NextDouble() -gt 0.5) { "Resolved" } else { "Open" }
+        Description = "$title detected at gate."
+        ReportedBy = "System"
+    }
 }
 
+Write-JsonArray $paths.users $users
+Write-JsonArray $paths.pricePolicies $pricePolicies
+Write-JsonArray $paths.zones $zones
 Write-JsonArray $paths.customers $customers
 Write-JsonArray $paths.monthlyTickets $monthlyTickets
 Write-JsonArray $paths.tickets $tickets
 Write-JsonArray $paths.sessions $sessions
 Write-JsonArray $paths.incidents $incidents
 
-Write-Host "Seeded data written to: $OutDir"
-Write-Host "- customers.json:        $($customers.Count)"
-Write-Host "- monthly_tickets.json:  $($monthlyTickets.Count)"
-Write-Host "- tickets.json:          $($tickets.Count)"
-Write-Host "- sessions.json:         $($sessions.Count)"
-Write-Host "- incidents.json:        $($incidents.Count)"
+Write-Host "Done. Data seeded to $OutDir"

@@ -4470,5 +4470,37 @@
     },
     "ParkingZoneId": "ZONE-A",
     "ExitGateId": null
+  },
+  {
+    "SessionId": "f5797350-1cc2-4106-a791-e7e08c2d9b57",
+    "EntryTime": "2026-01-16T17:37:33.7114487+07:00",
+    "ExitTime": "2026-01-16T17:38:08.3261981+07:00",
+    "FeeAmount": 6400,
+    "Status": "Completed",
+    "CardId": null,
+    "Vehicle": {
+      "VehicleType": "ELECTRIC_CAR",
+      "LicensePlate": "30A-98765"
+    },
+    "Ticket": {
+      "TicketId": "GIN-01-260116-0011-A49F",
+      "IssueTime": "2026-01-16T17:37:33.7114476+07:00",
+      "GateId": "GATE-IN-01",
+      "CardId": null,
+      "TicketType": "Daily"
+    },
+    "Payment": {
+      "PaymentId": "f282cccd-78bc-4f61-a6e6-c977d2d64a1d",
+      "Amount": 6400,
+      "Time": "2026-01-16T17:38:16.8995456+07:00",
+      "Method": "ExternalQR",
+      "Status": "Completed",
+      "TransactionCode": "TX-F55373AC",
+      "ErrorMessage": null,
+      "Attempts": 1,
+      "ProviderLog": "Gateway \u0111\u00E3 thanh to\u00E1n l\u00FAc 17:38:16"
+    },
+    "ParkingZoneId": "ZONE-E",
+    "ExitGateId": null
   }
 ]

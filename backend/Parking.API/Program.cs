@@ -12,6 +12,7 @@ using Parking.Core.Interfaces;
 using Parking.Infrastructure.External;
 using Parking.Infrastructure.Templates;
 using Parking.Infrastructure.Repositories;
+using Parking.Core.Factories; // Add this
 using Parking.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -98,6 +99,7 @@ builder.Services.AddScoped<IIncidentRepository, IncidentRepository>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 
 // 2. Services (Logic Layer)
+builder.Services.AddSingleton<IVehicleFactory, VehicleFactory>(); // Singleton is fine for a stateless Factory
 builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IMembershipService, MembershipService>();

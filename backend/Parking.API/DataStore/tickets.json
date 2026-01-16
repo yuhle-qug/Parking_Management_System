@@ -134,7 +134,7 @@
   },
   {
     "TicketId": "9846719A",
-    "IssueTime": "2026-01-15T22:18:12.530Z",
+    "IssueTime": "2026-01-15T22:18:12.53Z",
     "GateId": "GATE-01",
     "CardId": null,
     "TicketType": "Daily"
@@ -176,7 +176,7 @@
   },
   {
     "TicketId": "38DE411A",
-    "IssueTime": "2026-01-10T09:12:36.430Z",
+    "IssueTime": "2026-01-10T09:12:36.43Z",
     "GateId": "GATE-01",
     "CardId": null,
     "TicketType": "Daily"
@@ -239,7 +239,7 @@
   },
   {
     "TicketId": "786D473C",
-    "IssueTime": "2026-01-10T03:41:45.320Z",
+    "IssueTime": "2026-01-10T03:41:45.32Z",
     "GateId": "GATE-03",
     "CardId": null,
     "TicketType": "Daily"
@@ -316,7 +316,7 @@
   },
   {
     "TicketId": "E77BFB13",
-    "IssueTime": "2026-01-12T21:33:52.260Z",
+    "IssueTime": "2026-01-12T21:33:52.26Z",
     "GateId": "GATE-01",
     "CardId": null,
     "TicketType": "Daily"
@@ -365,7 +365,7 @@
   },
   {
     "TicketId": "3139F551",
-    "IssueTime": "2026-01-11T14:35:05.720Z",
+    "IssueTime": "2026-01-11T14:35:05.72Z",
     "GateId": "GATE-01",
     "CardId": null,
     "TicketType": "Daily"
@@ -456,7 +456,7 @@
   },
   {
     "TicketId": "11804CC0",
-    "IssueTime": "2026-01-12T17:13:39.540Z",
+    "IssueTime": "2026-01-12T17:13:39.54Z",
     "GateId": "GATE-02",
     "CardId": null,
     "TicketType": "Daily"
@@ -498,7 +498,7 @@
   },
   {
     "TicketId": "65E95043",
-    "IssueTime": "2026-01-15T13:20:13.190Z",
+    "IssueTime": "2026-01-15T13:20:13.19Z",
     "GateId": "GATE-03",
     "CardId": null,
     "TicketType": "Daily"
@@ -645,7 +645,7 @@
   },
   {
     "TicketId": "D966046F",
-    "IssueTime": "2026-01-15T17:04:22.740Z",
+    "IssueTime": "2026-01-15T17:04:22.74Z",
     "GateId": "GATE-02",
     "CardId": null,
     "TicketType": "Daily"
@@ -673,7 +673,7 @@
   },
   {
     "TicketId": "29C33B3B",
-    "IssueTime": "2026-01-16T04:32:08.570Z",
+    "IssueTime": "2026-01-16T04:32:08.57Z",
     "GateId": "GATE-03",
     "CardId": null,
     "TicketType": "Daily"
@@ -694,14 +694,14 @@
   },
   {
     "TicketId": "5E4A1BAA",
-    "IssueTime": "2026-01-15T16:50:14.920Z",
+    "IssueTime": "2026-01-15T16:50:14.92Z",
     "GateId": "GATE-02",
     "CardId": null,
     "TicketType": "Daily"
   },
   {
     "TicketId": "D773F77E",
-    "IssueTime": "2026-01-10T22:59:22.620Z",
+    "IssueTime": "2026-01-10T22:59:22.62Z",
     "GateId": "GATE-01",
     "CardId": null,
     "TicketType": "Daily"
@@ -834,7 +834,7 @@
   },
   {
     "TicketId": "129687A3",
-    "IssueTime": "2026-01-16T06:56:50.100Z",
+    "IssueTime": "2026-01-16T06:56:50.1Z",
     "GateId": "GATE-01",
     "CardId": null,
     "TicketType": "Daily"
@@ -897,7 +897,7 @@
   },
   {
     "TicketId": "B6A003A2",
-    "IssueTime": "2026-01-10T16:17:51.340Z",
+    "IssueTime": "2026-01-10T16:17:51.34Z",
     "GateId": "GATE-03",
     "CardId": null,
     "TicketType": "Daily"
@@ -960,7 +960,7 @@
   },
   {
     "TicketId": "C72D469B",
-    "IssueTime": "2026-01-13T06:30:21.280Z",
+    "IssueTime": "2026-01-13T06:30:21.28Z",
     "GateId": "GATE-03",
     "CardId": null,
     "TicketType": "Daily"
@@ -1046,6 +1046,13 @@
     "TicketId": "AD3BC02D",
     "IssueTime": "2026-01-11T11:56:01.147Z",
     "GateId": "GATE-02",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "GIN-01-260116-0011-A49F",
+    "IssueTime": "2026-01-16T17:37:33.7114476+07:00",
+    "GateId": "GATE-IN-01",
     "CardId": null,
     "TicketType": "Daily"
   }

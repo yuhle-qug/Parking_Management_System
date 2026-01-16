@@ -25,4 +25,10 @@ namespace Parking.Core.Interfaces
 	public interface ITicketRepository : IRepository<Ticket>
 	{
 	}
+
+	public interface IGateRepository : IRepository<Gate>
+	{
+		// Custom query to find gates supporting a vehicle type
+		Task<IEnumerable<Gate>> GetGatesForVehicleAsync(string vehicleCategory);
+	}
 }

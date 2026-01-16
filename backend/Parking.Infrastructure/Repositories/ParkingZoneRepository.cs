@@ -35,7 +35,7 @@ namespace Parking.Infrastructure.Repositories
 						Name = "Khu A (Ô tô)",
 						Capacity = 50,
 						VehicleCategory = "CAR",
-						GateIds = new List<string> { "GATE-IN-01", "GATE-IN-02" },
+						GateIds = new List<string> { "GATE-IN-CAR-01", "GATE-IN-CAR-02" },
 						PricePolicyId = "P-CAR"
 					},
 					new ParkingZone {
@@ -43,7 +43,7 @@ namespace Parking.Infrastructure.Repositories
 						Name = "Khu B (Xe máy)",
 						Capacity = 100,
 						VehicleCategory = "MOTORBIKE",
-						GateIds = new List<string> { "GATE-IN-01", "GATE-IN-03" },
+						GateIds = new List<string> { "GATE-IN-MOTO-01", "GATE-IN-MOTO-02", "GATE-IN-MOTO-03" },
 						PricePolicyId = "P-MOTO"
 					},
 					new ParkingZone {
@@ -51,7 +51,7 @@ namespace Parking.Infrastructure.Repositories
 						Name = "Khu C (Xe đạp)",
 						Capacity = 80,
 						VehicleCategory = "BICYCLE",
-						GateIds = new List<string> { "GATE-IN-02", "GATE-IN-03" },
+						GateIds = new List<string> { "GATE-IN-MOTO-01", "GATE-IN-MOTO-02", "GATE-IN-MOTO-03" },
 						PricePolicyId = "P-BIKE"
 					},
 					new ParkingZone {
@@ -60,7 +60,7 @@ namespace Parking.Infrastructure.Repositories
 						Capacity = 20,
 						VehicleCategory = "CAR",
 						ElectricOnly = true,
-						GateIds = new List<string> { "GATE-IN-02" },
+						GateIds = new List<string> { "GATE-IN-CAR-01", "GATE-IN-CAR-02" },
 						PricePolicyId = "P-ELEC"
 					},
 					new ParkingZone {
@@ -69,7 +69,7 @@ namespace Parking.Infrastructure.Repositories
 						Capacity = 40,
 						VehicleCategory = "MOTORBIKE",
 						ElectricOnly = true,
-						GateIds = new List<string> { "GATE-IN-01", "GATE-IN-03" },
+						GateIds = new List<string> { "GATE-IN-MOTO-01", "GATE-IN-MOTO-02", "GATE-IN-MOTO-03" },
 						PricePolicyId = "P-ELEC-MOTO"
 					}
 				};
@@ -85,7 +85,7 @@ namespace Parking.Infrastructure.Repositories
 					Name = "Khu C (Xe đạp)",
 					Capacity = 80,
 					VehicleCategory = "BICYCLE",
-					GateIds = new List<string> { "GATE-IN-02", "GATE-IN-03" },
+					GateIds = new List<string> { "GATE-IN-MOTO-01", "GATE-IN-MOTO-02", "GATE-IN-MOTO-03" },
 					PricePolicyId = "P-BIKE"
 				});
 				await JsonFileHelper.WriteListAsync(_filePath, zones.ToList());

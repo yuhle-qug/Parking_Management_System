@@ -24,9 +24,11 @@ backend/
 │   │   ├── IncidentController.cs
 │   │   ├── MembershipController.cs
 │   │   ├── PaymentController.cs
+│   │   ├── PlateRecognitionController.cs
+│   │   ├── PricePolicyController.cs
 │   │   ├── ReportController.cs
 │   │   ├── UserAccountController.cs
-│   │   └── PlateRecognitionController.cs
+│   │   └── ZonesController.cs
 │   ├── DataStore/                 # JSON files that act as persistence layer (seeded at runtime)
 │   │   ├── customers.json
 │   │   ├── incidents.json
@@ -44,13 +46,17 @@ backend/
 ├── Parking.Core/                  # Domain entities + interface contracts
 │   ├── Parking.Core.csproj
 │   ├── Entities/
+│   │   ├── AuditLog.cs
 │   │   ├── CoreEntities.cs
 │   │   ├── Incident.cs
+│   │   ├── MembershipDtos.cs
 │   │   ├── MembershipEntities.cs
 │   │   ├── MembershipPolicy.cs
 │   │   ├── ParkingStructure.cs
+│   │   ├── PaymentGatewayResult.cs
 │   │   ├── PricePolicy.cs
 │   │   ├── ReportEntities.cs
+│   │   ├── TicketPrint.cs
 │   │   ├── UserEntities.cs
 │   │   ├── Vehicle.cs
 │   │   └── PlateRecognitionResult.cs
@@ -74,14 +80,18 @@ backend/
 │   │   ├── MockPaymentGatewayAdapter.cs
 │   │   └── LicensePlateRecognitionClient.cs
 │   ├── Repositories/
+│   │   ├── AuditLogRepository.cs
 │   │   ├── BaseJsonRepository.cs
 │   │   ├── IncidentRepository.cs
 │   │   ├── MembershipPolicyRepository.cs
 │   │   ├── MembershipRepositories.cs
 │   │   ├── ParkingSessionRepository.cs
 │   │   ├── ParkingZoneRepository.cs
+│   │   ├── PricePolicyRepository.cs
 │   │   ├── TicketRepository.cs
 │   │   └── UserRepository.cs
+│   ├── Templates/
+│   │   └── TicketTemplateService.cs
 │   ├── bin/
 │   └── obj/
 └── Parking.Services/              # Application/business services coordinating repositories
@@ -119,9 +129,11 @@ backend/
 | Controllers/IncidentController.cs | Wraps `IIncidentService` to report/resolve incidents and list history. |
 | Controllers/MembershipController.cs | Creates vehicles/customers, issues monthly tickets, lists tickets/policies, deletes tickets. |
 | Controllers/PaymentController.cs | Calls `IPaymentService` to finalize payments and open gates. |
-| Controllers/ReportController.cs | Produces active session list, revenue report, and traffic report from `IParkingSessionRepository`. |
 | Controllers/PlateRecognitionController.cs | Accepts multipart image uploads and proxies them to the Python LPR service, returning normalized plate candidates. |
+| Controllers/PricePolicyController.cs | CRUD for pricing policies and lost ticket penalty configuration. |
+| Controllers/ReportController.cs | Produces active session list, revenue report, and traffic report from `IParkingSessionRepository`. |
 | Controllers/UserAccountController.cs | Authenticates admin/attendant accounts, CRUD for users, toggles status with safety checks. |
+| Controllers/ZonesController.cs | CRUD for parking zones (lanes) and capacity management. |
 | DataStore/*.json | JSON persistence for customers, incidents, memberships, active sessions, tickets, user accounts, and zone definitions plus backups. |
 | Properties/launchSettings.json | Local profile binding HTTP to `0.0.0.0:5166` and HTTPS `localhost:7275`. |
 
@@ -129,13 +141,17 @@ backend/
 
 | File | Contents |
 | ---- | -------- |
+| Entities/AuditLog.cs | Entity recording system actions for security auditing. |
 | Entities/CoreEntities.cs | Declares `Ticket`, `Payment`, and `ParkingSession` aggregate with helper methods to close sessions and attach payments. |
 | Entities/Incident.cs | Incident aggregate with status, metadata, and resolution notes. |
+| Entities/MembershipDtos.cs | DTOs for membership interactions (Request/Response models). |
 | Entities/MembershipEntities.cs | `Customer` and `MonthlyTicket` objects plus helper to validate ticket status. |
 | Entities/MembershipPolicy.cs | POCO describing monthly pricing plans per vehicle type. |
 | Entities/ParkingStructure.cs | `ParkingZone` (capacity management, price policy) and `ParkingLot` helper for zone resolution. |
+| Entities/PaymentGatewayResult.cs | DTO representing the outcome of a payment gateway transaction. |
 | Entities/PricePolicy.cs | Abstract `PricePolicy` with `ParkingFeePolicy` (hourly calc) and `LostTicketFeePolicy` (flat penalty). |
 | Entities/ReportEntities.cs | DTOs for revenue/traffic reports with metadata windows. |
+| Entities/TicketPrint.cs | Model for generating printed ticket content. |
 | Entities/UserEntities.cs | Polymorphic admin/attendant accounts with capability helpers plus JSON discriminator attributes. |
 | Entities/Vehicle.cs | Abstract `Vehicle` and concrete types (car, motorbike, bicycle + electric variants) overriding fee factors. |
 | Entities/PlateRecognitionResult.cs | Value object that wraps success flag, normalized plate list, and error metadata returned by the OCR bridge. |
@@ -150,23 +166,29 @@ backend/
 | External/MockGateDevice.cs | Simulated gate hardware that logs gate open actions; also exposes demo `ReadPlateAsync`. |
 | External/MockPaymentGatewayAdapter.cs | Mock adapter that logs and always approves payments after a delay. |
 | External/LicensePlateRecognitionClient.cs | Typed `HttpClient` that posts image bytes to the Python OCR service and normalizes the response. |
+| Repositories/AuditLogRepository.cs | Persists audit logs for system actions. |
 | Repositories/BaseJsonRepository.cs | Generic JSON-backed CRUD implementation used by specific repositories. |
 | Repositories/IncidentRepository.cs | Adds query for unresolved incidents. |
 | Repositories/MembershipPolicyRepository.cs | Seeds default policies and resolves pricing by vehicle type. |
 | Repositories/MembershipRepositories.cs | Customer + monthly ticket repositories with phone lookup, active ticket lookup, expired filter. |
 | Repositories/ParkingSessionRepository.cs | Session persistence plus lookups by plate or ticket ID. |
 | Repositories/ParkingZoneRepository.cs | Seeds default zones, enforces capacity, finds suitable zones based on vehicle type/electric flag. |
+| Repositories/PricePolicyRepository.cs | Persistence for dynamic pricing policies. |
 | Repositories/TicketRepository.cs | Simple JSON repository for ad-hoc tickets. |
 | Repositories/UserRepository.cs | Provides username lookup for authentication. |
+| Templates/TicketTemplateService.cs | Generates HTML content for thermal printers from ticket data. |
 
 ### Parking.Services (application orchestration)
 
 | File | Contents |
 | ---- | -------- |
+| Services/AuditService.cs | Logic for recording critical system actions (login, check-in, etc.) to the audit log. |
 | Services/IncidentService.cs | Implements `IIncidentService` to log, resolve, and list incidents via repository. |
 | Services/MembershipService.cs | Registers/extents monthly tickets, ensures customers exist, enforces single active ticket per plate, surfaces pricing and ticket lists. |
 | Services/ParkingService.cs | Coordinates zone selection, ticket issuance, session persistence, and gate control for check-in/out flows. |
 | Services/PaymentService.cs | Calls payment gateway, creates receipts, updates sessions, and triggers gate opening after successful payment. |
+| Services/JwtService.cs | Handles JWT token generation with secure key retrieval (Env / Config). |
+| Services/BcryptPasswordHasher.cs | Secure password hashing using BCrypt. |
 
 > **Note:** `bin/` and `obj/` folders within each project contain compiled artifacts and are regenerated on every build.
 

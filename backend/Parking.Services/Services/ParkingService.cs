@@ -21,6 +21,7 @@ namespace Parking.Services.Services
         private readonly ILogger<ParkingService> _logger;
         private readonly IIncidentService _incidentService;
         private readonly IVehicleFactory _vehicleFactory; // [OCP] Factory Injection
+        private readonly IGateRepository _gateRepo;
 
         // Constructor Injection
         public ParkingService(
@@ -32,7 +33,8 @@ namespace Parking.Services.Services
             IPricePolicyRepository pricePolicyRepo,
             ILogger<ParkingService> logger,
             IIncidentService incidentService,
-            IVehicleFactory vehicleFactory)
+            IVehicleFactory vehicleFactory,
+            IGateRepository gateRepo)
         {
             _sessionRepo = sessionRepo;
             _zoneRepo = zoneRepo;
@@ -43,11 +45,23 @@ namespace Parking.Services.Services
             _logger = logger;
             _incidentService = incidentService;
             _vehicleFactory = vehicleFactory;
+            _gateRepo = gateRepo;
         }
 
         // --- USE CASE: CHECK IN (Xe vào) ---
         public async Task<ParkingSession> CheckInAsync(string plateNumber, string vehicleType, string gateId, string? cardId = null)
         {
+            // [VALIDATION] Check if Gate exists and supports vehicle type
+            var gate = await _gateRepo.GetByIdAsync(gateId);
+            if (gate == null)
+            {
+                 throw new ArgumentException($"Cổng '{gateId}' không tồn tại trong hệ thống.");
+            }
+            if (!gate.CanAccept(vehicleType))
+            {
+                 throw new InvalidOperationException($"Cổng '{gate.Name}' không phân luồng cho loại xe '{vehicleType}'.");
+            }
+
             var activeSessions = await _sessionRepo.FindActiveByPlateAsync(plateNumber);
             if (activeSessions.Any())
             {
@@ -152,6 +166,13 @@ namespace Parking.Services.Services
                 throw new InvalidOperationException("Biển số bắt buộc khi cho xe ra.");
             }
 
+            // [VALIDATION] Check Gate exists
+            var gate = await _gateRepo.GetByIdAsync(gateId);
+            if (gate == null)
+            {
+                throw new ArgumentException($"Cổng ra '{gateId}' không tồn tại.");
+            }
+
             var session = await _sessionRepo.FindByTicketIdAsync(ticketIdOrPlate);
             if (session == null)
             {
@@ -194,6 +215,24 @@ namespace Parking.Services.Services
                 {
                     session.Ticket.CardId ??= cardId;
                 }
+            }
+
+            // [VALIDATION] Validate Vehicle Type vs Gate
+            // Note: session.Vehicle is polymorphic (Car, Motorbike, etc.)
+            // We need to map it back to the string constants used in Gate.AllowedVehicleCategories
+            string vehicleTypeStr = session.Vehicle switch 
+            {
+                ElectricCar => "ELECTRIC_CAR",
+                Car => "CAR",
+                ElectricMotorbike => "ELECTRIC_MOTORBIKE",
+                Motorbike => "MOTORBIKE",
+                Bicycle => "BICYCLE",
+                _ => "CAR" 
+            };
+            
+            if (!gate.CanAccept(vehicleTypeStr))
+            {
+                throw new InvalidOperationException($"Xe '{vehicleTypeStr}' không được phép ra cổng '{gate.Name}'.");
             }
 
             session.SetExitTime(DateTime.Now);

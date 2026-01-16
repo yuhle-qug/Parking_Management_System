@@ -5,13 +5,11 @@
     "VehicleCategory": "CAR",
     "ElectricOnly": false,
     "Capacity": 50,
-    "GateIds": [],
-    "ActiveSessions": [],
-    "PricePolicy": {
-      "PolicyType": "PARKING_FEE",
-      "PolicyId": "P-CAR",
-      "Name": "Ph\u00ED \u00F4 t\u00F4 ti\u00EAu chu\u1EA9n"
-    }
+    "GateIds": [
+      "GATE-IN-CAR-01"
+    ],
+    "PricePolicyId": "P-CAR",
+    "ActiveSessions": []
   },
   {
     "ZoneId": "ZONE-B",
@@ -19,41 +17,11 @@
     "VehicleCategory": "MOTORBIKE",
     "ElectricOnly": false,
     "Capacity": 100,
-    "GateIds": [],
-    "ActiveSessions": [],
-    "PricePolicy": {
-      "PolicyType": "PARKING_FEE",
-      "PolicyId": "P-MOTO",
-      "Name": "Ph\u00ED xe m\u00E1y ti\u00EAu chu\u1EA9n"
-    }
-  },
-  {
-    "ZoneId": "ZONE-E",
-    "Name": "Khu E (Xe \u0111i\u1EC7n)",
-    "VehicleCategory": "CAR",
-    "ElectricOnly": true,
-    "Capacity": 20,
-    "GateIds": [],
-    "ActiveSessions": [],
-    "PricePolicy": {
-      "PolicyType": "PARKING_FEE",
-      "PolicyId": "P-ELEC",
-      "Name": "Ph\u00ED xe \u0111i\u1EC7n \u01B0u \u0111\u00E3i"
-    }
-  },
-  {
-    "ZoneId": "ZONE-EM",
-    "Name": "Khu EM (Xe m\u00E1y \u0111i\u1EC7n)",
-    "VehicleCategory": "MOTORBIKE",
-    "ElectricOnly": true,
-    "Capacity": 40,
-    "GateIds": [],
-    "ActiveSessions": [],
-    "PricePolicy": {
-      "PolicyType": "PARKING_FEE",
-      "PolicyId": "P-ELEC-MOTO",
-      "Name": "Ph\u00ED xe m\u00E1y \u0111i\u1EC7n"
-    }
+    "GateIds": [
+      "GATE-IN-MOTO-01"
+    ],
+    "PricePolicyId": "P-MOTO",
+    "ActiveSessions": []
   },
   {
     "ZoneId": "ZONE-C",
@@ -62,14 +30,33 @@
     "ElectricOnly": false,
     "Capacity": 80,
     "GateIds": [
-      "GATE-IN-02",
-      "GATE-IN-03"
+      "GATE-IN-BIKE-01"
     ],
-    "ActiveSessions": [],
-    "PricePolicy": {
-      "PolicyType": "PARKING_FEE",
-      "PolicyId": "P-BIKE",
-      "Name": "Ph\u00ED xe \u0111\u1EA1p"
-    }
+    "PricePolicyId": "P-BIKE",
+    "ActiveSessions": []
+  },
+  {
+    "ZoneId": "ZONE-E",
+    "Name": "Khu E (Xe \u0111i\u1EC7n)",
+    "VehicleCategory": "CAR",
+    "ElectricOnly": true,
+    "Capacity": 20,
+    "GateIds": [
+      "GATE-IN-CAR-01"
+    ],
+    "PricePolicyId": "P-ELEC",
+    "ActiveSessions": []
+  },
+  {
+    "ZoneId": "ZONE-EM",
+    "Name": "Khu EM (Xe m\u00E1y \u0111i\u1EC7n)",
+    "VehicleCategory": "MOTORBIKE",
+    "ElectricOnly": true,
+    "Capacity": 40,
+    "GateIds": [
+      "GATE-IN-MOTO-01"
+    ],
+    "PricePolicyId": "P-ELEC-MOTO",
+    "ActiveSessions": []
   }
 ]

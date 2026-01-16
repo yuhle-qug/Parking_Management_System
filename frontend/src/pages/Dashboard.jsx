@@ -80,7 +80,7 @@ export default function Dashboard() {
   }
 
   const fetchZoneStatus = async () => {
-    const gateToCheck = user?.gateId || 'GATE-IN-01'
+    const gateToCheck = user?.gateId || 'GATE-IN-CAR-01'
     try {
       console.log('Fetching Zones status for gate:', gateToCheck)
       const res = await axios.get(`${API_BASE}/Zones/status?gateId=${gateToCheck}`)
@@ -102,7 +102,7 @@ export default function Dashboard() {
     return () => clearInterval(interval)
   }, [user?.gateId])
 
-  const currentGate = user?.gateId || 'GATE-IN-01'
+  const currentGate = user?.gateId || 'GATE-IN-CAR-01'
 
   const handleCheckIn = async () => {
     if (!plateIn) return alert('Nhập biển số trước')
@@ -297,7 +297,9 @@ export default function Dashboard() {
       {renderQrModal()}
       {/* Left Column - Gates */}
       <div className="lg:col-span-1 space-y-6">
-        {/* Check In Card */}
+        
+        {/* CHECK IN CARD - Only show if Gate ID contains "IN" */}
+        {currentGate.includes('IN') && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
@@ -430,8 +432,10 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
+        )}
 
-        {/* Check Out Card */}
+        {/* CHECK OUT CARD - Only show if Gate ID contains "OUT" */}
+        {currentGate.includes('OUT') && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
@@ -603,7 +607,7 @@ export default function Dashboard() {
             )}
           </div>
         </div>
-
+        )}
         {/* Logs */}
         <div className="bg-gray-900 rounded-xl p-4 text-green-400 font-mono text-xs max-h-48 overflow-auto">
           <div className="flex items-center gap-2 mb-2 text-gray-400">

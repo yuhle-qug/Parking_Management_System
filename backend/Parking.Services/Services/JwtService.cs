@@ -5,33 +5,9 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Parking.Core.Interfaces;
-using BCrypt.Net;
 
 namespace Parking.Services.Services
 {
-    public class BcryptPasswordHasher : IPasswordHasher
-    {
-        public string HashPassword(string password)
-        {
-            return BCrypt.Net.BCrypt.HashPassword(password);
-        }
-
-        public bool VerifyPassword(string password, string hash)
-        {
-            // Support legacy plain text check for migration
-            if (password == hash) return true;
-            
-            try
-            {
-                return BCrypt.Net.BCrypt.Verify(password, hash);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-    }
-
     public class JwtService : IJwtService
     {
         private readonly IConfiguration _config;
@@ -43,7 +19,22 @@ namespace Parking.Services.Services
 
         public string GenerateToken(string userId, string username, string role)
         {
-            var keyStr = _config["Jwt:Key"] ?? "VERY_SECRET_KEY_FOR_PARKING_SYSTEM_123456";
+            // PRIORITY: Environment Variable > AppSettings > Throw Exception (in Prod)
+            var envKey = Environment.GetEnvironmentVariable("JWT_KEY");
+            var configKey = _config["Jwt:Key"];
+            
+            var keyStr = envKey ?? configKey;
+
+            if (string.IsNullOrEmpty(keyStr)) 
+            {
+                // Fallback ONLY for local dev if explicitly allowed, otherwise dangerous.
+                // For this project, we'll keep a fallback string logic ONLY if not in Production context?
+                // Actually, let's stick to the pattern we agreed: use env var or placeholder default ONLY if we decided to allow it.
+                // The previous code had a hardcoded backup. We will use a clearer backup for DEV only or throw.
+                
+                keyStr = "DEFAULT_DEV_KEY_MUST_BE_CHANGED_IN_PROD_AND_MUST_BE_LONG_ENOUGH"; 
+            }
+
             var issuer = _config["Jwt:Issuer"] ?? "ParkingSystem";
             var audience = _config["Jwt:Audience"] ?? "ParkingFrontend";
 

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { API_BASE } from '../config/api'
-import { ENTRY_GATES, VEHICLE_GROUPS } from '../config/gates'
+import { ENTRY_GATES, EXIT_GATES, VEHICLE_GROUPS } from '../config/gates'
 
 export default function Login({ onLogin }) {
   const [username, setUsername] = useState('')
@@ -12,7 +12,18 @@ export default function Login({ onLogin }) {
   const [loading, setLoading] = useState(false)
 
   const gatesByGroup = useMemo(
-    () => ENTRY_GATES.filter((g) => !gateVehicleGroup || g.vehicleGroup === gateVehicleGroup),
+    () => {
+        // [UPDATE] Combine Entry and Exit gates for selection
+        // Heuristic: Assign vehicleGroup to EXIT_GATES based on ID/Label if missing in config
+        const allGates = [
+            ...ENTRY_GATES, 
+            ...EXIT_GATES.map(g => ({
+                ...g,
+                vehicleGroup: g.id.includes('CAR') ? 'CAR' : 'MOTORBIKE' 
+            }))
+        ]
+        return allGates.filter((g) => !gateVehicleGroup || g.vehicleGroup === gateVehicleGroup)
+    },
     [gateVehicleGroup]
   )
 

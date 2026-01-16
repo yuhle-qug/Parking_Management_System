@@ -69,7 +69,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? "VERY_SECRET_KEY_FOR_PARKING_SYSTEM_123456");
+        var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? Environment.GetEnvironmentVariable("JWT_KEY") ?? "DEFAULT_DEV_KEY_MUST_BE_CHANGED_IN_PROD");
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -97,6 +97,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IIncidentRepository, IncidentRepository>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+builder.Services.AddScoped<IGateRepository, GateRepository>();
+
 
 // 2. Services (Logic Layer)
 builder.Services.AddSingleton<IVehicleFactory, VehicleFactory>(); // Singleton is fine for a stateless Factory

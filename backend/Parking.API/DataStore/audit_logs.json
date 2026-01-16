@@ -889,5 +889,14 @@
     "ReferenceId": "USER001",
     "Details": "Login success",
     "Success": true
+  },
+  {
+    "LogId": "c8815b0d-7efd-45a2-8017-306da902e466",
+    "Timestamp": "2026-01-16T18:54:01.8470914+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
   }
 ]

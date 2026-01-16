@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Parking.Core.Entities;
 using Parking.Core.Interfaces;
-using Parking.Core.Constants; // Add this
 using Microsoft.Extensions.Logging;
 
 namespace Parking.Services.Services
@@ -20,8 +19,6 @@ namespace Parking.Services.Services
         private readonly IPricePolicyRepository _pricePolicyRepo;
         private readonly ILogger<ParkingService> _logger;
         private readonly IIncidentService _incidentService;
-        private readonly IVehicleFactory _vehicleFactory; // [OCP] Factory Injection
-        private readonly IGateRepository _gateRepo;
 
         // Constructor Injection
         public ParkingService(
@@ -32,9 +29,7 @@ namespace Parking.Services.Services
             IMonthlyTicketRepository monthlyTicketRepo,
             IPricePolicyRepository pricePolicyRepo,
             ILogger<ParkingService> logger,
-            IIncidentService incidentService,
-            IVehicleFactory vehicleFactory,
-            IGateRepository gateRepo)
+            IIncidentService incidentService)
         {
             _sessionRepo = sessionRepo;
             _zoneRepo = zoneRepo;
@@ -44,32 +39,18 @@ namespace Parking.Services.Services
             _pricePolicyRepo = pricePolicyRepo;
             _logger = logger;
             _incidentService = incidentService;
-            _vehicleFactory = vehicleFactory;
-            _gateRepo = gateRepo;
         }
 
         // --- USE CASE: CHECK IN (Xe vào) ---
         public async Task<ParkingSession> CheckInAsync(string plateNumber, string vehicleType, string gateId, string? cardId = null)
         {
-            // [VALIDATION] Check if Gate exists and supports vehicle type
-            var gate = await _gateRepo.GetByIdAsync(gateId);
-            if (gate == null)
-            {
-                 throw new ArgumentException($"Cổng '{gateId}' không tồn tại trong hệ thống.");
-            }
-            if (!gate.CanAccept(vehicleType))
-            {
-                 throw new InvalidOperationException($"Cổng '{gate.Name}' không phân luồng cho loại xe '{vehicleType}'.");
-            }
-
             var activeSessions = await _sessionRepo.FindActiveByPlateAsync(plateNumber);
             if (activeSessions.Any())
             {
                 throw new InvalidOperationException($"Xe {plateNumber} đang ở trong bãi, không thể check-in lại.");
             }
 
-            // [OCP Fix] Use Factory instead of hardcoded switch
-            Vehicle vehicle = _vehicleFactory.CreateVehicle(vehicleType, plateNumber);
+            Vehicle vehicle = CreateVehicle(vehicleType, plateNumber);
             bool isElectric = vehicle is ElectricCar || vehicle is ElectricMotorbike;
 
             var monthlyTicket = await _monthlyTicketRepo.FindActiveByPlateAsync(plateNumber);
@@ -101,38 +82,9 @@ namespace Parking.Services.Services
                 throw new InvalidOperationException($"Khu {zone.Name} đã đầy, vui lòng điều hướng qua gate khác.");
             }
 
-            // [REAL-WORLD LOGIC] ID Generation
-            string ticketId;
-            if (isMonthly)
-            {
-                // Vé tháng: ID chính là mã thẻ (TicketId của MonthlyTicket)
-                ticketId = monthlyTicket!.TicketId;
-            }
-            else
-            {
-                // Vé lượt: Sinh ID theo quy tắc [GATE]-[DATE]-[SEQ]-[HASH]
-                // VD: G01-240116-0001-A1B2
-                var today = DateTime.Today;
-                // Note: GetAllAsync() in-memory is acceptable for this scale. In DB, use Count query.
-                var dailyCount = (await _ticketRepo.GetAllAsync()).Count(t => t.IssueTime.Date == today);
-                var seq = dailyCount + 1;
-                
-                var gateCode = gateId.Replace("GATE-", "G").Replace("gate-", "G"); // Shorten GATE-01 -> G01
-                var dateCode = today.ToString("yyMMdd");
-                var seqCode = seq.ToString("D4");
-                var securityHash = Guid.NewGuid().ToString().Substring(0, 4).ToUpper(); // Anti-counterfeit suffix
-
-                ticketId = $"{gateCode}-{dateCode}-{seqCode}-{securityHash}";
-            }
-
-            var sessionTicket = new Ticket 
-            { 
-                TicketId = ticketId, 
-                IssueTime = DateTime.Now, 
-                GateId = gateId, 
-                CardId = cardId,
-                TicketType = isMonthly ? ParkingConstants.TicketType.Monthly : ParkingConstants.TicketType.Daily
-            };
+            var sessionTicket = isMonthly
+                ? new Ticket { TicketId = monthlyTicket!.TicketId, IssueTime = DateTime.Now, GateId = gateId, CardId = cardId }
+                : new Ticket { TicketId = Guid.NewGuid().ToString().Substring(0, 8).ToUpper(), IssueTime = DateTime.Now, GateId = gateId, CardId = cardId };
 
             var session = new ParkingSession
             {
@@ -140,7 +92,7 @@ namespace Parking.Services.Services
                 EntryTime = DateTime.Now,
                 Vehicle = vehicle,
                 Ticket = sessionTicket,
-                Status = ParkingConstants.ParkingSessionStatus.Active,
+                Status = "Active",
                 ParkingZoneId = zone.ZoneId,
                 CardId = cardId
             };
@@ -153,7 +105,7 @@ namespace Parking.Services.Services
             zone.AddSession(session);
             await _sessionRepo.AddAsync(session);
             await _gateDevice.OpenGateAsync(gateId);
-            _logger.LogInformation("Check-in thành công: {Plate} -> Ticket {TicketId}, Zone {ZoneId}", plateNumber, ticketId, zone.ZoneId);
+            _logger.LogInformation("Check-in thành công gate {GateId}: {Plate} -> Ticket {TicketId}, Zone {ZoneId}", gateId, plateNumber, sessionTicket.TicketId, zone.ZoneId);
 
             return session;
         }
@@ -164,13 +116,6 @@ namespace Parking.Services.Services
             if (string.IsNullOrWhiteSpace(plateNumber))
             {
                 throw new InvalidOperationException("Biển số bắt buộc khi cho xe ra.");
-            }
-
-            // [VALIDATION] Check Gate exists
-            var gate = await _gateRepo.GetByIdAsync(gateId);
-            if (gate == null)
-            {
-                throw new ArgumentException($"Cổng ra '{gateId}' không tồn tại.");
             }
 
             var session = await _sessionRepo.FindByTicketIdAsync(ticketIdOrPlate);
@@ -187,9 +132,6 @@ namespace Parking.Services.Services
 
             // Đối chiếu biển số (bắt buộc)
             var normalizedPlate = plateNumber.Trim().ToUpperInvariant();
-            // LicensePlate Value Object is already trimmed and uppercased by definition usually, 
-            // but for safety accessing .Value.
-            // Using explicit property access fixes the 'does not contain a definition for Trim' error.
             if (!string.Equals(normalizedPlate, session.Vehicle.LicensePlate?.Value, StringComparison.OrdinalIgnoreCase))
             {
                 _logger.LogWarning("Biển số không khớp ticket {TicketId}: nhập {InputPlate}, lưu {StoredPlate}", session.Ticket?.TicketId, normalizedPlate, session.Vehicle.LicensePlate?.Value);
@@ -217,30 +159,9 @@ namespace Parking.Services.Services
                 }
             }
 
-            // [VALIDATION] Validate Vehicle Type vs Gate
-            // Note: session.Vehicle is polymorphic (Car, Motorbike, etc.)
-            // We need to map it back to the string constants used in Gate.AllowedVehicleCategories
-            string vehicleTypeStr = session.Vehicle switch 
-            {
-                ElectricCar => "ELECTRIC_CAR",
-                Car => "CAR",
-                ElectricMotorbike => "ELECTRIC_MOTORBIKE",
-                Motorbike => "MOTORBIKE",
-                Bicycle => "BICYCLE",
-                _ => "CAR" 
-            };
-            
-            if (!gate.CanAccept(vehicleTypeStr))
-            {
-                throw new InvalidOperationException($"Xe '{vehicleTypeStr}' không được phép ra cổng '{gate.Name}'.");
-            }
-
             session.SetExitTime(DateTime.Now);
 
-            // [FIX] Detect Monthly Ticket robustly
-            // 1. New Logic: based on TicketType
-            // 2. Legacy Logic: based on "M-" prefix
-            bool isMonthly = session.Ticket.TicketType == ParkingConstants.TicketType.Monthly || session.Ticket.TicketId.StartsWith("M-");
+            bool isMonthly = session.Ticket.TicketId.StartsWith("M-");
 
             // Vé tháng: bắt buộc cardId
             if (isMonthly)
@@ -263,7 +184,7 @@ namespace Parking.Services.Services
             if (isMonthly)
             {
                 session.FeeAmount = 0;
-                session.Status = ParkingConstants.ParkingSessionStatus.Completed;
+                session.Status = "Completed";
                 await _sessionRepo.UpdateAsync(session);
                 await _gateDevice.OpenGateAsync(gateId);
                 return session;
@@ -271,7 +192,7 @@ namespace Parking.Services.Services
 
             var policy = await ResolvePricePolicyAsync(session);
             session.FeeAmount = policy.CalculateFee(session);
-            session.Status = ParkingConstants.ParkingSessionStatus.PendingPayment;
+            session.Status = "PendingPayment";
 
             await _sessionRepo.UpdateAsync(session);
             return session;
@@ -288,17 +209,17 @@ namespace Parking.Services.Services
             }
 
             // Cập nhật loại xe nếu khác và set giờ ra
-            session.Vehicle = _vehicleFactory.CreateVehicle(vehicleType, session.Vehicle?.LicensePlate?.Value ?? plateNumber);
+            session.Vehicle = CreateVehicle(vehicleType, session.Vehicle?.LicensePlate ?? plateNumber);
             session.SetExitTime(DateTime.Now);
 
-            bool isMonthly = session.Ticket.TicketType == ParkingConstants.TicketType.Monthly || session.Ticket.TicketId.StartsWith("M-");
+            bool isMonthly = session.Ticket.TicketId.StartsWith("M-");
             var policy = await ResolvePricePolicyAsync(session);
             double baseFee = isMonthly ? 0 : policy.CalculateFee(session);
             double lostFee = isMonthly ? 0 : policy.LostTicketFee;
             double fee = isMonthly ? 0 : baseFee + lostFee;
 
             session.FeeAmount = fee;
-            session.Status = ParkingConstants.ParkingSessionStatus.PendingPayment;
+            session.Status = "PendingPayment";
 
             await _sessionRepo.UpdateAsync(session);
             _logger.LogWarning("Xử lý mất vé {Plate}: tổng phí {Fee}", plateNumber, fee);
@@ -327,7 +248,7 @@ namespace Parking.Services.Services
             {
                 PolicyId = "DEFAULT",
                 Name = "Default Policy",
-                VehicleType = session.Vehicle?.GetType().Name.ToUpperInvariant() ?? ParkingConstants.VehicleType.Car,
+                VehicleType = session.Vehicle?.GetType().Name.ToUpperInvariant() ?? "CAR",
                 RatePerHour = 10000,
                 OvernightSurcharge = 30000,
                 DailyMax = 200000,
@@ -347,17 +268,60 @@ namespace Parking.Services.Services
             {
                 var vehicleType = session.Vehicle switch
                 {
-                    ElectricCar => ParkingConstants.VehicleType.ElectricCar,
-                    Car => ParkingConstants.VehicleType.Car,
-                    ElectricMotorbike => ParkingConstants.VehicleType.ElectricMotorbike,
-                    Motorbike => ParkingConstants.VehicleType.Motorbike,
-                    Bicycle => ParkingConstants.VehicleType.Bicycle,
-                    _ => ParkingConstants.VehicleType.Car
+                    ElectricCar => "ELECTRIC_CAR",
+                    Car => "CAR",
+                    ElectricMotorbike => "ELECTRIC_MOTORBIKE",
+                    Motorbike => "MOTORBIKE",
+                    Bicycle => "BICYCLE",
+                    _ => "CAR"
                 };
                 policy = await _pricePolicyRepo.GetPolicyByVehicleTypeAsync(vehicleType);
             }
 
             return policy ?? defaultPolicy;
+        }
+
+        // Helper: Factory Method tạo xe
+        private Vehicle CreateVehicle(string type, string plate)
+        {
+            return type.ToUpper() switch
+            {
+                "CAR" => new Car(plate),
+                "ELECTRIC_CAR" => new ElectricCar(plate),
+                "MOTORBIKE" => new Motorbike(plate),
+                "ELECTRIC_MOTORBIKE" => new ElectricMotorbike(plate),
+                "BICYCLE" => new Bicycle(plate),
+                _ => new Car(plate) // Default fallback
+            };
+        }
+
+        public async Task<PaymentResult> ConfirmPaymentAsync(string sessionId, string transactionCode, bool success, string? providerLog = null, string? exitGateId = null)
+        {
+             var session = await _sessionRepo.GetByIdAsync(sessionId);
+             if (session == null)
+             {
+                 return new PaymentResult { Success = false, Message = "Session not found" };
+             }
+
+             if (success)
+             {
+                 session.Status = "Completed";
+                 session.ExitTime = DateTime.Now;
+                 // session.PaymentTransactionId = transactionCode; // If Entity has this field
+                 await _sessionRepo.UpdateAsync(session);
+
+                 if (!string.IsNullOrWhiteSpace(exitGateId))
+                 {
+                     await _gateDevice.OpenGateAsync(exitGateId);
+                 }
+                 return new PaymentResult { Success = true, Message = "Payment confirmed and gate opened" };
+             }
+             else
+             {
+                 // Log failure but keep session Active/PendingPayment
+                 // session.Status = "PaymentFailed"; 
+                 return new PaymentResult { Success = false, Message = $"Payment failed: {providerLog}" };
+             }
         }
     }
 }

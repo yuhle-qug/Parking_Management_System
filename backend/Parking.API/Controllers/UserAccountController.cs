@@ -162,6 +162,37 @@ namespace Parking.API.Controllers
             await _userRepo.UpdateAsync(user);
             return Ok(new { Message = "Cập nhật trạng thái thành công", Status = user.Status });
         }
+
+        // [NEW] PUT: api/UserAccount/{userId}
+        [HttpPut("{userId}")]
+        public async Task<IActionResult> UpdateUser(string userId, [FromBody] UpdateUserRequest request)
+        {
+            var user = await _userRepo.GetByIdAsync(userId);
+            if (user == null) return NotFound(new { Error = "Không tìm thấy user" });
+
+            if (!string.IsNullOrWhiteSpace(request.FullName)) user.FullName = request.FullName;
+            if (!string.IsNullOrWhiteSpace(request.Email)) user.Email = request.Email;
+            if (!string.IsNullOrWhiteSpace(request.Phone)) user.Phone = request.Phone;
+            
+            // Password change logic (optional - usually separate endpoint but included for simplicity)
+            if (!string.IsNullOrWhiteSpace(request.Password))
+            {
+                user.PasswordHash = _hasher.HashPassword(request.Password);
+            }
+
+            await _userRepo.UpdateAsync(user);
+            await _auditService.LogAsync("UpdateUser", User.Identity?.Name ?? "Admin", user.UserId, $"Updated info user {user.Username}");
+
+            return Ok(new { Message = "Cập nhật thành công", User = new { user.UserId, user.Username, user.FullName, user.Email, user.Phone } });
+        }
+    }
+
+    public class UpdateUserRequest
+    {
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        public string? Phone { get; set; }
+        public string? Password { get; set; }
     }
 
     public class LoginRequest

@@ -29,6 +29,7 @@ export default function Membership() {
   const [tickets, setTickets] = useState([])
   const [policies, setPolicies] = useState([])
   const [loading, setLoading] = useState(false)
+  const [activeTab, setActiveTab] = useState('ACTIVE') // ACTIVE | ATTENTION
   const [search, setSearch] = useState('')
   const [form, setForm] = useState({
     ownerName: '',
@@ -37,7 +38,9 @@ export default function Membership() {
     vehicleType: 'CAR',
     months: 1,
     policyId: '',
-    identityNumber: ''
+    identityNumber: '',
+    vehicleBrand: '',
+    vehicleColor: ''
   })
   const [qrModal, setQrModal] = useState(null)
   const [renewModal, setRenewModal] = useState(null)
@@ -45,6 +48,12 @@ export default function Membership() {
   const [confirmModal, setConfirmModal] = useState(null)
   const [detailModal, setDetailModal] = useState(null)
   const [history, setHistory] = useState([])
+  
+  const user = useMemo(() => {
+    try {
+        return JSON.parse(localStorage.getItem('user') || '{}')
+    } catch { return {} }
+  }, [])
 
   const defaultPolicies = [
     { policyId: 'P-CAR', policyName: 'Vé tháng Ô tô', monthlyPrice: 1500000, vehicleType: 'CAR' },
@@ -138,7 +147,14 @@ export default function Membership() {
   useEffect(() => { fetchData() }, [])
 
   const selectedPolicy = policies.find(p => p.policyId === form.policyId)
-  const estimatedPrice = selectedPolicy ? selectedPolicy.monthlyPrice * form.months : 0
+  const estimatedPrice = useMemo(() => {
+    if (!selectedPolicy) return 0
+    let fee = selectedPolicy.monthlyPrice * form.months
+    if (form.months >= 12) fee *= 0.85
+    else if (form.months >= 6) fee *= 0.9
+    else if (form.months >= 3) fee *= 0.95
+    return fee
+  }, [selectedPolicy, form.months])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -160,7 +176,12 @@ export default function Membership() {
         plateNumber: confirmModal.licensePlate.toUpperCase(),
         vehicleType: confirmModal.vehicleType,
         planId: confirmModal.policyId,
-        months: confirmModal.months
+        vehicleType: confirmModal.vehicleType,
+        planId: confirmModal.policyId,
+        months: confirmModal.months,
+        vehicleBrand: confirmModal.vehicleBrand,
+        vehicleColor: confirmModal.vehicleColor,
+        performedBy: user?.username || 'staff'
       })
 
       const payment = res.data?.payment || res.data?.Payment
@@ -186,15 +207,56 @@ export default function Membership() {
   }
 
   const filteredTickets = useMemo(() => {
+    let result = tickets
+    
+    // Tab Filtering
+    if (activeTab === 'ACTIVE') {
+        // Show Active, PendingPayment, AND PendingCancellation.
+        // Hide Cancelled or Expired (Expired go to Attention tab, but maybe show here too if not cancelled? User focused on PendingCancellation)
+        // Let's rely on exclusion: Show anything NOT Cancelled and NOT Expired (unless Active status override?)
+        
+        // Revised logic based on user request:
+        // "vé hiện trạng thái đang chờ huỷ ở tab quản lý vé tháng cho nhân viên xem" -> Show PendingCancellation in ACTIVE tab.
+        // "huỷ xong thì bên staff sẽ không còn thấy nữa" -> Hide Cancelled.
+        
+        result = result.filter(t => {
+            const s = (t.status || '').toLowerCase()
+            const isPendingCancel = s === 'pendingcancellation'
+            const isPendingPayment = s === 'pendingpayment'
+            const isCancelled = s === 'cancelled'
+            
+            // Show Active, Pending Cancellation, AND Pending Payment
+            return (t.isActive || isPendingCancel || isPendingPayment) && !isCancelled
+        })
+    } else if (activeTab === 'ATTENTION') {
+        const isAdmin = user?.role === 'ADMIN'
+        result = result.filter(t => {
+            const s = (t.status || '').toLowerCase()
+            const isPendingCancel = s === 'pendingcancellation'
+            const isExpired = new Date(t.endDate) < new Date()
+            const isCancelled = s === 'cancelled'
+
+            // Admin: Only see PendingCancellation (Requests to approve)
+            if (isAdmin) {
+                return isPendingCancel && !isCancelled
+            }
+            // Staff: See PendingCancellation (Tracking) AND Expired (To take action)
+            return (isPendingCancel || isExpired) && !isCancelled
+        })
+    } else if (activeTab === 'CANCELLED') {
+        result = result.filter(t => (t.status || '').toLowerCase() === 'cancelled')
+    }
+
     const q = search.trim().toUpperCase()
-    if (!q) return tickets
-    return tickets.filter(t =>
+    if (!q) return result
+    
+    return result.filter(t =>
       (t.licensePlate || '').toUpperCase().includes(q) ||
       (t.ticketId || '').toUpperCase().includes(q) ||
       (t.phone || '').toUpperCase().includes(q) ||
       (t.ownerName || '').toUpperCase().includes(q)
     )
-  }, [search, tickets])
+  }, [search, tickets, activeTab])
 
   const handleCancel = async (ticketId) => {
     const note = window.prompt('Lý do hủy (không bắt buộc):')
@@ -480,13 +542,19 @@ export default function Membership() {
                  </div>
               </div>
 
-              <div className="bg-blue-50 p-3 rounded-lg flex justify-between items-center">
-                 <div>
-                    <div className="text-xs text-blue-600 mb-1">Xe đăng ký</div>
-                    <div className="font-bold text-blue-800">{detailModal.licensePlate}</div>
+              <div className="bg-blue-50 p-3 rounded-lg">
+                 <div className="flex justify-between items-center mb-2">
+                     <div>
+                        <div className="text-xs text-blue-600 mb-1">Xe đăng ký</div>
+                        <div className="font-bold text-blue-800">{detailModal.licensePlate}</div>
+                     </div>
+                     <div className="text-xs font-mono bg-white px-2 py-1 rounded text-blue-600 border border-blue-100">
+                        {detailModal.vehicleType}
+                     </div>
                  </div>
-                 <div className="text-xs font-mono bg-white px-2 py-1 rounded text-blue-600 border border-blue-100">
-                    {detailModal.vehicleType}
+                 <div className="text-xs text-gray-600 flex gap-4">
+                     <span>Hãng: <span className="font-semibold">{detailModal.vehicleBrand || '---'}</span></span>
+                     <span>Màu: <span className="font-semibold">{detailModal.vehicleColor || '---'}</span></span>
                  </div>
               </div>
            </div>
@@ -579,6 +647,29 @@ export default function Membership() {
                 <option value="BICYCLE">🚲 Xe đạp</option>
               </select>
             </div>
+            
+            <div className="grid grid-cols-2 gap-3">
+                 <div>
+                   <label className="block text-sm font-medium text-gray-600 mb-1">Hãng xe</label>
+                   <input
+                     type="text"
+                     className="w-full bg-gray-50 rounded-lg px-3 py-2 text-sm outline-none"
+                     placeholder="Toyota, Honda..."
+                     value={form.vehicleBrand}
+                     onChange={(e) => setForm({ ...form, vehicleBrand: e.target.value })}
+                   />
+                 </div>
+                 <div>
+                   <label className="block text-sm font-medium text-gray-600 mb-1">Màu xe</label>
+                   <input
+                     type="text"
+                     className="w-full bg-gray-50 rounded-lg px-3 py-2 text-sm outline-none"
+                     placeholder="Đen, Trắng..."
+                     value={form.vehicleColor}
+                     onChange={(e) => setForm({ ...form, vehicleColor: e.target.value })}
+                   />
+                 </div>
+            </div>
             <div>
               <label className="block text-sm font-medium text-gray-600 mb-2">Gói đăng ký</label>
               <div className="grid grid-cols-2 gap-2">
@@ -632,28 +723,56 @@ export default function Membership() {
       {/* Active Tickets */}
       <div className="lg:col-span-2">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
                 <CheckCircle className="text-green-600" size={24} />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-gray-800">Vé tháng đang hoạt động</h2>
-                <p className="text-xs text-gray-500">{tickets.filter(t => t.isActive).length} vé còn hiệu lực</p>
+                <h2 className="text-lg font-bold text-gray-800">Quản lý vé tháng</h2>
+                <div className="flex gap-2 mt-1">
+                    <button 
+                        onClick={() => setActiveTab('ACTIVE')}
+                        className={`text-xs font-bold px-3 py-1 rounded-full transition ${activeTab === 'ACTIVE' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+                    >
+                        Đang hoạt động
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('ATTENTION')}
+                        className={`text-xs font-bold px-3 py-1 rounded-full transition flex items-center gap-1 ${activeTab === 'ATTENTION' ? 'bg-amber-500 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+                    >
+                        Cần xử lý <span className="ml-1 bg-white text-amber-600 px-1.5 rounded-full text-[10px]">{tickets.filter(t => {
+                            const s = (t.status || '').toLowerCase()
+                            const isPendingCancel = s === 'pendingcancellation'
+                            const isExpired = new Date(t.endDate) < new Date()
+                            const isCancelled = s === 'cancelled'
+                            const isAdmin = user?.role === 'ADMIN'
+                            
+                            if (isAdmin) return isPendingCancel && !isCancelled
+                            return (isPendingCancel || isExpired) && !isCancelled
+                        }).length}</span>
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('CANCELLED')}
+                        className={`text-xs font-bold px-3 py-1 rounded-full transition flex items-center gap-1 ${activeTab === 'CANCELLED' ? 'bg-gray-600 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+                    >
+                        Đã hủy
+                    </button>
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="relative">
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <div className="relative flex-1 md:flex-none">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-8 pr-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:border-indigo-200 outline-none"
+                  className="pl-8 pr-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:border-indigo-200 outline-none w-full md:w-64"
                   placeholder="Tìm mã vé / biển số"
                 />
               </div>
-              {loading && <span className="text-xs text-gray-400">Đang tải...</span>}
+              {loading && <span className="text-xs text-gray-400 whitespace-nowrap">Loading...</span>}
             </div>
           </div>
 
@@ -663,63 +782,109 @@ export default function Membership() {
               <p>Chưa có vé tháng nào được đăng ký</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 h-[600px] overflow-y-auto pr-2">
-              {filteredTickets.map((t) => (
+             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 h-[600px] overflow-y-auto pr-2">
+              {filteredTickets.map((t) => {
+                  const s = (t.status || '').toLowerCase()
+                  const isExpired = new Date(t.expiryDate) < new Date()
+                  // Logic: Active if Status is Active (or PendingPayment but not expired?) 
+                  // Let's rely on DB Status 'Active' mostly, but also check Expiry for UI warning.
+                  // Actually, user wants to see "Active" buttons for Staff ONLY if NOT Expired? 
+                  // User said: "If expired, wait for admin confirmation".
+                  
+                  // Let's refine:
+                  // Show "Request Cancel" for Staff always.
+                  // Show "Cancel" for Admin.
+                  const isAdmin = user?.role === 'ADMIN'
+                  const isPendingCancel = s === 'pendingcancellation'
+                  const isActive = s === 'active' || s === 'pendingpayment' // Assuming these are "live"
+                  
+                  return (
                 <div key={t.ticketId} className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
                    <div>
                       <div className="flex justify-between items-start mb-3">
                          <span className="font-mono text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded">{t.ticketId}</span>
                          {(() => {
-                            const s = (t.status || '').toString().toLowerCase()
                             const pay = (t.paymentStatus || '').toString().toLowerCase()
                             const cls = pay === 'completed' || s === 'active'
                               ? 'bg-green-100 text-green-700'
-                              : pay === 'failed'
-                                ? 'bg-red-100 text-red-700'
-                                : pay === 'pendingexternal'
-                                  ? 'bg-amber-100 text-amber-700'
-                                  : 'bg-gray-100 text-gray-500'
-                            const label = pay === 'pendingexternal' ? 'Chờ thanh toán' : pay === 'failed' ? 'Lỗi thanh toán' : t.status
-                            return <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${cls}`}>{label}</span>
+                              : isPendingCancel
+                                ? 'bg-amber-100 text-amber-700'
+                                : pay === 'failed'
+                                  ? 'bg-red-100 text-red-700'
+                                  : pay === 'pendingexternal'
+                                    ? 'bg-amber-100 text-amber-700'
+                                    : 'bg-gray-100 text-gray-500'
+                            
+                            const label = isPendingCancel 
+                                ? 'Chờ hủy' 
+                                : isExpired ? 'Hết hạn' 
+                                : pay === 'pendingexternal' ? 'Chờ thanh toán' : pay === 'failed' ? 'Lỗi thanh toán' : t.status
+                            
+                            // Override color for Expired if it was green
+                            const finalCls = (isExpired && !isPendingCancel) ? 'bg-orange-100 text-orange-700' : cls
+                            
+                            return <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${finalCls}`}>{label}</span>
                          })()}
                       </div>
-                      
-                      <div className="text-center py-2">
-                         <div className="text-2xl font-bold text-gray-800 tracking-tight">{t.licensePlate || '---'}</div>
-                         <div className="text-sm font-semibold text-gray-800 truncate mt-1">{t.ownerName}</div>
-                         <div className="text-xs text-gray-500 flex items-center justify-center gap-1 mt-0.5">
-                             <Phone size={10} /> {t.phone || '---'}
-                         </div>
+                      <div className="flex justify-between items-start mb-2">
+                            <h3 className="font-bold text-gray-800">{t.ownerName || 'Khách vãng lai'}</h3>
+                            <div className="text-right">
+                                <div className="font-mono font-bold text-indigo-600">{t.licensePlate}</div>
+                            </div>
                       </div>
-
-                      <div className="mt-2 space-y-2 text-xs text-gray-600 bg-gray-50 p-2 rounded-lg">
-                          <div className="flex justify-between">
-                             <span>Hạn dùng:</span>
-                             <span className="font-medium">{formatDate(t.endDate)}</span>
+                      
+                      <div className="space-y-1 mb-4 text-xs text-gray-500">
+                          <div className="flex items-center gap-2">
+                             <Phone size={12} /> {t.phone}
                           </div>
-                          <div className="flex justify-between items-center">
-                             <span>Còn lại:</span>
-                             {t.daysLeft != null ? (
-                                <span className={`font-bold ${t.daysLeft <= 7 ? 'text-amber-600' : 'text-emerald-600'}`}>
-                                   {t.daysLeft} ngày
-                                </span>
-                             ) : <span>--</span>}
+                          <div className="flex items-center gap-2">
+                             <CreditCard size={12} /> {t.vehicleType}
                           </div>
+                          <div className="flex items-center gap-2">
+                             <Calendar size={12} /> 
+                             <span className={isExpired ? 'text-red-500 font-bold' : ''}>
+                                {new Date(t.startDate).toLocaleDateString('vi-VN')} - {new Date(t.endDate).toLocaleDateString('vi-VN')}
+                             </span>
+                          </div>
+                          {t.vehicleBrand && (
+                              <div className="flex items-center gap-2">
+                                <Car size={12} /> {t.vehicleBrand} - {t.vehicleColor}
+                              </div>
+                          )}
                       </div>
                    </div>
 
-                   <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-2 gap-2">
-                      {t.isActive ? (
+                   <div className="grid grid-cols-2 gap-2 mt-2 pt-3 border-t border-gray-50">
+                      <button onClick={() => setDetailModal(t)} className="col-span-2 text-xs text-gray-500 hover:text-indigo-600 mb-2 underline">
+                         Xem chi tiết
+                      </button>
+                      
+                      {/* ACTION BUTTONS LOGIC */}
+                      {(!isPendingCancel && s !== 'cancelled') ? (
                          <>
                             <button onClick={() => handleRenew(t)} className="flex items-center justify-center gap-1 text-xs font-semibold py-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition">
                                <CalendarPlus size={14} /> Gia hạn
                             </button>
-                            <button onClick={() => handleCancel(t.ticketId)} className="flex items-center justify-center gap-1 text-xs font-semibold py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition">
-                               <XCircle size={14} /> Hủy vé
+                            
+                            <button 
+                                onClick={() => {
+                                    if (confirm(`Bạn có chắc muốn ${isAdmin ? 'hủy' : 'gửi yêu cầu hủy'} vé này không?`)) {
+                                        handleCancel(t.ticketId)
+                                    }
+                                }} 
+                                className={`flex items-center justify-center gap-1 text-xs font-semibold py-2 rounded-lg transition ${isAdmin ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-orange-50 text-orange-600 hover:bg-orange-100'}`}
+                            >
+                               <XCircle size={14} /> {isAdmin ? "Hủy vé" : "Yêu cầu hủy"}
                             </button>
                          </>
+                      ) : (isPendingCancel && isAdmin) ? (
+                            <button onClick={() => handleCancel(t.ticketId)} className="col-span-2 flex items-center justify-center gap-1 text-xs font-semibold py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition">
+                               <CheckCircle size={14} /> Duyệt hủy vé
+                            </button>
                       ) : (
-                         <div className="col-span-2 text-center text-xs text-gray-400 italic py-2">Vé không khả dụng</div>
+                         <div className="col-span-2 text-center text-xs text-gray-400 italic py-2">
+                            {s === 'cancelled' ? 'Đã hủy' : 'Chờ Admin duyệt'}
+                         </div>
                       )}
                       
                       {(t.paymentStatus?.toLowerCase() === 'pendingexternal' || t.paymentStatus?.toLowerCase() === 'failed') && (
@@ -736,7 +901,7 @@ export default function Membership() {
                       </button>
                    </div>
                 </div>
-              ))}
+              )})}
             </div>
           )}
         </div>

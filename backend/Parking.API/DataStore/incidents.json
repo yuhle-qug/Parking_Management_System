@@ -67,7 +67,7 @@
   },
   {
     "IncidentId": "INC-144650",
-    "ReportedDate": "2026-01-11T17:23:37.690Z",
+    "ReportedDate": "2026-01-11T17:23:37.69Z",
     "Type": null,
     "Title": "Lost Ticket",
     "Description": "Lost Ticket detected at gate.",
@@ -155,7 +155,7 @@
   },
   {
     "IncidentId": "INC-05198A",
-    "ReportedDate": "2026-01-04T22:02:11.480Z",
+    "ReportedDate": "2026-01-04T22:02:11.48Z",
     "Type": null,
     "Title": "Lost Ticket",
     "Description": "Lost Ticket detected at gate.",
@@ -166,7 +166,7 @@
   },
   {
     "IncidentId": "INC-35DC3B",
-    "ReportedDate": "2026-01-04T17:45:32.680Z",
+    "ReportedDate": "2026-01-04T17:45:32.68Z",
     "Type": null,
     "Title": "Payment Error",
     "Description": "Payment Error detected at gate.",
@@ -221,7 +221,7 @@
   },
   {
     "IncidentId": "INC-274F41",
-    "ReportedDate": "2026-01-02T23:19:12.110Z",
+    "ReportedDate": "2026-01-02T23:19:12.11Z",
     "Type": null,
     "Title": "Barrier Fail",
     "Description": "Barrier Fail detected at gate.",
@@ -273,5 +273,16 @@
     "ReportedBy": "System",
     "ReferenceId": null,
     "ResolutionNotes": "Fixed by restarting device"
+  },
+  {
+    "IncidentId": "INC-7AD87B1F",
+    "ReportedDate": "2026-01-16T19:35:03.96972+07:00",
+    "Type": null,
+    "Title": "M\u1EA5t v\u00E9 - 61A-90174",
+    "Description": "Gate GATE-OUT-CAR-02, lo\u1EA1i xe CAR, ph\u00ED c\u01A1 b\u1EA3n 96000, ph\u1EE5 thu m\u1EA5t v\u00E9 200000, t\u1ED5ng 296000. ",
+    "Status": "Open",
+    "ReportedBy": "GATE-OUT-CAR-02",
+    "ReferenceId": "18DC48B0",
+    "ResolutionNotes": null
   }
 ]

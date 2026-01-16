@@ -14,6 +14,9 @@ using Parking.Infrastructure.Templates;
 using Parking.Infrastructure.Repositories;
 using Parking.Core.Factories; // Add this
 using Parking.Services.Services;
+using Parking.Services.Strategies;
+using Parking.Services.Factories;
+using Parking.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -110,6 +113,11 @@ builder.Services.AddSingleton<ITicketTemplateService, TicketTemplateService>();
 builder.Services.AddScoped<IAuditService, AuditService>();
 builder.Services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+
+// Report System (Strategy Pattern)
+builder.Services.AddScoped<IReportFactory, ReportFactory>();
+builder.Services.AddScoped<RevenueReportStrategy>();
+builder.Services.AddScoped<TrafficReportStrategy>();
 
 // 3. Infrastructure / External (Device, Payment)
 builder.Services.AddSingleton<IGateDevice, MockGateDevice>(); // Singleton vì thiết bị là duy nhất

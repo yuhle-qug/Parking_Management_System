@@ -1,0 +1,84 @@
+@startuml
+actor Admin
+participant "Admin Page\n(Frontend)" as UI
+participant "PricePolicyController" as Controller
+participant "PricePolicyRepository" as Repo
+participant "ParkingZoneRepository" as ZoneRepo
+
+== Xem danh sách bảng giá ==
+Admin -> UI: Truy cập tab Bảng giá
+activate UI
+UI -> Controller: GET /api/PricePolicy
+activate Controller
+Controller -> Repo: GetAllAsync()
+activate Repo
+Repo --> Controller: List<PricePolicy>
+deactivate Repo
+Controller --> UI: 200 OK (JSON)
+deactivate Controller
+UI --> Admin: Hiển thị danh sách
+deactivate UI
+
+== Tạo bảng giá mới ==
+Admin -> UI: Nhập thông tin & Submit
+activate UI
+UI -> Controller: POST /api/PricePolicy
+activate Controller
+
+Controller -> Controller: Validate (PolicyId, Name, Price > 0)
+alt Dữ liệu không hợp lệ
+    Controller --> UI: 400 BadRequest
+else Dữ liệu hợp lệ
+    Controller -> Repo: GetPolicyAsync(policyId)
+    activate Repo
+    Repo --> Controller: existing (null/Policy)
+    deactivate Repo
+
+    alt PolicyId đã tồn tại
+        Controller --> UI: 409 Conflict
+    else PolicyId mới
+        Controller -> Repo: AddAsync(policy)
+        activate Repo
+        Repo --> Controller: void
+        deactivate Repo
+        Controller --> UI: 200 OK (Created Policy)
+    end
+end
+deactivate Controller
+UI --> Admin: Cập nhật danh sách
+deactivate UI
+
+== Xóa bảng giá ==
+Admin -> UI: Click Xóa
+activate UI
+UI -> Controller: DELETE /api/PricePolicy/{id}
+activate Controller
+Controller -> Repo: GetPolicyAsync(id)
+activate Repo
+Repo --> Controller: policy
+deactivate Repo
+
+alt Không tìm thấy
+    Controller --> UI: 404 NotFound
+else Tìm thấy
+    Controller -> ZoneRepo: GetAllAsync()
+    activate ZoneRepo
+    ZoneRepo --> Controller: listZones
+    deactivate ZoneRepo
+    
+    Controller -> Controller: Check if InUse (Is any zone using this PolicyId?)
+    
+    alt Đang được sử dụng
+        Controller --> UI: 400 BadRequest ("Policy đang được sử dụng")
+    else Không sử dụng
+        Controller -> Repo: DeleteAsync(id)
+        activate Repo
+        Repo --> Controller: void
+        deactivate Repo
+        Controller --> UI: 200 OK
+    end
+end
+deactivate Controller
+UI --> Admin: Cập nhật danh sách
+deactivate UI
+@enduml

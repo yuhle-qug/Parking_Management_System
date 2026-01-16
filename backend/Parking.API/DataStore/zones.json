@@ -6,7 +6,8 @@
     "ElectricOnly": false,
     "Capacity": 50,
     "GateIds": [
-      "GATE-IN-CAR-01"
+      "GATE-IN-CAR-01",
+      "GATE-IN-CAR-02"
     ],
     "PricePolicyId": "P-CAR",
     "ActiveSessions": []
@@ -18,7 +19,9 @@
     "ElectricOnly": false,
     "Capacity": 100,
     "GateIds": [
-      "GATE-IN-MOTO-01"
+      "GATE-IN-MOTO-01",
+      "GATE-IN-MOTO-02", 
+      "GATE-IN-MOTO-03"
     ],
     "PricePolicyId": "P-MOTO",
     "ActiveSessions": []
@@ -30,7 +33,9 @@
     "ElectricOnly": false,
     "Capacity": 80,
     "GateIds": [
-      "GATE-IN-BIKE-01"
+      "GATE-IN-MOTO-01",
+      "GATE-IN-MOTO-02",
+      "GATE-IN-MOTO-03"
     ],
     "PricePolicyId": "P-BIKE",
     "ActiveSessions": []
@@ -42,7 +47,8 @@
     "ElectricOnly": true,
     "Capacity": 20,
     "GateIds": [
-      "GATE-IN-CAR-01"
+      "GATE-IN-CAR-01",
+      "GATE-IN-CAR-02"
     ],
     "PricePolicyId": "P-ELEC",
     "ActiveSessions": []
@@ -54,7 +60,9 @@
     "ElectricOnly": true,
     "Capacity": 40,
     "GateIds": [
-      "GATE-IN-MOTO-01"
+      "GATE-IN-MOTO-01",
+      "GATE-IN-MOTO-02",
+      "GATE-IN-MOTO-03"
     ],
     "PricePolicyId": "P-ELEC-MOTO",
     "ActiveSessions": []

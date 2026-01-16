@@ -9,10 +9,12 @@ namespace Parking.API.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
+        private readonly IParkingService _parkingService;
 
-        public PaymentController(IPaymentService paymentService)
+        public PaymentController(IPaymentService paymentService, IParkingService parkingService)
         {
             _paymentService = paymentService;
+            _parkingService = parkingService;
         }
 
         [HttpPost]
@@ -56,7 +58,7 @@ namespace Parking.API.Controllers
             try
             {
                 var success = string.Equals(request.Status, "SUCCESS", StringComparison.OrdinalIgnoreCase);
-                var result = await _paymentService.ConfirmExternalPaymentAsync(request.SessionId, request.TransactionCode, success, request.ProviderLog, request.ExitGateId);
+                var result = await _parkingService.ConfirmPaymentAsync(request.SessionId, request.TransactionCode, success, request.ProviderLog, request.ExitGateId);
 
                 return Ok(new
                 {

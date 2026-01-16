@@ -38,30 +38,25 @@ namespace Parking.API.Controllers
                 var customer = new Customer { Name = request.Name, Phone = request.Phone, IdentityNumber = request.IdentityNumber };
                 var vehicle = CreateVehicle(request.VehicleType, request.PlateNumber);
 
-                var ticket = await _membershipService.RegisterMonthlyTicketAsync(customer, vehicle, request.PlanId, request.Months);
+                string performedBy = User.Identity?.Name ?? "staff";
+                var ticket = await _membershipService.RegisterMonthlyTicketAsync(customer, vehicle, request.PlanId, request.Months, request.VehicleBrand, request.VehicleColor, performedBy);
 
                 var orderInfo = $"Monthly ticket {ticket.TicketId} - Plate {vehicle.LicensePlate}";
                 var gatewayResult = await _paymentGateway.RequestPaymentAsync(ticket.MonthlyFee, orderInfo);
 
                 if (gatewayResult == null || !gatewayResult.Accepted)
                 {
-                    ticket.PaymentStatus = "Failed";
-                    ticket.Status = "PaymentFailed";
-                    ticket.ProviderLog = gatewayResult?.Error ?? "Gateway từ chối tạo QR";
-                    ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
+                    ticket.SetPaymentFailed(gatewayResult?.Error ?? "Gateway từ chối tạo QR");
                     await _monthlyTicketRepo.UpdateAsync(ticket);
                     return BadRequest(new { Error = ticket.ProviderLog });
                 }
 
-                ticket.TransactionCode = string.IsNullOrWhiteSpace(gatewayResult.TransactionCode)
-                    ? $"MT-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}"
-                    : gatewayResult.TransactionCode;
-                ticket.PaymentStatus = "PendingExternal";
-                ticket.QrContent = string.IsNullOrWhiteSpace(gatewayResult.PaymentUrl)
-                    ? gatewayResult.QrContent
-                    : gatewayResult.PaymentUrl;
-                ticket.ProviderLog = gatewayResult.ProviderMessage;
-                ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
+                ticket.SetPendingPayment(
+                    gatewayResult.TransactionCode,
+                    string.IsNullOrWhiteSpace(gatewayResult.PaymentUrl) ? gatewayResult.QrContent : gatewayResult.PaymentUrl,
+                    gatewayResult.ProviderMessage
+                );
+                // ticket.QrContent and ProviderLog are already set in SetPendingPayment
 
                 await _monthlyTicketRepo.UpdateAsync(ticket);
 
@@ -91,30 +86,25 @@ namespace Parking.API.Controllers
             {
                 if (request.Months <= 0) request.Months = 1;
 
-                var ticket = await _membershipService.ExtendMonthlyTicketAsync(ticketId, request.Months, request.PerformedBy ?? "staff", request.Note);
+                string performedBy = User.Identity?.Name ?? request.PerformedBy ?? "staff";
+                var ticket = await _membershipService.ExtendMonthlyTicketAsync(ticketId, request.Months, performedBy, request.Note);
 
                 var orderInfo = $"Extend monthly ticket {ticket.TicketId} - Plate {ticket.VehiclePlate}";
                 var gatewayResult = await _paymentGateway.RequestPaymentAsync(ticket.MonthlyFee, orderInfo);
 
                 if (gatewayResult == null || !gatewayResult.Accepted)
                 {
-                    ticket.PaymentStatus = "Failed";
-                    ticket.Status = "PaymentFailed";
-                    ticket.ProviderLog = gatewayResult?.Error ?? "Gateway từ chối tạo QR";
-                    ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
+                    ticket.SetPaymentFailed(gatewayResult?.Error ?? "Gateway từ chối tạo QR");
                     await _monthlyTicketRepo.UpdateAsync(ticket);
                     return BadRequest(new { Error = ticket.ProviderLog });
                 }
 
-                ticket.TransactionCode = string.IsNullOrWhiteSpace(gatewayResult.TransactionCode)
-                    ? $"MT-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}"
-                    : gatewayResult.TransactionCode;
-                ticket.PaymentStatus = "PendingExternal";
-                ticket.QrContent = string.IsNullOrWhiteSpace(gatewayResult.PaymentUrl)
-                    ? gatewayResult.QrContent
-                    : gatewayResult.PaymentUrl;
-                ticket.ProviderLog = gatewayResult.ProviderMessage;
-                ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
+                ticket.SetPendingPayment(
+                    gatewayResult.TransactionCode,
+                    string.IsNullOrWhiteSpace(gatewayResult.PaymentUrl) ? gatewayResult.QrContent : gatewayResult.PaymentUrl,
+                    gatewayResult.ProviderMessage
+                );
+                // ticket.QrContent and ProviderLog are already set in SetPendingPayment
 
                 await _monthlyTicketRepo.UpdateAsync(ticket);
 
@@ -148,17 +138,16 @@ namespace Parking.API.Controllers
 
             var success = string.Equals(request.Status, "SUCCESS", StringComparison.OrdinalIgnoreCase);
 
-            ticket.Status = success ? "Active" : "PaymentFailed";
-            ticket.PaymentStatus = success ? "Completed" : "Failed";
-            ticket.TransactionCode = string.IsNullOrWhiteSpace(request.TransactionCode)
-                ? ticket.TransactionCode
-                : request.TransactionCode;
-            ticket.ProviderLog = request.ProviderLog ?? ticket.ProviderLog;
-            ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
-
-            if (ticket.Status == "Active" && ticket.StartDate > DateTime.Now)
+            if (success)
             {
-                ticket.StartDate = DateTime.Now;
+                ticket.TransactionCode = string.IsNullOrWhiteSpace(request.TransactionCode) 
+                    ? ticket.TransactionCode 
+                    : request.TransactionCode;
+                ticket.Activate();
+            }
+            else
+            {
+                ticket.SetPaymentFailed(request.ProviderLog ?? "User confirm failed");
             }
 
             await _monthlyTicketRepo.UpdateAsync(ticket);
@@ -184,17 +173,16 @@ namespace Parking.API.Controllers
 
             var success = string.Equals(request.Status, "SUCCESS", StringComparison.OrdinalIgnoreCase);
 
-            ticket.Status = success ? "Active" : "PaymentFailed";
-            ticket.PaymentStatus = success ? "Completed" : "Failed";
-            ticket.TransactionCode = string.IsNullOrWhiteSpace(request.TransactionCode)
-                ? ticket.TransactionCode
-                : request.TransactionCode;
-            ticket.ProviderLog = request.ProviderLog ?? ticket.ProviderLog;
-            ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
-
-            if (ticket.Status == "Active" && ticket.StartDate > DateTime.Now)
+            if (success)
             {
-                ticket.StartDate = DateTime.Now;
+                ticket.TransactionCode = string.IsNullOrWhiteSpace(request.TransactionCode) 
+                    ? ticket.TransactionCode 
+                    : request.TransactionCode;
+                ticket.Activate();
+            }
+            else
+            {
+                ticket.SetPaymentFailed(request.ProviderLog ?? "Callback failed");
             }
 
             await _monthlyTicketRepo.UpdateAsync(ticket);
@@ -218,8 +206,13 @@ namespace Parking.API.Controllers
         {
             try
             {
-                var ticket = await _membershipService.CancelMonthlyTicketAsync(ticketId, request.PerformedBy ?? "staff", request.Note);
-                return Ok(new { Message = "Đã hủy vé tháng", Ticket = ticket });
+                bool isAdmin = User.IsInRole("ADMIN");
+                string performedBy = User.Identity?.Name ?? request.PerformedBy ?? "staff";
+
+                var ticket = await _membershipService.CancelMonthlyTicketAsync(ticketId, performedBy, isAdmin, request.Note);
+                
+                string msg = isAdmin ? "Đã hủy vé tháng" : "Đã gửi yêu cầu hủy (chờ Admin duyệt)";
+                return Ok(new { Message = msg, Ticket = ticket });
             }
             catch (Exception ex)
             {
@@ -303,6 +296,25 @@ namespace Parking.API.Controllers
                 _ => new Car(p)
             };
         }
+
+        [HttpPost("tickets/{ticketId}/approve-cancel")]
+        // [Authorize(Roles = "ADMIN")] // Uncomment when Auth is fully active
+        public async Task<IActionResult> ApproveCancelTicket(string ticketId)
+        {
+            try
+            {
+                // Simulation: Check if user is admin (In real app, rely on [Authorize])
+                // if (!User.IsInRole("ADMIN")) return Forbid();
+                
+                string adminId = User.Identity?.Name ?? "admin";
+                var ticket = await _membershipService.ApproveCancellationAsync(ticketId, adminId);
+                return Ok(new { Message = "Đã duyệt hủy vé tháng", Ticket = ticket });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+        }
     }
 
     public class RegisterRequest
@@ -314,6 +326,8 @@ namespace Parking.API.Controllers
         public string VehicleType { get; set; }
         public string PlanId { get; set; }
         public int Months { get; set; }
+        public string? VehicleBrand { get; set; }
+        public string? VehicleColor { get; set; }
     }
 
     public class ConfirmMembershipPaymentRequest

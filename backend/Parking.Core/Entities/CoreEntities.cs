@@ -53,6 +53,7 @@ namespace Parking.Core.Entities
         public int Attempts { get; set; }
         public string? QrContent { get; set; }
         public string? ProviderLog { get; set; }
+        public string? Message { get; set; }
     }
 
     // Phiên gửi xe (Quan trọng nhất)

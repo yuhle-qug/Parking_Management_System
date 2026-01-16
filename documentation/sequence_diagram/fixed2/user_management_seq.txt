@@ -1,0 +1,45 @@
+@startuml
+actor Admin
+participant "Admin Page\n(Frontend)" as UI
+participant "UserAccountController" as Controller
+participant "UserRepository" as Repo
+participant "BcryptPasswordHasher" as Hasher
+participant "AuditService" as Audit
+
+Admin -> UI: Nhập thông tin User (Username, Password, Role)
+activate UI
+UI -> Controller: POST /api/UserAccount/create
+activate Controller
+
+Controller -> Repo: FindByUsernameAsync(request.Username)
+activate Repo
+Repo --> Controller: existingUser (null/User)
+deactivate Repo
+
+alt Username đã tồn tại
+    Controller --> UI: 400 BadRequest ("Username đã tồn tại")
+    UI --> Admin: Hiển thị lỗi
+else Username hợp lệ
+    Controller -> Controller: Init new UserAccount
+    Controller -> Hasher: HashPassword(request.Password)
+    activate Hasher
+    Hasher --> Controller: passwordHash
+    deactivate Hasher
+
+    Controller -> Repo: AddAsync(newUser)
+    activate Repo
+    Repo --> Controller: void
+    deactivate Repo
+
+    Controller -> Audit: LogAsync("CreateUser", "Created user...")
+    activate Audit
+    Audit --> Controller: void
+    deactivate Audit
+
+    Controller --> UI: 200 OK (UserId, Role)
+    deactivate Controller
+    UI --> Admin: Thông báo thành công
+end
+
+deactivate UI
+@enduml

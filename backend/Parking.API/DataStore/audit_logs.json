@@ -898,5 +898,572 @@
     "ReferenceId": "USER001",
     "Details": "Login success",
     "Success": true
+  },
+  {
+    "LogId": "1f5da983-89b9-4ffc-b8a2-f77bb0fd5283",
+    "Timestamp": "2026-01-16T19:04:24.5923284+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "469258cd-bdb2-433a-b901-dfd28e185620",
+    "Timestamp": "2026-01-16T19:04:29.4770384+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "cfa19759-27d5-4521-a785-22ab9d27eaea",
+    "Timestamp": "2026-01-16T19:04:34.4271333+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "b7950c4a-07ca-43a1-a865-80b8327c64bf",
+    "Timestamp": "2026-01-16T19:04:43.3302305+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "296d2b93-7f56-4326-a92f-7ced4d9e4b87",
+    "Timestamp": "2026-01-16T19:04:56.0252234+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "c7f9ee7a-577e-4992-bd44-a155052ba51e",
+    "Timestamp": "2026-01-16T19:05:00.610226+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "0977faaf-c27a-4c7c-91bf-b005b292d05c",
+    "Timestamp": "2026-01-16T19:05:09.2257481+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "48af0233-934e-4e5c-843d-58ca3661b246",
+    "Timestamp": "2026-01-16T19:05:14.195935+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "f19f2422-9d50-4335-a1e2-26a9312a4662",
+    "Timestamp": "2026-01-16T19:05:46.8474492+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "a92590a0-289b-4cde-ba51-927ddc39129c",
+    "Timestamp": "2026-01-16T19:05:53.413784+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "2a2defcd-c198-46c6-bc7e-e93de897cee3",
+    "Timestamp": "2026-01-16T19:06:48.4262328+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "afe74ed5-6461-402d-8b38-f0d784df3d33",
+    "Timestamp": "2026-01-16T19:11:02.6963918+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "8c708030-87fb-4d2d-8607-acfd814fbb0e",
+    "Timestamp": "2026-01-16T19:11:06.6254554+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "9f836efa-0604-412b-b1c0-d22092a09724",
+    "Timestamp": "2026-01-16T19:11:13.1147783+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "5d41e004-6b67-4ddd-aa3b-8166efb93633",
+    "Timestamp": "2026-01-16T19:11:20.2780689+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "57c0db84-7632-4303-9612-bbf3e7ce25ca",
+    "Timestamp": "2026-01-16T19:11:31.4807027+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "8301b672-b028-4a5f-8a33-74a92cd0fe5b",
+    "Timestamp": "2026-01-16T19:11:41.5598405+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "6fdc0407-cb3e-4dad-a487-8da5210ee167",
+    "Timestamp": "2026-01-16T19:14:26.7932416+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "c025a61a-2fa5-458e-b816-e80d3e728b70",
+    "Timestamp": "2026-01-16T19:14:31.9256229+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "c160b983-c22b-4d3f-8be7-b20811885288",
+    "Timestamp": "2026-01-16T19:14:37.0250601+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "9e6307fd-b56c-4df8-abd6-c63eb2e9124b",
+    "Timestamp": "2026-01-16T19:14:44.3462829+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "01c7b894-ad84-4ab8-ae5c-eb548ac71b88",
+    "Timestamp": "2026-01-16T19:29:47.68736+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "8ac761c9-1b5e-499c-be8b-158a3aea2812",
+    "Timestamp": "2026-01-16T19:32:20.5129622+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "4ce590aa-bcf1-4f7d-9ea0-36bdefcb47fa",
+    "Timestamp": "2026-01-16T19:44:06.1876656+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "a7e3176b-d587-4f0f-b632-939e70fd5a17",
+    "Timestamp": "2026-01-16T19:44:17.8280403+07:00",
+    "Action": "CreateUser",
+    "Username": "admin",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Created user staff as ATTENDANT",
+    "Success": true
+  },
+  {
+    "LogId": "a397e159-b97b-4ebf-8435-46d2fd509cd8",
+    "Timestamp": "2026-01-16T19:44:28.4182377+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "29f2c8c8-2220-4680-9f28-f4c3e788dd89",
+    "Timestamp": "2026-01-16T21:38:16.4394603+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "44153654-8aa1-4cad-9a0b-1bc078ed167f",
+    "Timestamp": "2026-01-16T21:41:21.9260599+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "0eea51d4-953a-4ff5-868f-829251d93272",
+    "Timestamp": "2026-01-16T21:41:44.6346277+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "88126c37-5c72-49ff-b7dc-1ac3f7471e6c",
+    "Timestamp": "2026-01-16T22:30:46.624417+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "e8e06eed-3b9a-4ade-9472-2d5ed1b4e202",
+    "Timestamp": "2026-01-16T22:31:00.0816315+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "6871bdc6-7e76-4ab0-ba53-91a7f5ee412a",
+    "Timestamp": "2026-01-16T22:48:04.1230241+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "f8d7b768-8134-4287-b40b-a2f69853ece4",
+    "Timestamp": "2026-01-16T22:51:23.0979652+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "3a69ccd7-14a0-44f9-8b78-0222c91c7c2d",
+    "Timestamp": "2026-01-16T22:51:40.4302605+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "4b8e8d33-164c-4fe2-9a5e-7d0083d8c332",
+    "Timestamp": "2026-01-16T22:55:01.4671332+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "dd8dee80-8864-4deb-a6c4-f9e0f3fb6fbd",
+    "Timestamp": "2026-01-16T22:55:53.0210037+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "4174e69a-5b72-4d6b-adf7-ef83c89481d9",
+    "Timestamp": "2026-01-16T22:56:27.3695398+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "1266a422-3ef2-4fad-b27d-3ce14188f6e1",
+    "Timestamp": "2026-01-16T23:02:09.1162898+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "eb01d493-3094-4b90-bcb3-f71ba5dc2b6e",
+    "Timestamp": "2026-01-16T23:10:27.474085+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "ffd7940d-fd6d-4393-9094-09b68ca674af",
+    "Timestamp": "2026-01-16T23:51:13.2401384+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "26728c15-8548-42b2-b45a-fa5bb8a837f3",
+    "Timestamp": "2026-01-16T23:52:28.1778571+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "2e6127f0-ebb8-4a85-b960-c50e4db5717f",
+    "Timestamp": "2026-01-17T00:19:22.5022238+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "2746f3fb-2a77-4b80-b132-19ac7534986f",
+    "Timestamp": "2026-01-17T00:21:34.4159405+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "32a5d9b2-7c64-42ca-ab78-978cdedf8d31",
+    "Timestamp": "2026-01-17T00:25:47.4348024+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "001e5a79-4495-4392-b48d-c9f43d1e752c",
+    "Timestamp": "2026-01-17T00:26:59.1467195+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "789147e5-401d-44eb-a831-56c5d694dae8",
+    "Timestamp": "2026-01-17T00:27:04.5356394+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "1b06db24-9798-4f25-ac03-49832eeca2d5",
+    "Timestamp": "2026-01-17T00:27:41.3360968+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "800edc26-502d-42c6-966e-6dd82b89b0b1",
+    "Timestamp": "2026-01-17T00:35:02.7026105+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "63e2a13a-9729-42e1-a8b1-d4a0abe3fcaa",
+    "Timestamp": "2026-01-17T00:39:09.6314536+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "aec435db-e85a-4a1a-a57b-d9d3bab89136",
+    "Timestamp": "2026-01-17T00:52:46.1466383+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "82c106b1-e944-4571-b65d-f62461f6b0a6",
+    "Timestamp": "2026-01-17T00:52:57.0452965+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "75a641a6-2b98-40ca-a96f-dcd217930fff",
+    "Timestamp": "2026-01-17T00:55:49.4250527+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "e08910d0-5521-4af1-8ed6-b9e4738b2c3a",
+    "Timestamp": "2026-01-17T00:55:58.0054736+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "fe86d11d-6bfc-4bcb-be9f-33f032d8ec87",
+    "Timestamp": "2026-01-17T01:03:02.1939432+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "7c822543-064f-44a3-b460-494707011572",
+    "Timestamp": "2026-01-17T01:21:51.2449029+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "daf36d64-df35-4d69-b3e7-cd070ea1f3ff",
+    "Timestamp": "2026-01-17T01:21:57.246337+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "127b0cc3-59fa-4ce9-bbdb-5a8c3d0f02e4",
+    "Timestamp": "2026-01-17T01:32:25.5012791+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "5b5a565b-f7bf-4f3b-931a-4895d79dad64",
+    "Timestamp": "2026-01-17T01:32:30.9879414+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "d53ce085-5eee-4625-823a-5670b2ca942a",
+    "Timestamp": "2026-01-17T01:33:04.2168917+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "b67e7ebe-bafa-44db-87ee-240776159502",
+    "Timestamp": "2026-01-17T01:33:18.9248729+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "cb1b6508-4f7f-4f93-9b1d-398c2ba0bc7d",
+    "Timestamp": "2026-01-17T01:56:52.3924796+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "69d524b7-b04e-4e7c-a5fc-a0903a3fd0b9",
+    "Timestamp": "2026-01-17T02:48:14.7021025+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "USER001",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "d93768b8-1b48-4360-ac7a-f4aeabbe59db",
+    "Timestamp": "2026-01-17T02:48:26.6453966+07:00",
+    "Action": "Login",
+    "Username": "staff",
+    "ReferenceId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "Details": "Login success",
+    "Success": true
   }
 ]

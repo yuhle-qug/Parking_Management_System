@@ -9,6 +9,9 @@ namespace Parking.Core.Entities
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public string Status { get; set; }
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        public string? Phone { get; set; }
 
         public abstract string Role { get; }
 

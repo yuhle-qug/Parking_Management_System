@@ -1,0 +1,641 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+left to right direction
+skinparam packageStyle rectangle
+
+'================= MÀU SẮC PHÂN LOẠI =================
+skinparam class {
+  BackgroundColor<<boundary>>   #e6f7ff
+  BackgroundColor<<control>>    #fff7e6
+  BackgroundColor<<entity>>     #e6ffe6
+  BackgroundColor<<interface>>  #f2e6ff
+  BackgroundColor<<repository>> #ffe6e6
+  BorderColor #333333
+}
+
+'=====================================================
+' BOUNDARY LAYER
+'=====================================================
+package "Boundary Layer\n(UI / Thiết bị / Hệ thống ngoài)" {
+
+  class EntryUI <<boundary>> {
+    +requestCheckIn(vehicleInfo, gateId)
+    +showTicketInfo(ticketInfo)
+    +showFullMessage()
+    +showError(message: String)
+  }
+
+  class ExitUI <<boundary>> {
+    +requestCheckOut(ticketOrPlate, gateId)
+    +showLostTicketForm()
+    +showFeeInfo(feeAmount: double)
+    +showError(message: String)
+
+    ' bổ sung theo sequence check-out (mất vé + show message)
+    +submitLostTicketInfo(vehicleInfo, ownerDocs)
+    +showMessage(message: String)
+  }
+
+  class MembershipUI <<boundary>> {
+    +registerMonthlyTicket(customerInfo, vehicleInfo, plan)
+    +showMembershipInfo(ticketInfo)
+    +showError(message: String)
+
+    ' bổ sung theo 2 sequence mới
+    +renewMonthlyTicket(ticketId: String, months: int)
+    +cancelMonthlyTicket(ticketId: String)
+    +showRenewInfo(feeAmount: double, months: int)
+    +showSuccess(message: String)
+  }
+
+  class UserManagementUI <<boundary>> {
+    +createUserAccount(info)
+    +updateUserAccount(info)
+    +deleteUserAccount(userId)
+    +showUserList()
+    +showError(message: String)
+  }
+
+  class ReportUI <<boundary>> {
+    +selectReportType(type: ReportType)
+    +inputDateRange(start, end)
+    +displayReport(data: ReportData)
+    +exportReport(format: String)
+  }
+
+  class GateDevice <<boundary>> {
+    +readPlate(): String
+    +readCardId(): String
+    +openGate(gateId)
+
+    ' bổ sung để khớp sequence check-out
+    +readCardOrPlate(): String
+  }
+
+  interface IPaymentGateway <<interface>> {
+    +requestPayment(amount: double, paymentInfo): PaymentResult
+  }
+
+  class PaymentGatewayAdapter <<boundary>> {
+    +requestPayment(amount: double, paymentInfo): PaymentResult
+  }
+
+  ' căn thẳng hàng UI (đỡ lệch cột)
+  EntryUI -[hidden]- ExitUI
+  ExitUI -[hidden]- MembershipUI
+  MembershipUI -[hidden]- UserManagementUI
+  UserManagementUI -[hidden]- ReportUI
+
+  ' căn thẳng hàng thiết bị
+  GateDevice -[hidden]- PaymentGatewayAdapter
+}
+
+IPaymentGateway <|.. PaymentGatewayAdapter
+
+
+'=====================================================
+' CONTROL LAYER
+'=====================================================
+package "Control Layer\n(Use Case Controllers)" {
+
+  class CheckInController <<control>> {
+    -sessionRepo: IParkingSessionRepository
+    -ticketRepo: ITicketRepository
+    +requestCheckIn(vehicleInfo, gateId)
+  }
+
+  class CheckOutController <<control>> {
+    -sessionRepo: IParkingSessionRepository
+    -feePolicy: PricePolicy
+    +requestCheckOut(ticketOrPlate, gateId)
+    +processFoundSession(session: ParkingSession, gateId)
+    +processLostTicket(vehicleInfo)
+
+    ' bổ sung theo sequence check-out (mất vé submit info)
+    +submitLostTicketInfo(vehicleInfo, ownerDocs)
+  }
+
+  class MembershipController <<control>> {
+    -customerRepo: ICustomerRepository
+    -monthlyTicketRepo: IMonthlyTicketRepository
+    +verifyMembership(vehicle: Vehicle): MembershipInfo
+    +registerMonthlyTicket(customerInfo, vehicleInfo, plan)
+    +findOrCreateCustomer(customerInfo): Customer
+
+    ' bổ sung theo sequence check-out (kiểm vé tháng theo card/plate)
+    +verifyMembershipByCardOrPlate(cardOrPlateId: String): MembershipInfo
+
+    ' bổ sung theo 2 sequence mới
+    +renewMonthlyTicket(ticketId: String, months: int)
+    +cancelMonthlyTicket(ticketId: String)
+
+    ' bổ sung để khớp sequence đăng ký/gia hạn
+    +createOrUpdateVehicle(vehicleInfo): Vehicle
+  }
+
+  class PaymentController <<control>> {
+    -paymentGateway: IPaymentGateway
+
+    ' giữ cái cũ
+    +processPayment(session: ParkingSession, amount: double, method: String)
+    +processPaymentForMembership(customer: Customer, amount: double)
+
+    ' bổ sung theo sequence (có paymentInfo + renew theo ticketId)
+    +processPayment(session: ParkingSession, amount: double, method: String, paymentInfo)
+    +processPaymentForMembership(ticketId: String, amount: double, method: String, paymentInfo)
+  }
+
+  class UserAccountController <<control>> {
+    -userRepo: IUserRepository
+    +createUserAccount(info)
+    +updateUserAccount(info)
+    +deleteUserAccount(userId)
+    +getUserList(): List<UserAccount>
+  }
+
+  class SystemScheduler <<control>> {
+    -monthlyTicketRepo: IMonthlyTicketRepository
+    +checkExpiredMonthlyTickets()
+    +runDailyReportJob()
+
+    ' bổ sung theo nghiệp vụ hủy quá hạn >12 tháng (nếu tự động)
+    +autoCancelExpiredOver12Months()
+  }
+
+  class ReportController <<control>> {
+    -sessionRepo: IParkingSessionRepository
+    +requestReport(type: String, start: Date, end: Date)
+    +exportReport(reportId: String, format: String)
+  }
+
+  ' căn ngang controllers
+  CheckInController -[hidden]- CheckOutController
+  CheckOutController -[hidden]- MembershipController
+  MembershipController -[hidden]- PaymentController
+  PaymentController -[hidden]- UserAccountController
+  UserAccountController -[hidden]- SystemScheduler
+  SystemScheduler -[hidden]- ReportController
+}
+
+
+'=====================================================
+' PERSISTENCE LAYER / REPOSITORY
+'=====================================================
+package "Persistence Layer / Repository" {
+
+  class JsonFileHelper <<repository>> {
+    +{static} readList<T>(filePath: String): List<T>
+    +{static} writeList<T>(filePath: String, data: List<T>): bool
+  }
+
+  interface IRepository<T> <<interface>> {
+    +getAll(): List<T>
+    +getById(id: String): T
+    +add(entity: T): void
+    +update(entity: T): void
+    +delete(id: String): void
+  }
+
+  interface IParkingSessionRepository <<interface>> {
+    +getAll(): List<ParkingSession>
+    +getById(id: String): ParkingSession
+    +add(entity: ParkingSession): void
+    +update(entity: ParkingSession): void
+    +delete(id: String): void
+
+    +findActiveByPlate(plate: String): List<ParkingSession>
+    +findByTicketId(ticketId: String): ParkingSession
+    +findByDateRange(start: Date, end: Date): List<ParkingSession>
+
+    ' bổ sung để khớp sequence check-out mới
+    +findOpenSession(cardOrPlateId: String): ParkingSession
+    +createLostTicketSession(vehicleInfo, feeAmount: double): ParkingSession
+  }
+
+  interface ICustomerRepository <<interface>> {
+    +getAll(): List<Customer>
+    +getById(id: String): Customer
+    +add(entity: Customer): void
+    +update(entity: Customer): void
+    +delete(id: String): void
+
+    +findByPhone(phone: String): Customer
+  }
+
+  interface IMonthlyTicketRepository <<interface>> {
+    +getAll(): List<MonthlyTicket>
+    +getById(id: String): MonthlyTicket
+    +add(entity: MonthlyTicket): void
+    +update(entity: MonthlyTicket): void
+    +delete(id: String): void
+
+    +findActiveByPlate(plate: String): MonthlyTicket
+    +findExpiredTickets(date: Date): List<MonthlyTicket>
+
+    ' bổ sung alias để đúng tên trong sequence (findById)
+    +findById(ticketId: String): MonthlyTicket
+  }
+
+  interface ITicketRepository <<interface>> {
+    +getAll(): List<Ticket>
+    +getById(id: String): Ticket
+    +add(entity: Ticket): void
+    +update(entity: Ticket): void
+    +delete(id: String): void
+  }
+
+  interface IUserRepository <<interface>> {
+    +getAll(): List<UserAccount>
+    +getById(id: String): UserAccount
+    +add(entity: UserAccount): void
+    +update(entity: UserAccount): void
+    +delete(id: String): void
+
+    +findByUsername(username: String): UserAccount
+  }
+
+  '--- Implementations dùng JSON ---
+  class JsonParkingSessionRepo <<repository>> {
+    -filePath: String = "sessions.json"
+  }
+
+  class JsonCustomerRepo <<repository>> {
+    -filePath: String = "customers.json"
+  }
+
+  class JsonMonthlyTicketRepo <<repository>> {
+    -filePath: String = "monthly_tickets.json"
+  }
+
+  class JsonUserRepo <<repository>> {
+    -filePath: String = "users.json"
+  }
+
+  ' bổ sung thiếu: repo cho vé lượt
+  class JsonTicketRepo <<repository>> {
+    -filePath: String = "tickets.json"
+  }
+
+  ' implements
+  IParkingSessionRepository <|.. JsonParkingSessionRepo
+  ICustomerRepository       <|.. JsonCustomerRepo
+  IMonthlyTicketRepository  <|.. JsonMonthlyTicketRepo
+  IUserRepository           <|.. JsonUserRepo
+  ITicketRepository         <|.. JsonTicketRepo
+
+  JsonParkingSessionRepo ..> JsonFileHelper
+  JsonCustomerRepo      ..> JsonFileHelper
+  JsonMonthlyTicketRepo ..> JsonFileHelper
+  JsonUserRepo          ..> JsonFileHelper
+  JsonTicketRepo        ..> JsonFileHelper
+}
+
+
+'=====================================================
+' ENTITY LAYER
+'=====================================================
+package "Entity Layer\n(Nghiệp vụ & Dữ liệu)" {
+
+  package "Parking Domain" {
+
+    class ParkingLot <<entity>> {
+      -name: String
+      -zones: List<ParkingZone>
+      +findZoneFor(vehicle: Vehicle, gateId: String): ParkingZone
+    }
+
+    class ParkingZone <<entity>> {
+      -zoneId: String
+      -name: String
+      -vehicleCategory: String
+      -electricOnly: bool
+      -capacity: int
+      -activeSessions: List<ParkingSession>
+      -pricePolicy: PricePolicy
+      +isFull(): bool
+      +addSession(session: ParkingSession)
+      +removeSession(session: ParkingSession)
+    }
+
+    class ParkingSession <<entity>> {
+      -sessionId: String
+      -entryTime: DateTime
+      -exitTime: DateTime
+      -feeAmount: double
+      -status: String
+      +setExitTime(time: DateTime)
+      +close()
+      +attachPayment(payment: Payment)
+    }
+
+    class Ticket <<entity>> {
+      -ticketId: String
+      -issueTime: DateTime
+      -gateId: String
+
+      ' bổ sung: thời gian bắt đầu/kết thúc
+      -startDate: DateTime
+      -endDate: DateTime
+    }
+
+    abstract class Vehicle <<entity>> {
+      -licensePlate: String
+      +getFeeFactor(): double
+    }
+
+    class Car <<entity>> { 
+       +getFeeFactor(): double 
+}
+    class ElectricCar <<entity>> { 
++getFeeFactor(): double 
+}
+    class Motorbike <<entity>> { 
++getFeeFactor(): double 
+}
+    class ElectricMotorbike <<entity>> { 
++getFeeFactor(): double 
+}
+    class Bicycle <<entity>> { 
++getFeeFactor(): double 
+}
+    class ElectricBicycle <<entity>> { 
++getFeeFactor(): double 
+}
+
+    Vehicle <|-- Car
+    Vehicle <|-- ElectricCar
+    Vehicle <|-- Motorbike
+    Vehicle <|-- ElectricMotorbike
+    Vehicle <|-- Bicycle
+    Vehicle <|-- ElectricBicycle
+
+    abstract class PricePolicy <<entity>> {
+      -policyId: String
+      -name: String
+      +calculateFee(session: ParkingSession): double
+
+      ' bổ sung theo sequence check-out (mất vé)
+      +calculateLostTicketFee(vehicleInfo): double
+      +calculateParkingFeeForLostTicket(vehicleInfo, now: DateTime): double
+    }
+
+    class ParkingFeePolicy <<entity>> { 
++calculateFee(session: ParkingSession): double 
+}
+
+    class LostTicketFeePolicy <<entity>> {
+      +calculateFee(session: ParkingSession): double
+      +calculateLostTicketFee(vehicleInfo): double
+      +calculateParkingFeeForLostTicket(vehicleInfo, now: DateTime): double
+    }
+
+    PricePolicy <|-- ParkingFeePolicy
+    PricePolicy <|-- LostTicketFeePolicy
+
+    class Payment <<entity>> {
+      -paymentId: String
+      -amount: double
+      -time: DateTime
+      -method: String
+      -status: String
+      +markCompleted()
+      +markFailed()
+    }
+
+    ' căn ngang (giữ cột Parking gọn)
+    ParkingLot -[hidden]- ParkingZone
+    ParkingZone -[hidden]- ParkingSession
+    ParkingSession -[hidden]- Ticket
+    Ticket -[hidden]- Vehicle
+  }
+
+  package "Membership Domain" {
+
+    class Customer <<entity>> {
+      -customerId: String
+      -name: String
+      -phone: String
+    }
+
+    class MonthlyTicket <<entity>> {
+      -ticketId: String
+      -startDate: Date
+      -expiryDate: Date
+      -status: String
+
+      ' bổ sung theo 2 sequence mới
+      -endDate: Date
+      +isExpired(now: Date): bool
+      +expiredDurationMonths(now: Date): int
+      +extendEndDate(months: int, now: Date): void
+      +cancel(now: Date, reason: String): void
+      +hasActiveTicket(now: Date): bool
+    }
+
+    class MembershipPolicy <<entity>> {
+      -policyId: String
+      -name: String
+      +calculateMembershipFee(plan: String, vehicleType: String): double
+    }
+
+    Customer -[hidden]- MonthlyTicket
+    MonthlyTicket -[hidden]- MembershipPolicy
+  }
+
+  package "User / Account Domain" {
+
+    abstract class UserAccount <<entity>> {
+      -userId: String
+      -username: String
+      -passwordHash: String
+      -status: String
+    }
+
+    class AdminAccount <<entity>> {
+      +canAccessEntry(): bool
+      +canAccessExit(): bool
+      +canAccessReports(): bool
+      +canManageUsers(): bool
+    }
+
+    class AttendantAccount <<entity>> {
+      +canAccessEntry(): bool
+      +canAccessExit(): bool
+      +canAccessReports(): bool
+      +canManageUsers(): bool
+    }
+
+    UserAccount <|-- AdminAccount
+    UserAccount <|-- AttendantAccount
+  }
+
+  package "Reporting Domain" {
+
+    abstract class Report <<entity>> {
+      #startDate: Date
+      #endDate: Date
+      #generatedDate: DateTime
+      +generateData(): void
+      +getExportData(): Object
+    }
+
+    class RevenueReport <<entity>> {
+      -totalRevenue: double
+      -revenueByPaymentMethod: Map
+      +generateData()
+    }
+
+    class TrafficReport <<entity>> {
+      -totalVehicles: int
+      -vehiclesByType: Map
+      +generateData()
+    }
+
+    class IncidentReport <<entity>> {
+      +generateData()
+    }
+
+    Report <|-- RevenueReport
+    Report <|-- TrafficReport
+    Report <|-- IncidentReport
+
+    ' làm cột report đỡ thưa + thẳng hàng
+    Report -[hidden]- RevenueReport
+    RevenueReport -[hidden]- TrafficReport
+    TrafficReport -[hidden]- IncidentReport
+  }
+
+  package "DTO / Support Types" {
+
+    class MembershipInfo <<entity>> {
+      -hasMonthlyTicket: bool
+      -ticketId: String
+      -endDate: Date
+    }
+
+    class PaymentResult <<entity>> {
+      -success: bool
+      -message: String
+      -transactionId: String
+    }
+
+    enum ReportType <<entity>> {
+      REVENUE
+      TRAFFIC
+      INCIDENT
+    }
+
+    class ReportData <<entity>> {
+      -reportId: String
+      -type: ReportType
+      -payload: Object
+    }
+
+    ' căn cho DTO/enum gọn lại (đỡ rỗng)
+    MembershipInfo -[hidden]- PaymentResult
+    PaymentResult -[hidden]- ReportType
+    ReportType -[hidden]- ReportData
+  }
+}
+
+'=====================================================
+' RELATIONSHIPS
+'=====================================================
+
+'--- UI -> Controllers
+EntryUI          -right-> CheckInController
+ExitUI           -right-> CheckOutController
+MembershipUI     -right-> MembershipController
+UserManagementUI -right-> UserAccountController
+ReportUI         -down-> ReportController
+
+'--- Controllers -> Boundary / Interface
+CheckInController  -down-> GateDevice
+CheckOutController -down-> GateDevice
+PaymentController  -down-> IPaymentGateway
+
+'--- Controllers -> Repository interfaces (DIP)
+CheckInController      o--> IParkingSessionRepository
+CheckInController      o--> ITicketRepository
+CheckOutController     o--> IParkingSessionRepository
+MembershipController   o--> ICustomerRepository
+MembershipController   o--> IMonthlyTicketRepository
+UserAccountController  o--> IUserRepository
+ReportController       o--> IParkingSessionRepository
+SystemScheduler        o--> IMonthlyTicketRepository
+
+'--- Repository interfaces trả về Entity
+IParkingSessionRepository ..> ParkingSession : returns List
+ICustomerRepository        ..> Customer     : returns
+IMonthlyTicketRepository   ..> MonthlyTicket: returns
+IUserRepository            ..> UserAccount  : returns
+ITicketRepository          ..> Ticket       : returns
+
+'--- Controllers -> Entity (logic nghiệp vụ tổng quát)
+CheckInController    -right-> ParkingLot
+CheckInController    -right-> Vehicle
+CheckInController    -right-> Ticket
+CheckInController    -right-> ParkingSession
+CheckInController    -down-> MembershipController
+
+CheckOutController   -right-> ParkingSession
+CheckOutController   -right-> MembershipController
+CheckOutController   -right-> PricePolicy
+CheckOutController   -right-> PaymentController
+
+MembershipController -right-> Customer
+MembershipController -right-> Vehicle
+MembershipController -right-> MonthlyTicket
+MembershipController -right-> MembershipPolicy
+MembershipController -right-> MembershipInfo
+MembershipController -down-> PaymentController
+
+UserAccountController -right-> UserAccount
+PaymentController     -right-> Payment
+PaymentController     ..> PaymentResult
+IPaymentGateway       ..> PaymentResult
+
+SystemScheduler -right-> ParkingLot
+SystemScheduler -right-> MembershipController
+
+'--- Entity relationships
+ParkingLot "1" -- "1..*" ParkingZone : zones
+ParkingZone "1" -- "0..*" ParkingSession : activeSessions
+
+ParkingSession "1" --> "1" Vehicle
+ParkingSession "1" --> "1" Ticket
+ParkingSession "0..1" --> "0..1" Payment
+ParkingSession "1" --> "1" ParkingZone
+
+Customer "1" -- "0..*" MonthlyTicket : owns
+MonthlyTicket "1" --> "1" Vehicle
+
+'--- Reporting dùng ParkingSession
+ReportController -right-> Report : creates & uses
+ReportController -down-> RevenueReport
+ReportController -down-> TrafficReport
+ReportController -down-> IncidentReport
+
+RevenueReport ..> ParkingSession
+TrafficReport ..> ParkingSession
+IncidentReport ..> ParkingSession
+
+'--- BỔ SUNG MỐI QUAN HỆ cho ReportType & ReportData (để không "đứng một mình")
+ReportUI ..> ReportType
+ReportUI ..> ReportData
+
+ReportController ..> ReportType
+ReportController ..> ReportData : returns/uses
+
+Report ..> ReportData : generates
+ReportData --> ReportType
+'--- Repository interfaces extend base IRepository<T>
+IRepository <|-- IParkingSessionRepository
+IRepository <|-- ICustomerRepository
+IRepository <|-- IMonthlyTicketRepository
+IRepository <|-- ITicketRepository
+IRepository <|-- IUserRepository
+
+
+@enduml

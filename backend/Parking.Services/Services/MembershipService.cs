@@ -25,7 +25,7 @@ namespace Parking.Services.Services
             _logger = logger;
         }
 
-        public async Task<MonthlyTicket> RegisterMonthlyTicketAsync(Customer customerInfo, Vehicle vehicle, string planId, int months = 1)
+        public async Task<MonthlyTicket> RegisterMonthlyTicketAsync(Customer customerInfo, Vehicle vehicle, string planId, int months = 1, string? brand = null, string? color = null, string? performedBy = null)
         {
             // [REAL-WORLD] Customer Code: KH-[OneTimeRandom] or Sequential
             if (string.IsNullOrWhiteSpace(customerInfo.CustomerId))
@@ -80,6 +80,8 @@ namespace Parking.Services.Services
                 CustomerId = existingCustomer.CustomerId,
                 VehiclePlate = vehicle.LicensePlate,
                 VehicleType = vehicleType,
+                VehicleBrand = brand,
+                VehicleColor = color,
                 StartDate = DateTime.Now,
                 ExpiryDate = DateTime.Now.AddMonths(months),
                 Status = "PendingPayment",
@@ -100,7 +102,7 @@ namespace Parking.Services.Services
                 Action = "Register",
                 Months = months,
                 Amount = fee,
-                PerformedBy = GetActor(customerInfo),
+                PerformedBy = performedBy ?? GetActor(customerInfo),
                 Time = DateTime.Now,
                 Note = $"Plan {planId} - Generated Card: {simulatedCardUid}"
             });
@@ -122,14 +124,7 @@ namespace Parking.Services.Services
             var baseDate = ticket.ExpiryDate > now ? ticket.ExpiryDate : now;
             var fee = await CalculateFeeAsync(ticket.VehicleType, months);
 
-            ticket.ExpiryDate = baseDate.AddMonths(months);
-            ticket.Status = "PendingPayment";
-            ticket.PaymentStatus = "PendingExternal";
-            ticket.PaymentAttempts = 0;
-            ticket.TransactionCode = string.Empty;
-            ticket.QrContent = null;
-            ticket.ProviderLog = null;
-            ticket.MonthlyFee = fee;
+            ticket.PrepareExtend(baseDate, months, fee);
 
             await _ticketRepo.UpdateAsync(ticket);
 
@@ -148,15 +143,20 @@ namespace Parking.Services.Services
             return ticket;
         }
 
-        public async Task<MonthlyTicket> CancelMonthlyTicketAsync(string ticketId, string performedBy, string? note = null)
+        public async Task<MonthlyTicket> CancelMonthlyTicketAsync(string ticketId, string performedBy, bool isAdmin, string? note = null)
         {
             var ticket = await _ticketRepo.GetByIdAsync(ticketId);
             if (ticket == null) throw new KeyNotFoundException("Không tìm thấy vé tháng");
 
-            ticket.Status = "Cancelled";
-            ticket.PaymentStatus = "Cancelled";
-            ticket.ExpiryDate = DateTime.Now;
-            ticket.ProviderLog = note ?? ticket.ProviderLog;
+            if (isAdmin)
+            {
+                ticket.Cancel(note);
+            }
+            else
+            {
+                // Non-admin request: needs approval
+                ticket.Status = "PendingCancellation";
+            }
 
             await _ticketRepo.UpdateAsync(ticket);
 
@@ -169,7 +169,36 @@ namespace Parking.Services.Services
                 Amount = 0,
                 PerformedBy = string.IsNullOrWhiteSpace(performedBy) ? "system" : performedBy,
                 Time = DateTime.Now,
-                Note = note
+                Note = isAdmin ? note : $"Request Cancel: {note}"
+            });
+
+            return ticket;
+        }
+
+        public async Task<MonthlyTicket> ApproveCancellationAsync(string ticketId, string adminId)
+        {
+            var ticket = await _ticketRepo.GetByIdAsync(ticketId);
+            if (ticket == null) throw new KeyNotFoundException("Không tìm thấy vé tháng");
+
+            if (!string.Equals(ticket.Status, "PendingCancellation", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException("Vé này không ở trạng thái chờ hủy.");
+            }
+
+            ticket.ApproveCancel(adminId);
+
+            await _ticketRepo.UpdateAsync(ticket);
+
+            await _historyRepo.AddHistoryAsync(new MembershipHistory
+            {
+                HistoryId = Guid.NewGuid().ToString(),
+                TicketId = ticket.TicketId,
+                Action = "ApproveCancel",
+                Months = 0,
+                Amount = 0,
+                PerformedBy = adminId,
+                Time = DateTime.Now,
+                Note = "Admin approved cancellation request"
             });
 
             return ticket;
@@ -184,9 +213,9 @@ namespace Parking.Services.Services
                 .ToDictionary(c => c.CustomerId, StringComparer.OrdinalIgnoreCase);
             var now = DateTime.Now;
 
-            // Trả về vé còn hiệu lực hoặc đang chờ thanh toán
+            // [MODIFIED] Return ALL tickets so the Frontend can filter (Active vs Pending vs Expired)
             return tickets
-                .Where(t => (t.Status == "Active" || t.Status == "PendingPayment") && t.ExpiryDate >= now)
+                //.Where(t => (t.Status == "Active" || t.Status == "PendingPayment") && t.ExpiryDate >= now) -- REMOVED
                 .Select(t =>
                 {
                     customers.TryGetValue(t.CustomerId ?? string.Empty, out var customer);
@@ -200,6 +229,8 @@ namespace Parking.Services.Services
                         IdentityNumber = customer?.IdentityNumber ?? string.Empty,
                         VehiclePlate = t.VehiclePlate,
                         VehicleType = t.VehicleType,
+                        VehicleBrand = t.VehicleBrand,
+                        VehicleColor = t.VehicleColor,
                         StartDate = t.StartDate,
                         ExpiryDate = t.ExpiryDate,
                         MonthlyFee = t.MonthlyFee,

@@ -1,0 +1,55 @@
+@startuml
+actor Attendant
+boundary MembershipUI
+control MembershipController
+control PaymentController
+entity Customers
+entity Vehicles
+entity MonthlyTicket
+entity MembershipPolicy as PricePolicy
+entity Payments
+participant "Cổng thanh toán ngoài" as PaymentGateway
+
+Attendant -> MembershipUI: Chọn "Gia hạn vé"
+MembershipUI -> MembershipController: renewMonthlyTicket(ticketId, months)
+
+alt months không thuộc {1,3,6}
+  MembershipController -> MembershipUI: showError("Chỉ được gia hạn 1/3/6 tháng")
+  return
+end
+
+MembershipController -> MonthlyTicket: findById(ticketId)
+alt Không tìm thấy vé
+  MembershipController -> MembershipUI: showError("Không tìm thấy vé tháng")
+  return
+end
+
+MembershipController -> MonthlyTicket: isExpired(now)?
+alt Vé đã hết hạn quá 12 tháng
+  MembershipController -> MembershipUI: showError("Vé đã ngưng >12 tháng, phải đăng ký mới")
+  return
+else Vé còn hiệu lực hoặc hết hạn <= 12 tháng
+end
+
+MembershipController -> PricePolicy: calculateMembershipFee(plan=months, vehicleType)
+PricePolicy --> MembershipController: feeAmount
+
+MembershipController -> MembershipUI: showRenewInfo(feeAmount, months)
+Attendant -> MembershipUI: Xác nhận thanh toán(method, paymentInfo)
+
+MembershipUI -> PaymentController: processPaymentForMembership(ticketId, feeAmount, method, paymentInfo)
+PaymentController -> PaymentGateway: requestPayment(feeAmount, paymentInfo)
+PaymentGateway --> PaymentController: paymentResult(success/fail)
+
+alt Thanh toán thất bại
+  PaymentController -> MembershipUI: showError("Thanh toán thất bại, vui lòng thử lại")
+
+else Thanh toán thành công
+  PaymentController -> Payments: createPayment(amount)
+  Payments --> PaymentController: markedCompleted()
+  PaymentController --> MembershipController: paymentCompleted
+  PaymentController -> MonthlyTicket: extendEndDate(months, now)
+  MonthlyTicket --> PaymentController: updated
+  PaymentController -> MembershipUI: showSuccess("Gia hạn thành công", newEndDate)
+end
+@enduml

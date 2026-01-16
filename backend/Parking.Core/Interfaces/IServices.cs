@@ -11,20 +11,21 @@ namespace Parking.Core.Interfaces
 		Task<ParkingSession> CheckInAsync(string plateNumber, string vehicleType, string gateId, string? cardId = null);
 		Task<ParkingSession> CheckOutAsync(string ticketIdOrPlate, string gateId, string? plateNumber = null, string? cardId = null);
 		Task<ParkingSession> ProcessLostTicketAsync(string plateNumber, string vehicleType, string gateId);
+		Task<PaymentResult> ConfirmPaymentAsync(string sessionId, string transactionCode, bool success, string? providerLog = null, string? exitGateId = null);
 	}
 
 	public interface IPaymentService
 	{
 		Task<PaymentResult> ProcessPaymentAsync(string sessionId, double amount, string method, string? exitGateId = null, int maxRetry = 3, int timeoutSeconds = 5);
-		Task<PaymentResult> ConfirmExternalPaymentAsync(string sessionId, string transactionCode, bool success, string? providerLog = null, string? exitGateId = null);
 		Task<PaymentResult> CancelPaymentAsync(string sessionId, string reason = "User cancelled");
 	}
 
 	public interface IMembershipService
 	{
-		Task<MonthlyTicket> RegisterMonthlyTicketAsync(Customer customerInfo, Vehicle vehicle, string planId, int months = 1);
+		Task<MonthlyTicket> RegisterMonthlyTicketAsync(Customer customerInfo, Vehicle vehicle, string planId, int months = 1, string? brand = null, string? color = null, string? performedBy = null);
 		Task<MonthlyTicket> ExtendMonthlyTicketAsync(string ticketId, int months, string performedBy, string? note = null);
-		Task<MonthlyTicket> CancelMonthlyTicketAsync(string ticketId, string performedBy, string? note = null);
+		Task<MonthlyTicket> CancelMonthlyTicketAsync(string ticketId, string performedBy, bool isAdmin, string? note = null);
+		Task<MonthlyTicket> ApproveCancellationAsync(string ticketId, string adminId);
 		
 		// [NEW] Thêm 2 hàm lấy dữ liệu
 		Task<IEnumerable<MonthlyTicketDto>> GetAllTicketsAsync();

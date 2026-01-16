@@ -8,5 +8,155 @@
     "PerformedBy": "l\u00EA quang huy",
     "Time": "2026-01-16T16:26:32.0557135+07:00",
     "Note": "Plan P-MOTO - Generated Card: 7736B027AD99C029"
+  },
+  {
+    "HistoryId": "71781863-9c9d-4a61-905c-b52b4216f692",
+    "TicketId": "D62945B49E1D7B81",
+    "Action": "Register",
+    "Months": 12,
+    "Amount": 1224000,
+    "PerformedBy": "thu\u1EF3 d\u01B0\u01A1ng ",
+    "Time": "2026-01-16T19:38:03.098135+07:00",
+    "Note": "Plan P-MOTO - Generated Card: D62945B49E1D7B81"
+  },
+  {
+    "HistoryId": "d7e87dc6-43c4-44b9-aced-2a2c34f0a729",
+    "TicketId": "D62945B49E1D7B81",
+    "Action": "Extend",
+    "Months": 3,
+    "Amount": 342000,
+    "PerformedBy": "staff",
+    "Time": "2026-01-16T19:39:32.4735664+07:00",
+    "Note": "Gia h\u1EA1n 3 th\u00E1ng"
+  },
+  {
+    "HistoryId": "ddca6ff5-18c5-42bd-97f3-1fd4a9f2ecd2",
+    "TicketId": "D62945B49E1D7B81",
+    "Action": "Cancel",
+    "Months": 0,
+    "Amount": 0,
+    "PerformedBy": "staff",
+    "Time": "2026-01-16T19:40:54.2407337+07:00",
+    "Note": "sfasdf"
+  },
+  {
+    "HistoryId": "05943ac1-6390-41a9-80a2-ca4183f36d7b",
+    "TicketId": "M-F468BA40",
+    "Action": "Cancel",
+    "Months": 0,
+    "Amount": 0,
+    "PerformedBy": "staff",
+    "Time": "2026-01-16T21:41:27.8067679+07:00",
+    "Note": "Request Cancel: H\u1EE7y b\u1EDFi qu\u1EA3n l\u00FD"
+  },
+  {
+    "HistoryId": "ee0cdaf2-9724-4768-9da9-b87ac2e0fa06",
+    "TicketId": "31DA83BABF70F810",
+    "Action": "Register",
+    "Months": 12,
+    "Amount": 1224000,
+    "PerformedBy": "admin",
+    "Time": "2026-01-16T21:45:47.0363899+07:00",
+    "Note": "Plan P-MOTO - Generated Card: 31DA83BABF70F810"
+  },
+  {
+    "HistoryId": "7203318a-efdd-4e33-9c6d-bc4c114ec19c",
+    "TicketId": "M-0DFEC5AD",
+    "Action": "Cancel",
+    "Months": 0,
+    "Amount": 0,
+    "PerformedBy": "staff",
+    "Time": "2026-01-16T22:30:54.8486088+07:00",
+    "Note": "Request Cancel: H\u1EE7y b\u1EDFi qu\u1EA3n l\u00FD"
+  },
+  {
+    "HistoryId": "88b0fde0-4524-465d-857a-003671617fc4",
+    "TicketId": "M-0DFEC5AD",
+    "Action": "Cancel",
+    "Months": 0,
+    "Amount": 0,
+    "PerformedBy": "admin",
+    "Time": "2026-01-16T22:47:35.3136198+07:00",
+    "Note": "H\u1EE7y b\u1EDFi qu\u1EA3n l\u00FD"
+  },
+  {
+    "HistoryId": "f24628cc-8906-4513-8d04-e9b4be34d75e",
+    "TicketId": "M-F062CD0C",
+    "Action": "Cancel",
+    "Months": 0,
+    "Amount": 0,
+    "PerformedBy": "admin",
+    "Time": "2026-01-16T22:47:47.1581528+07:00",
+    "Note": "H\u1EE7y b\u1EDFi qu\u1EA3n l\u00FD"
+  },
+  {
+    "HistoryId": "9ed76553-884a-47a8-93f1-9dfca7a0777d",
+    "TicketId": "M-C3D1E6AE",
+    "Action": "Cancel",
+    "Months": 0,
+    "Amount": 0,
+    "PerformedBy": "staff",
+    "Time": "2026-01-16T22:48:14.2697489+07:00",
+    "Note": "Request Cancel: H\u1EE7y b\u1EDFi qu\u1EA3n l\u00FD"
+  },
+  {
+    "HistoryId": "3be15a97-c9ba-44e7-ac08-0c35c4fbb0fa",
+    "TicketId": "M-B8E427CD",
+    "Action": "Extend",
+    "Months": 1,
+    "Amount": 80000,
+    "PerformedBy": "staff",
+    "Time": "2026-01-16T22:54:00.2649047+07:00",
+    "Note": "Gia h\u1EA1n 1 th\u00E1ng"
+  },
+  {
+    "HistoryId": "5d009edf-2ccb-4b10-9736-efbe77b04d0a",
+    "TicketId": "7736B027AD99C029",
+    "Action": "Extend",
+    "Months": 1,
+    "Amount": 120000,
+    "PerformedBy": "staff",
+    "Time": "2026-01-16T22:54:30.0174686+07:00",
+    "Note": "Gia h\u1EA1n 1 th\u00E1ng"
+  },
+  {
+    "HistoryId": "e99db38f-a144-4e8d-93a1-75fd43905483",
+    "TicketId": "M-35DA3E8A",
+    "Action": "Cancel",
+    "Months": 0,
+    "Amount": 0,
+    "PerformedBy": "staff",
+    "Time": "2026-01-16T22:56:20.6306845+07:00",
+    "Note": "Request Cancel: H\u1EE7y b\u1EDFi qu\u1EA3n l\u00FD"
+  },
+  {
+    "HistoryId": "cfd4ac9c-d596-4ac6-b6dc-57336ee6bf76",
+    "TicketId": "M-35DA3E8A",
+    "Action": "Cancel",
+    "Months": 0,
+    "Amount": 0,
+    "PerformedBy": "admin",
+    "Time": "2026-01-16T22:56:37.0359639+07:00",
+    "Note": "H\u1EE7y b\u1EDFi qu\u1EA3n l\u00FD"
+  },
+  {
+    "HistoryId": "5b1c62cc-91b6-48c5-9f03-67708b1e102c",
+    "TicketId": "M-9DC3B5A8",
+    "Action": "Cancel",
+    "Months": 0,
+    "Amount": 0,
+    "PerformedBy": "staff",
+    "Time": "2026-01-17T01:32:55.6792905+07:00",
+    "Note": "Request Cancel: H\u1EE7y b\u1EDFi qu\u1EA3n l\u00FD"
+  },
+  {
+    "HistoryId": "ebf25257-c55e-4855-8984-f213d4573ae2",
+    "TicketId": "M-9DC3B5A8",
+    "Action": "Cancel",
+    "Months": 0,
+    "Amount": 0,
+    "PerformedBy": "admin",
+    "Time": "2026-01-17T01:33:10.061703+07:00",
+    "Note": "H\u1EE7y b\u1EDFi qu\u1EA3n l\u00FD"
   }
 ]

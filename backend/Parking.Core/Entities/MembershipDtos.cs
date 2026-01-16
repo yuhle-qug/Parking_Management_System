@@ -11,6 +11,8 @@ namespace Parking.Core.Entities
         public string IdentityNumber { get; set; } = string.Empty;
         public string VehiclePlate { get; set; } = string.Empty;
         public string VehicleType { get; set; } = string.Empty;
+        public string? VehicleBrand { get; set; }
+        public string? VehicleColor { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime ExpiryDate { get; set; }
         public double MonthlyFee { get; set; }

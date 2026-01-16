@@ -34,12 +34,12 @@
   {
     "SessionId": "f82e9967-ef72-4f2c-9657-20d2c776a5e2",
     "EntryTime": "2026-01-16T08:28:28.779Z",
-    "ExitTime": null,
-    "FeeAmount": 0,
-    "Status": "Active",
+    "ExitTime": "2026-01-16T19:35:03.9223592+07:00",
+    "FeeAmount": 296000,
+    "Status": "Completed",
     "CardId": null,
     "Vehicle": {
-      "VehicleType": "BICYCLE",
+      "VehicleType": "CAR",
       "LicensePlate": "61A-90174"
     },
     "Ticket": {
@@ -49,7 +49,17 @@
       "CardId": null,
       "TicketType": "Daily"
     },
-    "Payment": null,
+    "Payment": {
+      "PaymentId": "eeb57ba2-0103-48aa-8a05-fd8ed41023fe",
+      "Amount": 296000,
+      "Time": "2026-01-16T19:35:34.8311841+07:00",
+      "Method": "ExternalQR",
+      "Status": "Completed",
+      "TransactionCode": "TX-539D0BC6",
+      "ErrorMessage": null,
+      "Attempts": 1,
+      "ProviderLog": "Gateway \u0111\u00E3 thanh to\u00E1n l\u00FAc 19:35:34"
+    },
     "ParkingZoneId": "ZONE-E",
     "ExitGateId": null
   },
@@ -164,9 +174,9 @@
   {
     "SessionId": "eff25695-ccfe-416e-a468-662b9f3f3b4a",
     "EntryTime": "2026-01-16T01:53:24.916Z",
-    "ExitTime": null,
-    "FeeAmount": 0,
-    "Status": "Active",
+    "ExitTime": "2026-01-17T00:31:15.8804828+07:00",
+    "FeeAmount": 100000,
+    "Status": "Completed",
     "CardId": null,
     "Vehicle": {
       "VehicleType": "MOTORBIKE",
@@ -179,7 +189,17 @@
       "CardId": null,
       "TicketType": "Daily"
     },
-    "Payment": null,
+    "Payment": {
+      "PaymentId": "f28c1709-6ae4-4746-b831-9001fea14634",
+      "Amount": 100000,
+      "Time": "2026-01-17T00:31:20.8136275+07:00",
+      "Method": "ExternalQR",
+      "Status": "Completed",
+      "TransactionCode": "TX-986C9FF4",
+      "ErrorMessage": null,
+      "Attempts": 1,
+      "ProviderLog": "Gateway SUCCESS confirmed by Attendant"
+    },
     "ParkingZoneId": "ZONE-E",
     "ExitGateId": null
   },
@@ -4501,6 +4521,178 @@
       "ProviderLog": "Gateway \u0111\u00E3 thanh to\u00E1n l\u00FAc 17:38:16"
     },
     "ParkingZoneId": "ZONE-E",
+    "ExitGateId": null
+  },
+  {
+    "SessionId": "cc00a896-5e79-443c-8fac-f8ad7f222d53",
+    "EntryTime": "2026-01-16T19:31:10.2049691+07:00",
+    "ExitTime": "2026-01-16T19:33:17.4752034+07:00",
+    "FeeAmount": 18000,
+    "Status": "Completed",
+    "CardId": null,
+    "Vehicle": {
+      "VehicleType": "CAR",
+      "LicensePlate": "30A-4721"
+    },
+    "Ticket": {
+      "TicketId": "GIN-CAR-01-260116-0012-1471",
+      "IssueTime": "2026-01-16T19:31:10.2049669+07:00",
+      "GateId": "GATE-IN-CAR-01",
+      "CardId": null,
+      "TicketType": "Daily"
+    },
+    "Payment": {
+      "PaymentId": "d914dc04-37fc-44a8-b059-ceac4d3e5897",
+      "Amount": 18000,
+      "Time": "2026-01-16T19:34:29.941243+07:00",
+      "Method": "ExternalQR",
+      "Status": "Completed",
+      "TransactionCode": "TX-00122ABB",
+      "ErrorMessage": null,
+      "Attempts": 1,
+      "ProviderLog": "Gateway \u0111\u00E3 thanh to\u00E1n l\u00FAc 19:34:29"
+    },
+    "ParkingZoneId": "ZONE-A",
+    "ExitGateId": null
+  },
+  {
+    "SessionId": "cd5541fe-fe69-402b-9196-7d5d7d549357",
+    "EntryTime": "2026-01-17T00:24:52.6143238+07:00",
+    "ExitTime": "2026-01-17T00:30:16.3849416+07:00",
+    "FeeAmount": 12000,
+    "Status": "Completed",
+    "CardId": null,
+    "Vehicle": {
+      "VehicleType": "CAR",
+      "LicensePlate": "30A - 9295"
+    },
+    "Ticket": {
+      "TicketId": "25CB1737",
+      "IssueTime": "2026-01-17T00:24:52.6143202+07:00",
+      "GateId": "GATE-IN-CAR-01",
+      "CardId": null,
+      "TicketType": "Daily"
+    },
+    "Payment": {
+      "PaymentId": "d1acf99e-c87f-40a9-a67a-7de833ef7940",
+      "Amount": 12000,
+      "Time": "2026-01-17T00:30:22.7554997+07:00",
+      "Method": "ExternalQR",
+      "Status": "Completed",
+      "TransactionCode": "TX-32D351B1",
+      "ErrorMessage": null,
+      "Attempts": 1,
+      "ProviderLog": "Gateway SUCCESS confirmed by Attendant"
+    },
+    "ParkingZoneId": "ZONE-A",
+    "ExitGateId": null
+  },
+  {
+    "SessionId": "8c276c8c-5714-4b2b-a026-b0387d43b1ae",
+    "EntryTime": "2026-01-17T00:25:15.4376673+07:00",
+    "ExitTime": "2026-01-17T00:26:30.2833523+07:00",
+    "FeeAmount": 12000,
+    "Status": "Completed",
+    "CardId": null,
+    "Vehicle": {
+      "VehicleType": "CAR",
+      "LicensePlate": "30A-012123"
+    },
+    "Ticket": {
+      "TicketId": "8495191E",
+      "IssueTime": "2026-01-17T00:25:15.4376616+07:00",
+      "GateId": "GATE-IN-CAR-01",
+      "CardId": null,
+      "TicketType": "Daily"
+    },
+    "Payment": {
+      "PaymentId": "420d9ba5-4d15-4768-9c09-42d52f104ace",
+      "Amount": 12000,
+      "Time": "2026-01-17T00:26:40.8037782+07:00",
+      "Method": "ExternalQR",
+      "Status": "Completed",
+      "TransactionCode": "TX-CF523931",
+      "ErrorMessage": null,
+      "Attempts": 1,
+      "ProviderLog": "Gateway SUCCESS confirmed by Attendant"
+    },
+    "ParkingZoneId": "ZONE-A",
+    "ExitGateId": null
+  },
+  {
+    "SessionId": "2f9974fe-1200-45ec-96f6-b909da1dfe04",
+    "EntryTime": "2026-01-17T00:27:21.6290953+07:00",
+    "ExitTime": "2026-01-17T00:27:52.6437693+07:00",
+    "FeeAmount": 400,
+    "Status": "PendingPayment",
+    "CardId": null,
+    "Vehicle": {
+      "VehicleType": "BICYCLE",
+      "LicensePlate": "30A-0000000"
+    },
+    "Ticket": {
+      "TicketId": "E627C1C5",
+      "IssueTime": "2026-01-17T00:27:21.6290942+07:00",
+      "GateId": "GATE-IN-MOTO-01",
+      "CardId": null,
+      "TicketType": "Daily"
+    },
+    "Payment": {
+      "PaymentId": "5d05f387-56ac-4084-a7d9-4300b0a5766e",
+      "Amount": 400,
+      "Time": "2026-01-17T00:27:54.0272479+07:00",
+      "Method": "ExternalQR",
+      "Status": "Failed",
+      "TransactionCode": "TX-5733FACF",
+      "ErrorMessage": "Gateway FAILED confirmed by Attendant",
+      "Attempts": 1,
+      "ProviderLog": "Gateway FAILED confirmed by Attendant"
+    },
+    "ParkingZoneId": "ZONE-C",
+    "ExitGateId": null
+  },
+  {
+    "SessionId": "73e62ff7-3dcd-4626-a9a6-ba533d1fc216",
+    "EntryTime": "2026-01-17T00:49:31.8498397+07:00",
+    "ExitTime": null,
+    "FeeAmount": 0,
+    "Status": "Active",
+    "CardId": null,
+    "Vehicle": {
+      "VehicleType": "ELECTRIC_CAR",
+      "LicensePlate": "19A-12345"
+    },
+    "Ticket": {
+      "TicketId": "75498AF9",
+      "IssueTime": "2026-01-17T00:49:31.849837+07:00",
+      "GateId": "GATE-IN-CAR-01",
+      "CardId": null,
+      "TicketType": "Daily"
+    },
+    "Payment": null,
+    "ParkingZoneId": "ZONE-E",
+    "ExitGateId": null
+  },
+  {
+    "SessionId": "e0ca74fb-3935-4bf9-8d4f-182ed3378a44",
+    "EntryTime": "2026-01-17T00:53:13.1715553+07:00",
+    "ExitTime": null,
+    "FeeAmount": 0,
+    "Status": "Active",
+    "CardId": null,
+    "Vehicle": {
+      "VehicleType": "ELECTRIC_MOTORBIKE",
+      "LicensePlate": "36A-1818181"
+    },
+    "Ticket": {
+      "TicketId": "B6D9FE81",
+      "IssueTime": "2026-01-17T00:53:13.171554+07:00",
+      "GateId": "GATE-IN-MOTO-01",
+      "CardId": null,
+      "TicketType": "Daily"
+    },
+    "Payment": null,
+    "ParkingZoneId": "ZONE-EM",
     "ExitGateId": null
   }
 ]

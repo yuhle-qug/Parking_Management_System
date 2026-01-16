@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard'
 import Membership from './pages/Membership'
 import Report from './pages/Report'
 import Admin from './pages/Admin'
+import CheckIn from './pages/CheckIn'
+import CheckOut from './pages/CheckOut'
 import MainLayout from './layouts/MainLayout'
 
 // Global interceptor for 401 handling
@@ -68,9 +70,13 @@ function App() {
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/membership" element={<Membership />} />
-            <Route path="/report" element={<Report />} />
+            <Route path="/checkin" element={<CheckIn />} />
+            <Route path="/checkout" element={<CheckOut />} />
             {user.role?.toUpperCase() === 'ADMIN' && (
-              <Route path="/admin" element={<Admin />} />
+              <>
+                <Route path="/report" element={<Report />} />
+                <Route path="/admin" element={<Admin />} />
+              </>
             )}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>

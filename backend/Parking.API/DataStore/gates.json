@@ -1,0 +1,108 @@
+[
+  {
+    "GateId": "GATE-IN-CAR-01",
+    "Name": "C\u1ED5ng \u00D4t\u00F4 01",
+    "Direction": "In",
+    "Status": "Active",
+    "AllowedVehicleCategories": [
+      "CAR",
+      "ELECTRIC_CAR"
+    ]
+  },
+  {
+    "GateId": "GATE-IN-CAR-02",
+    "Name": "C\u1ED5ng \u00D4t\u00F4 02",
+    "Direction": "In",
+    "Status": "Active",
+    "AllowedVehicleCategories": [
+      "CAR",
+      "ELECTRIC_CAR"
+    ]
+  },
+  {
+    "GateId": "GATE-IN-MOTO-01",
+    "Name": "C\u1ED5ng Xe m\u00E1y 01",
+    "Direction": "In",
+    "Status": "Active",
+    "AllowedVehicleCategories": [
+      "MOTORBIKE",
+      "ELECTRIC_MOTORBIKE",
+      "BICYCLE"
+    ]
+  },
+  {
+    "GateId": "GATE-IN-MOTO-02",
+    "Name": "C\u1ED5ng Xe m\u00E1y 02",
+    "Direction": "In",
+    "Status": "Active",
+    "AllowedVehicleCategories": [
+      "MOTORBIKE",
+      "ELECTRIC_MOTORBIKE",
+      "BICYCLE"
+    ]
+  },
+  {
+    "GateId": "GATE-IN-MOTO-03",
+    "Name": "C\u1ED5ng Xe m\u00E1y 03",
+    "Direction": "In",
+    "Status": "Active",
+    "AllowedVehicleCategories": [
+      "MOTORBIKE",
+      "ELECTRIC_MOTORBIKE",
+      "BICYCLE"
+    ]
+  },
+  {
+    "GateId": "GATE-OUT-CAR-01",
+    "Name": "C\u1ED5ng ra \u00D4 t\u00F4 01",
+    "Direction": "Out",
+    "Status": "Active",
+    "AllowedVehicleCategories": [
+      "CAR",
+      "ELECTRIC_CAR"
+    ]
+  },
+  {
+    "GateId": "GATE-OUT-CAR-02",
+    "Name": "C\u1ED5ng ra \u00D4 t\u00F4 02",
+    "Direction": "Out",
+    "Status": "Active",
+    "AllowedVehicleCategories": [
+      "CAR",
+      "ELECTRIC_CAR"
+    ]
+  },
+  {
+    "GateId": "GATE-OUT-MOTO-01",
+    "Name": "C\u1ED5ng ra Xe m\u00E1y 01",
+    "Direction": "Out",
+    "Status": "Active",
+    "AllowedVehicleCategories": [
+      "MOTORBIKE",
+      "ELECTRIC_MOTORBIKE",
+      "BICYCLE"
+    ]
+  },
+  {
+    "GateId": "GATE-OUT-MOTO-02",
+    "Name": "C\u1ED5ng ra Xe m\u00E1y 02",
+    "Direction": "Out",
+    "Status": "Active",
+    "AllowedVehicleCategories": [
+      "MOTORBIKE",
+      "ELECTRIC_MOTORBIKE",
+      "BICYCLE"
+    ]
+  },
+  {
+    "GateId": "GATE-OUT-MOTO-03",
+    "Name": "C\u1ED5ng ra Xe m\u00E1y 03",
+    "Direction": "Out",
+    "Status": "Active",
+    "AllowedVehicleCategories": [
+      "MOTORBIKE",
+      "ELECTRIC_MOTORBIKE",
+      "BICYCLE"
+    ]
+  }
+]

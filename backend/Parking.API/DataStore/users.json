@@ -1,18 +1,16 @@
-﻿[
-    {
-        "UserId": "USER001",
-        "Username": "admin",
-        "PasswordHash": "123",
-        "FullName": "System Administrator",
-        "Role": "ADMIN",
-        "Status": "Active"
-    },
-    {
-        "UserId": "USER002",
-        "Username": "staff01",
-        "PasswordHash": "123",
-        "FullName": "Staff Member 01",
-        "Role": "ATTENDANT",
-        "Status": "Active"
-    }
+[
+  {
+    "userId": "USER001",
+    "username": "admin",
+    "passwordHash": "123",
+    "role": "ADMIN",
+    "status": "Active"
+  },
+  {
+    "userId": "f0da942a-1832-4011-a2ad-6e5111be4601",
+    "username": "staff",
+    "passwordHash": "$2a$11$TQToA5xFWcqvE/Kv4wECDu84sus20sRe42KpLi8mX8BEXYwgH7/9e",
+    "role": "ATTENDANT",
+    "status": "Active"
+  }
 ]

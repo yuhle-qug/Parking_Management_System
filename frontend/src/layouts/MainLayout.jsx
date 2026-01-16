@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, CreditCard, BarChart3, Shield, LogOut } from 'lucide-react'
+import { LayoutDashboard, CreditCard, BarChart3, Shield, LogOut, ArrowRightCircle, ArrowLeftCircle } from 'lucide-react'
 
 export default function MainLayout({ user, onLogout }) {
   const location = useLocation()
@@ -11,14 +12,32 @@ export default function MainLayout({ user, onLogout }) {
   }
 
   const isAdmin = user?.role?.toUpperCase() === 'ADMIN'
+  const gateId = user?.gateId || ''
+  const isEntryGate = gateId.includes('IN')
+  const isExitGate = gateId.includes('OUT')
+  
+  // If no specific gate flow identified (e.g. Admin without gate), maybe show both or neither? 
+  // Requirement says "default gate at login kept". 
+  // If user is ADMIN they might see everything, but let's follow the "Gate Type" rule strictly for operational tabs.
+
   const menuItems = [
     { path: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
+    ...(isEntryGate ? [{ path: '/checkin', label: 'Cổng Vào (Check-In)', icon: <ArrowRightCircle size={20} /> }] : []),
+    ...(isExitGate ? [{ path: '/checkout', label: 'Cổng Ra (Check-Out)', icon: <ArrowLeftCircle size={20} /> }] : []),
     { path: '/membership', label: 'Vé Tháng', icon: <CreditCard size={20} /> },
-    { path: '/report', label: 'Báo Cáo', icon: <BarChart3 size={20} /> },
     ...(isAdmin
-      ? [{ path: '/admin', label: 'Quản Trị', icon: <Shield size={20} /> }]
+      ? [
+          { path: '/report', label: 'Báo Cáo', icon: <BarChart3 size={20} /> },
+          { path: '/admin', label: 'Quản Trị', icon: <Shield size={20} /> }
+        ]
       : []),
   ]
+
+  const [logs, setLogs] = useState([])
+  
+  const addLog = (msg) => {
+    setLogs((prev) => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev].slice(0, 50))
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
@@ -66,7 +85,7 @@ export default function MainLayout({ user, onLogout }) {
         </aside>
 
         <main className="flex-1 p-6">
-          <Outlet context={{ user }} />
+          <Outlet context={{ user, logs, addLog }} />
         </main>
       </div>
     </div>

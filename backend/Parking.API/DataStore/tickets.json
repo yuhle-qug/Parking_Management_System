@@ -1055,5 +1055,47 @@
     "GateId": "GATE-IN-01",
     "CardId": null,
     "TicketType": "Daily"
+  },
+  {
+    "TicketId": "GIN-CAR-01-260116-0012-1471",
+    "IssueTime": "2026-01-16T19:31:10.2049669+07:00",
+    "GateId": "GATE-IN-CAR-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "25CB1737",
+    "IssueTime": "2026-01-17T00:24:52.6143202+07:00",
+    "GateId": "GATE-IN-CAR-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "8495191E",
+    "IssueTime": "2026-01-17T00:25:15.4376616+07:00",
+    "GateId": "GATE-IN-CAR-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "E627C1C5",
+    "IssueTime": "2026-01-17T00:27:21.6290942+07:00",
+    "GateId": "GATE-IN-MOTO-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "75498AF9",
+    "IssueTime": "2026-01-17T00:49:31.849837+07:00",
+    "GateId": "GATE-IN-CAR-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "B6D9FE81",
+    "IssueTime": "2026-01-17T00:53:13.171554+07:00",
+    "GateId": "GATE-IN-MOTO-01",
+    "CardId": null,
+    "TicketType": "Daily"
   }
 ]

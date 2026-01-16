@@ -10,17 +10,15 @@ namespace Parking.Services.Services
     {
         private readonly IParkingSessionRepository _sessionRepo;
         private readonly IPaymentGateway _paymentGateway;
-        private readonly IGateDevice _gateDevice;
 
+        // [OOP - DI]: Inject các thành phần phụ thuộc
         // [OOP - DI]: Inject các thành phần phụ thuộc
         public PaymentService(
             IParkingSessionRepository sessionRepo,
-            IPaymentGateway paymentGateway,
-            IGateDevice gateDevice)
+            IPaymentGateway paymentGateway)
         {
             _sessionRepo = sessionRepo;
             _paymentGateway = paymentGateway;
-            _gateDevice = gateDevice;
         }
 
         public async Task<PaymentResult> ProcessPaymentAsync(string sessionId, double amount, string method, string? exitGateId = null, int maxRetry = 3, int timeoutSeconds = 5)
@@ -71,8 +69,10 @@ namespace Parking.Services.Services
 
                 await _sessionRepo.UpdateAsync(session);
 
-                var gateToOpen = !string.IsNullOrWhiteSpace(exitGateId) ? exitGateId : (!string.IsNullOrWhiteSpace(session.ExitGateId) ? session.ExitGateId : session.Ticket.GateId);
-                await _gateDevice.OpenGateAsync(gateToOpen);
+                // Note: Gate opening is now responsibility of ParkingService (or Controller logic if needed).
+                // Returning success here means payment/fee processing is done.
+                // For "Free" tickets handled by ParkingService.CheckOutAsync, the gate opens there.
+                // If a payment request comes here with 0 amount, we mark it paid.
 
                 return new PaymentResult
                 {
@@ -155,64 +155,6 @@ namespace Parking.Services.Services
                 TransactionCode = payment.TransactionCode,
                 Error = payment.ErrorMessage,
                 Attempts = attempts
-            };
-        }
-
-        public async Task<PaymentResult> ConfirmExternalPaymentAsync(string sessionId, string transactionCode, bool success, string? providerLog = null, string? exitGateId = null)
-        {
-            var session = await _sessionRepo.GetByIdAsync(sessionId);
-            if (session == null) throw new ArgumentException("Session not found");
-
-            var payment = session.Payment ?? new Payment
-            {
-                PaymentId = Guid.NewGuid().ToString(),
-                Amount = session.FeeAmount,
-                Method = "ExternalQR",
-                Time = DateTime.Now,
-                Status = "PendingExternal",
-                TransactionCode = string.IsNullOrWhiteSpace(transactionCode)
-                    ? $"TX-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}"
-                    : transactionCode
-            };
-
-            payment.TransactionCode = string.IsNullOrWhiteSpace(transactionCode) ? payment.TransactionCode : transactionCode;
-            payment.ProviderLog = providerLog;
-            session.AttachPayment(payment);
-
-            if (success)
-            {
-                payment.MarkCompleted();
-                payment.Status = "Completed";
-                payment.ErrorMessage = null;
-                session.Close();
-
-                await _sessionRepo.UpdateAsync(session);
-
-                var gateToOpen = !string.IsNullOrWhiteSpace(exitGateId) ? exitGateId : (!string.IsNullOrWhiteSpace(session.ExitGateId) ? session.ExitGateId : session.Ticket.GateId);
-                await _gateDevice.OpenGateAsync(gateToOpen);
-
-                return new PaymentResult
-                {
-                    Success = true,
-                    Status = payment.Status,
-                    TransactionCode = payment.TransactionCode,
-                    ProviderLog = providerLog,
-                    Attempts = payment.Attempts
-                };
-            }
-
-            payment.Status = "Failed";
-            payment.ErrorMessage = providerLog ?? "Gateway reported failure";
-            await _sessionRepo.UpdateAsync(session);
-
-            return new PaymentResult
-            {
-                Success = false,
-                Status = payment.Status,
-                TransactionCode = payment.TransactionCode,
-                ProviderLog = providerLog,
-                Error = payment.ErrorMessage,
-                Attempts = payment.Attempts
             };
         }
 

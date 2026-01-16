@@ -1,0 +1,53 @@
+@startuml
+skinparam lifelineStrategy solid
+
+actor Attendant
+
+boundary EntryUI
+boundary GateDevice
+control CheckInController
+control MembershipController
+entity ParkingLot
+entity ParkingZone
+entity Vehicle
+entity Ticket
+entity ParkingSession
+
+'===== BẮT ĐẦU CHECK-IN =====
+Attendant -> EntryUI : chọn zone (Normal/Electric) + \n nhập biển số xe
+
+EntryUI -> CheckInController : requestCheckIn(vehicleInfo, gateId, zoneId)
+
+' (optional) kiểm tra vé tháng (nếu hệ thống có)
+CheckInController -> MembershipController : verifyMembershipByCard(plate)
+MembershipController --> CheckInController : membershipInfo
+
+alt Có vé tháng (membershipInfo.hasMonthlyTicket = true)
+    CheckInController -> ParkingSession : createMonthlySession(vehicleInfo, zoneId, now)
+    ParkingSession --> CheckInController : sessionCreated
+    CheckInController -> EntryUI : showTicketInfo("Vé tháng - OK")
+
+else Không có vé tháng
+    ' tạo vé lượt
+    CheckInController -> Ticket : create(gateId, plate, now)
+    Ticket --> CheckInController : ticket
+
+    ' lấy zone theo zoneId (không dùng findZone)
+    CheckInController -> ParkingLot : getZoneById(zoneId)
+    ParkingLot --> CheckInController : zone: ParkingZone
+
+    ' tạo session
+    CheckInController -> ParkingSession : create(vehicleInfo, ticket, zone, now)
+    ParkingSession --> CheckInController : sessionCreated
+
+    CheckInController -> ParkingZone : addSession(sessionCreated)
+    ParkingZone --> CheckInController : added
+    CheckInController -> EntryUI : showTicketInfo(ticket)
+end
+
+' mở cổng cho xe vào
+CheckInController -> GateDevice : openGate(gateId)
+GateDevice --> EntryUI : opened
+EntryUI -> Attendant : "OK, mời xe vào"
+
+@enduml

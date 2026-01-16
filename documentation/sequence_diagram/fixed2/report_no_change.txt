@@ -1,0 +1,52 @@
+@startuml
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+autonumber
+
+actor "Admin" as Admin
+participant ":ReportUI" as UI <<Boundary>>
+participant ":ReportController" as Ctrl <<Control>>
+participant "report:RevenueReport" as Rpt <<Entity>>
+participant ":ParkingSession" as Session <<Entity>>
+
+activate Admin
+
+Admin -> UI: 1. Chọn "Báo cáo Doanh thu"\nvà nhập (startDate, endDate)
+activate UI
+
+UI -> Ctrl: 2. requestReport("REVENUE", startDate, endDate)
+activate Ctrl
+
+    note right of Ctrl
+        Factory Method đơn giản:
+        Dựa vào loại báo cáo để tạo
+        Object tương ứng (Strategy)
+    end note
+
+    Ctrl -> Rpt ** : 3. create(startDate, endDate)
+    activate Rpt
+    
+    Ctrl -> Rpt: 4. generateData()
+    
+        group Logic Tính toán (Business Logic)
+            Rpt -> Session: 5. getCompletedSessions(startDate, endDate)
+            activate Session
+            Session --> Rpt: trả về listSessions
+            deactivate Session
+            
+            loop for each session in listSessions
+                Rpt -> Rpt: calculateTotal(session.fee)
+                Rpt -> Rpt: groupByDate()
+            end
+        end
+
+    Rpt --> Ctrl: 6. trả về reportData (DTO/Model)
+    deactivate Rpt
+
+Ctrl --> UI: 7. hiển thị dữ liệu (renderChart/Table)
+deactivate Ctrl
+
+UI --> Admin: 8. Hiển thị biểu đồ doanh thu
+deactivate UI
+
+@enduml

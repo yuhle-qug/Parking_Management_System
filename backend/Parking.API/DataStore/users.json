@@ -10,16 +10,8 @@
   {
     "$type": "attendant",
     "Role": "ATTENDANT",
-    "UserId": "7530d031-539a-4ad5-a67d-d4d3962d405e",
-    "Username": "admin1",
-    "PasswordHash": "456",
-    "Status": "Active"
-  },
-  {
-    "$type": "attendant",
-    "Role": "ATTENDANT",
-    "UserId": "ca0b9e40-df49-4241-a3c8-ad4dc860a2d0",
-    "Username": "admin123",
+    "UserId": "ec01439b-e68c-4287-bef1-4a134ce0cac5",
+    "Username": "NV1",
     "PasswordHash": "123",
     "Status": "Active"
   }

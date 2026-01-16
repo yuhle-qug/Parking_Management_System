@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Parking.Core.Entities;
 using Parking.Core.Interfaces;
+using System.Threading.Tasks;
 
 namespace Parking.API.Controllers
 {
@@ -11,11 +12,15 @@ namespace Parking.API.Controllers
     {
         private readonly IMembershipService _membershipService;
         private readonly IMonthlyTicketRepository _monthlyTicketRepo;
+        private readonly IPaymentGateway _paymentGateway;
+        private readonly IMembershipPolicyRepository _policyRepo;
 
-        public MembershipController(IMembershipService membershipService, IMonthlyTicketRepository monthlyTicketRepo)
+        public MembershipController(IMembershipService membershipService, IMonthlyTicketRepository monthlyTicketRepo, IMembershipPolicyRepository policyRepo, IPaymentGateway paymentGateway)
         {
             _membershipService = membershipService;
             _monthlyTicketRepo = monthlyTicketRepo;
+            _policyRepo = policyRepo;
+            _paymentGateway = paymentGateway;
         }
 
         [HttpPost("register")]
@@ -23,11 +28,55 @@ namespace Parking.API.Controllers
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(request.PlanId))
+                {
+                    return BadRequest(new { Error = "Thiếu PlanId" });
+                }
+
+                if (request.Months <= 0) request.Months = 1;
+
                 var customer = new Customer { Name = request.Name, Phone = request.Phone, IdentityNumber = request.IdentityNumber };
                 var vehicle = CreateVehicle(request.VehicleType, request.PlateNumber);
 
-                var ticket = await _membershipService.RegisterMonthlyTicketAsync(customer, vehicle, "MONTHLY_PLAN");
-                return Ok(ticket);
+                var ticket = await _membershipService.RegisterMonthlyTicketAsync(customer, vehicle, request.PlanId, request.Months);
+
+                var orderInfo = $"Monthly ticket {ticket.TicketId} - Plate {vehicle.LicensePlate}";
+                var gatewayResult = await _paymentGateway.RequestPaymentAsync(ticket.MonthlyFee, orderInfo);
+
+                if (gatewayResult == null || !gatewayResult.Accepted)
+                {
+                    ticket.PaymentStatus = "Failed";
+                    ticket.Status = "PaymentFailed";
+                    ticket.ProviderLog = gatewayResult?.Error ?? "Gateway từ chối tạo QR";
+                    ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
+                    await _monthlyTicketRepo.UpdateAsync(ticket);
+                    return BadRequest(new { Error = ticket.ProviderLog });
+                }
+
+                ticket.TransactionCode = string.IsNullOrWhiteSpace(gatewayResult.TransactionCode)
+                    ? $"MT-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}"
+                    : gatewayResult.TransactionCode;
+                ticket.PaymentStatus = "PendingExternal";
+                ticket.QrContent = string.IsNullOrWhiteSpace(gatewayResult.PaymentUrl)
+                    ? gatewayResult.QrContent
+                    : gatewayResult.PaymentUrl;
+                ticket.ProviderLog = gatewayResult.ProviderMessage;
+                ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
+
+                await _monthlyTicketRepo.UpdateAsync(ticket);
+
+                return Ok(new
+                {
+                    Ticket = ticket,
+                    Payment = new
+                    {
+                        Amount = ticket.MonthlyFee,
+                        TransactionCode = ticket.TransactionCode,
+                        QrContent = ticket.QrContent,
+                        Status = "PendingPayment",
+                        ProviderLog = ticket.ProviderLog
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -35,12 +84,154 @@ namespace Parking.API.Controllers
             }
         }
 
+        [HttpPost("tickets/{ticketId}/extend")]
+        public async Task<IActionResult> ExtendTicket(string ticketId, [FromBody] ExtendMembershipRequest request)
+        {
+            try
+            {
+                if (request.Months <= 0) request.Months = 1;
+
+                var ticket = await _membershipService.ExtendMonthlyTicketAsync(ticketId, request.Months, request.PerformedBy ?? "staff", request.Note);
+
+                var orderInfo = $"Extend monthly ticket {ticket.TicketId} - Plate {ticket.VehiclePlate}";
+                var gatewayResult = await _paymentGateway.RequestPaymentAsync(ticket.MonthlyFee, orderInfo);
+
+                if (gatewayResult == null || !gatewayResult.Accepted)
+                {
+                    ticket.PaymentStatus = "Failed";
+                    ticket.Status = "PaymentFailed";
+                    ticket.ProviderLog = gatewayResult?.Error ?? "Gateway từ chối tạo QR";
+                    ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
+                    await _monthlyTicketRepo.UpdateAsync(ticket);
+                    return BadRequest(new { Error = ticket.ProviderLog });
+                }
+
+                ticket.TransactionCode = string.IsNullOrWhiteSpace(gatewayResult.TransactionCode)
+                    ? $"MT-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}"
+                    : gatewayResult.TransactionCode;
+                ticket.PaymentStatus = "PendingExternal";
+                ticket.QrContent = string.IsNullOrWhiteSpace(gatewayResult.PaymentUrl)
+                    ? gatewayResult.QrContent
+                    : gatewayResult.PaymentUrl;
+                ticket.ProviderLog = gatewayResult.ProviderMessage;
+                ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
+
+                await _monthlyTicketRepo.UpdateAsync(ticket);
+
+                return Ok(new
+                {
+                    Ticket = ticket,
+                    Payment = new
+                    {
+                        Amount = ticket.MonthlyFee,
+                        TransactionCode = ticket.TransactionCode,
+                        QrContent = ticket.QrContent,
+                        Status = "PendingPayment",
+                        ProviderLog = ticket.ProviderLog
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+        }
+
+        [HttpPost("confirm-payment")]
+        public async Task<IActionResult> ConfirmPayment([FromBody] ConfirmMembershipPaymentRequest request)
+        {
+            var ticket = await _monthlyTicketRepo.GetByIdAsync(request.TicketId);
+            if (ticket == null)
+            {
+                return NotFound(new { Error = "Không tìm thấy vé tháng" });
+            }
+
+            var success = string.Equals(request.Status, "SUCCESS", StringComparison.OrdinalIgnoreCase);
+
+            ticket.Status = success ? "Active" : "PaymentFailed";
+            ticket.PaymentStatus = success ? "Completed" : "Failed";
+            ticket.TransactionCode = string.IsNullOrWhiteSpace(request.TransactionCode)
+                ? ticket.TransactionCode
+                : request.TransactionCode;
+            ticket.ProviderLog = request.ProviderLog ?? ticket.ProviderLog;
+            ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
+
+            if (ticket.Status == "Active" && ticket.StartDate > DateTime.Now)
+            {
+                ticket.StartDate = DateTime.Now;
+            }
+
+            await _monthlyTicketRepo.UpdateAsync(ticket);
+
+            return Ok(new
+            {
+                Message = "Đã ghi nhận thanh toán vé tháng",
+                TicketId = ticket.TicketId,
+                Status = ticket.Status,
+                TransactionCode = request.TransactionCode,
+                ProviderLog = request.ProviderLog
+            });
+        }
+
+        [HttpPost("payment-callback")]
+        public async Task<IActionResult> PaymentCallback([FromBody] MembershipPaymentCallbackRequest request)
+        {
+            var ticket = await _monthlyTicketRepo.GetByIdAsync(request.TicketId);
+            if (ticket == null)
+            {
+                return NotFound(new { Error = "Không tìm thấy vé tháng" });
+            }
+
+            var success = string.Equals(request.Status, "SUCCESS", StringComparison.OrdinalIgnoreCase);
+
+            ticket.Status = success ? "Active" : "PaymentFailed";
+            ticket.PaymentStatus = success ? "Completed" : "Failed";
+            ticket.TransactionCode = string.IsNullOrWhiteSpace(request.TransactionCode)
+                ? ticket.TransactionCode
+                : request.TransactionCode;
+            ticket.ProviderLog = request.ProviderLog ?? ticket.ProviderLog;
+            ticket.PaymentAttempts = ticket.PaymentAttempts + 1;
+
+            if (ticket.Status == "Active" && ticket.StartDate > DateTime.Now)
+            {
+                ticket.StartDate = DateTime.Now;
+            }
+
+            await _monthlyTicketRepo.UpdateAsync(ticket);
+
+            return Ok(new
+            {
+                Message = "Đã ghi nhận callback thanh toán vé tháng",
+                Ticket = ticket
+            });
+        }
+
         // DELETE: api/Membership/tickets/{ticketId}
         [HttpDelete("tickets/{ticketId}")]
         public async Task<IActionResult> DeleteTicket(string ticketId)
         {
-            await _monthlyTicketRepo.DeleteAsync(ticketId);
-            return Ok(new { Message = "Deleted" });
+            return BadRequest(new { Error = "Xóa vé tháng bị vô hiệu, hãy dùng hủy (cancel)." });
+        }
+
+        [HttpPost("tickets/{ticketId}/cancel")]
+        public async Task<IActionResult> CancelTicket(string ticketId, [FromBody] CancelMembershipRequest request)
+        {
+            try
+            {
+                var ticket = await _membershipService.CancelMonthlyTicketAsync(ticketId, request.PerformedBy ?? "staff", request.Note);
+                return Ok(new { Message = "Đã hủy vé tháng", Ticket = ticket });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+        }
+
+        [HttpGet("tickets/{ticketId}/history")]
+        public async Task<IActionResult> GetHistory(string ticketId)
+        {
+            var history = await _membershipService.GetHistoryAsync(ticketId);
+            return Ok(history);
         }
 
         // [NEW] GET: api/Membership/tickets
@@ -57,6 +248,45 @@ namespace Parking.API.Controllers
         {
             var policies = await _membershipService.GetAllPoliciesAsync();
             return Ok(policies);
+        }
+
+        [HttpPost("policies")]
+        public async Task<IActionResult> CreatePolicy([FromBody] MembershipPolicy policy)
+        {
+            if (string.IsNullOrWhiteSpace(policy.PolicyId)) return BadRequest(new { Error = "PolicyId bắt buộc" });
+            if (string.IsNullOrWhiteSpace(policy.VehicleType)) return BadRequest(new { Error = "VehicleType bắt buộc" });
+            if (policy.MonthlyPrice <= 0) return BadRequest(new { Error = "MonthlyPrice phải > 0" });
+
+            var existing = await _policyRepo.GetPolicyAsync(policy.PolicyId);
+            if (existing != null) return Conflict(new { Error = "PolicyId đã tồn tại" });
+
+            policy.VehicleType = policy.VehicleType.ToUpperInvariant();
+            await _policyRepo.AddAsync(policy);
+            return Ok(policy);
+        }
+
+        [HttpPut("policies/{policyId}")]
+        public async Task<IActionResult> UpdatePolicy(string policyId, [FromBody] MembershipPolicy policy)
+        {
+            var existing = await _policyRepo.GetPolicyAsync(policyId);
+            if (existing == null) return NotFound(new { Error = "Không tìm thấy policy" });
+
+            if (policy.MonthlyPrice <= 0) return BadRequest(new { Error = "MonthlyPrice phải > 0" });
+            policy.PolicyId = policyId;
+            policy.VehicleType = string.IsNullOrWhiteSpace(policy.VehicleType) ? existing.VehicleType : policy.VehicleType.ToUpperInvariant();
+
+            await _policyRepo.UpdateAsync(policy);
+            return Ok(policy);
+        }
+
+        [HttpDelete("policies/{policyId}")]
+        public async Task<IActionResult> DeletePolicy(string policyId)
+        {
+            var existing = await _policyRepo.GetPolicyAsync(policyId);
+            if (existing == null) return NotFound(new { Error = "Không tìm thấy policy" });
+
+            await _policyRepo.DeleteAsync(policyId);
+            return Ok(new { Message = "Đã xóa" });
         }
 
         private static Vehicle CreateVehicle(string type, string plate)
@@ -82,5 +312,36 @@ namespace Parking.API.Controllers
         public string IdentityNumber { get; set; }
         public string PlateNumber { get; set; }
         public string VehicleType { get; set; }
+        public string PlanId { get; set; }
+        public int Months { get; set; }
+    }
+
+    public class ConfirmMembershipPaymentRequest
+    {
+        public string TicketId { get; set; }
+        public string Status { get; set; } = "SUCCESS"; // SUCCESS/FAILED
+        public string TransactionCode { get; set; }
+        public string? ProviderLog { get; set; }
+    }
+
+    public class MembershipPaymentCallbackRequest
+    {
+        public string TicketId { get; set; }
+        public string TransactionCode { get; set; }
+        public string Status { get; set; }
+        public string? ProviderLog { get; set; }
+    }
+
+    public class ExtendMembershipRequest
+    {
+        public int Months { get; set; }
+        public string? PerformedBy { get; set; }
+        public string? Note { get; set; }
+    }
+
+    public class CancelMembershipRequest
+    {
+        public string? PerformedBy { get; set; }
+        public string? Note { get; set; }
     }
 }

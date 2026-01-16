@@ -12,9 +12,21 @@
     "MonthlyPrice": 120000
   },
   {
+    "PolicyId": "P-ELEC-MOTO",
+    "Name": "Monthly Electric Motorbike",
+    "VehicleType": "ELECTRIC_MOTORBIKE",
+    "MonthlyPrice": 120000
+  },
+  {
     "PolicyId": "P-ELEC",
     "Name": "Monthly Electric Car",
     "VehicleType": "ELECTRIC_CAR",
     "MonthlyPrice": 1000000
+  },
+  {
+    "PolicyId": "P-BIKE",
+    "Name": "Monthly Bicycle",
+    "VehicleType": "BICYCLE",
+    "MonthlyPrice": 80000
   }
 ]

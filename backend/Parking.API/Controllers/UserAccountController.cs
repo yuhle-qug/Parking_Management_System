@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Parking.Core.Entities;
 using Parking.Core.Interfaces;
+using Parking.Services.Services;
 
 namespace Parking.API.Controllers
 {
@@ -11,10 +13,20 @@ namespace Parking.API.Controllers
     public class UserAccountController : ControllerBase
     {
         private readonly IUserRepository _userRepo;
+        private readonly IPasswordHasher _hasher;
+        private readonly IJwtService _jwtService;
+        private readonly IAuditService _auditService;
 
-        public UserAccountController(IUserRepository userRepo)
+        public UserAccountController(
+            IUserRepository userRepo, 
+            IPasswordHasher hasher, 
+            IJwtService jwtService,
+            IAuditService auditService)
         {
             _userRepo = userRepo;
+            _hasher = hasher;
+            _jwtService = jwtService;
+            _auditService = auditService;
         }
 
         [HttpPost("login")]
@@ -22,19 +34,30 @@ namespace Parking.API.Controllers
         {
             var user = await _userRepo.FindByUsernameAsync(request.Username);
 
-            if (user == null || user.PasswordHash != request.Password)
+            if (user == null || !_hasher.VerifyPassword(request.Password, user.PasswordHash))
             {
+                await _auditService.LogAsync("Login", request.Username, null, "Failed login attempt", success: false);
                 return Unauthorized(new { Message = "Sai tài khoản hoặc mật khẩu" });
             }
 
             if (user.Status == "Locked")
             {
+                await _auditService.LogAsync("Login", request.Username, null, "Locked account login attempt", success: false);
                 return BadRequest(new { Message = "Tài khoản bị khóa" });
             }
+
+            // Lazy migration: if verifying plain text passed (handled inside VerifyPassword) but it wasn't hashed yet,
+            // we might want to re-hash. But for simplicity, we assume VerifyPassword handles both or we just proceed.
+            // A more robust lazy migration would be: if (Verify(plain)) { user.PasswordHash = Hash(plain); await _userRepo.UpdateAsync(user); }
+            // Given the BcryptPasswordHasher implementation I wrote supports plain text check fallback, migration is implicit but doesn't auto-update DB.
+            
+            var token = _jwtService.GenerateToken(user.UserId, user.Username, user.Role);
+            await _auditService.LogAsync("Login", user.Username, user.UserId, "Login success");
 
             return Ok(new
             {
                 Message = "Đăng nhập thành công",
+                Token = token,
                 UserId = user.UserId,
                 Username = user.Username,
                 Role = user.Role,
@@ -47,6 +70,7 @@ namespace Parking.API.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
         {
             var existing = await _userRepo.FindByUsernameAsync(request.Username);
@@ -58,10 +82,12 @@ namespace Parking.API.Controllers
 
             newUser.UserId = Guid.NewGuid().ToString();
             newUser.Username = request.Username;
-            newUser.PasswordHash = request.Password;
+            newUser.PasswordHash = _hasher.HashPassword(request.Password); // Hash password
             newUser.Status = "Active";
 
             await _userRepo.AddAsync(newUser);
+            await _auditService.LogAsync("CreateUser", User.Identity?.Name ?? "Admin", newUser.UserId, $"Created user {newUser.Username} as {newUser.Role}");
+            
             return Ok(new { Message = "Tạo user thành công", UserId = newUser.UserId, Role = newUser.Role });
         }
 

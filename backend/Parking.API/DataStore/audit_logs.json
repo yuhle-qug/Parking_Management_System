@@ -1,0 +1,74 @@
+[
+  {
+    "LogId": "e5c39d47-5c69-4f1c-ad28-01e44cba88f4",
+    "Timestamp": "2026-01-16T09:21:28.5679328+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "bc5998d1-948d-4d2b-8736-2ce7147342f1",
+    "Timestamp": "2026-01-16T09:21:54.5601298+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "e41fee24-b7db-4deb-84fa-f8768e5ef536",
+    "Timestamp": "2026-01-16T09:22:20.5239531+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "9b00a17e-1f9c-4555-850a-2bdc5e3e3e8b",
+    "Timestamp": "2026-01-16T09:28:08.1613383+07:00",
+    "Action": "Login",
+    "Username": "NV1",
+    "ReferenceId": "ec01439b-e68c-4287-bef1-4a134ce0cac5",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "2cea9242-1f0d-4fc3-a74c-8907939ed528",
+    "Timestamp": "2026-01-16T11:19:59.3838248+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "db66e5af-a58d-4af6-874f-4e09f3d81250",
+    "Timestamp": "2026-01-16T11:25:57.2825445+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "97cf66fd-6675-4dd4-ac3e-4fe1fe9ac9b5",
+    "Timestamp": "2026-01-16T11:26:00.6863116+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
+    "Details": "Login success",
+    "Success": true
+  },
+  {
+    "LogId": "2da7ec3a-5e79-4a34-9988-bc37ea563d76",
+    "Timestamp": "2026-01-16T14:33:18.3677377+07:00",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
+    "Details": "Login success",
+    "Success": true
+  }
+]

@@ -33,7 +33,7 @@ namespace Parking.API.Controllers
                     LostPenalty = lostPenalty,
                     IsLostTicket = false,
                     SessionId = session.SessionId,
-                    LicensePlate = session.Vehicle.LicensePlate
+                    LicensePlate = session.Vehicle.LicensePlate?.Value
                 });
             }
             catch (Exception ex)
@@ -64,7 +64,7 @@ namespace Parking.API.Controllers
                     LostPenalty = lostPenalty,
                     IsLostTicket = true,
                     SessionId = session.SessionId,
-                    LicensePlate = session.Vehicle.LicensePlate,
+                    LicensePlate = session.Vehicle.LicensePlate?.Value,
                     ReportFilePath = reportPath,
                     ReportUrl = reportUrl
                 });

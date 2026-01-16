@@ -1,7 +1,18 @@
 [
   {
-    "IncidentId": "INC-451119",
-    "ReportedDate": "2026-01-16T05:13:57.6115583+07:00",
+    "IncidentId": "INC-9143E3",
+    "ReportedDate": "2026-01-15T17:34:36.639Z",
+    "Type": null,
+    "Title": "Barrier Fail",
+    "Description": "Barrier Fail detected at gate.",
+    "Status": "Resolved",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": "Fixed by restarting device"
+  },
+  {
+    "IncidentId": "INC-9A6D0F",
+    "ReportedDate": "2026-01-14T11:51:07.908Z",
     "Type": null,
     "Title": "Lost Ticket",
     "Description": "Lost Ticket detected at gate.",
@@ -11,30 +22,140 @@
     "ResolutionNotes": null
   },
   {
-    "IncidentId": "INC-C7F5B1",
-    "ReportedDate": "2026-01-16T09:13:57.6115583+07:00",
-    "Type": null,
-    "Title": "Lost Ticket",
-    "Description": "Lost Ticket detected at gate.",
-    "Status": "Open",
-    "ReportedBy": "System",
-    "ReferenceId": null,
-    "ResolutionNotes": null
-  },
-  {
-    "IncidentId": "INC-D02C45",
-    "ReportedDate": "2026-01-14T19:13:57.6115583+07:00",
+    "IncidentId": "INC-E2AF38",
+    "ReportedDate": "2026-01-14T08:09:24.169Z",
     "Type": null,
     "Title": "Payment Error",
     "Description": "Payment Error detected at gate.",
     "Status": "Resolved",
     "ReportedBy": "System",
     "ReferenceId": null,
+    "ResolutionNotes": "Fixed by restarting device"
+  },
+  {
+    "IncidentId": "INC-07EAF1",
+    "ReportedDate": "2026-01-14T06:39:05.391Z",
+    "Type": null,
+    "Title": "Barrier Fail",
+    "Description": "Barrier Fail detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
     "ResolutionNotes": null
   },
   {
-    "IncidentId": "INC-BD6832",
-    "ReportedDate": "2026-01-16T07:13:57.6115583+07:00",
+    "IncidentId": "INC-F635A3",
+    "ReportedDate": "2026-01-12T17:21:40.271Z",
+    "Type": null,
+    "Title": "Barrier Fail",
+    "Description": "Barrier Fail detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-56EEFE",
+    "ReportedDate": "2026-01-12T00:10:47.219Z",
+    "Type": null,
+    "Title": "Barrier Fail",
+    "Description": "Barrier Fail detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-144650",
+    "ReportedDate": "2026-01-11T17:23:37.690Z",
+    "Type": null,
+    "Title": "Lost Ticket",
+    "Description": "Lost Ticket detected at gate.",
+    "Status": "Resolved",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": "Fixed by restarting device"
+  },
+  {
+    "IncidentId": "INC-0B9D15",
+    "ReportedDate": "2026-01-11T08:04:05.853Z",
+    "Type": null,
+    "Title": "Payment Error",
+    "Description": "Payment Error detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-9E52C7",
+    "ReportedDate": "2026-01-10T21:09:19.997Z",
+    "Type": null,
+    "Title": "Payment Error",
+    "Description": "Payment Error detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-D03E5C",
+    "ReportedDate": "2026-01-07T00:51:37.134Z",
+    "Type": null,
+    "Title": "Payment Error",
+    "Description": "Payment Error detected at gate.",
+    "Status": "Resolved",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": "Fixed by restarting device"
+  },
+  {
+    "IncidentId": "INC-BFAF7C",
+    "ReportedDate": "2026-01-06T19:30:33.546Z",
+    "Type": null,
+    "Title": "Camera Offline",
+    "Description": "Camera Offline detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-9DA719",
+    "ReportedDate": "2026-01-06T04:04:25.429Z",
+    "Type": null,
+    "Title": "Camera Offline",
+    "Description": "Camera Offline detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-AD532C",
+    "ReportedDate": "2026-01-05T06:27:28.027Z",
+    "Type": null,
+    "Title": "Camera Offline",
+    "Description": "Camera Offline detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-A7E560",
+    "ReportedDate": "2026-01-05T04:33:53.197Z",
+    "Type": null,
+    "Title": "Lost Ticket",
+    "Description": "Lost Ticket detected at gate.",
+    "Status": "Resolved",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": "Fixed by restarting device"
+  },
+  {
+    "IncidentId": "INC-05198A",
+    "ReportedDate": "2026-01-04T22:02:11.480Z",
     "Type": null,
     "Title": "Lost Ticket",
     "Description": "Lost Ticket detected at gate.",
@@ -44,30 +165,19 @@
     "ResolutionNotes": null
   },
   {
-    "IncidentId": "INC-0F4CD4",
-    "ReportedDate": "2026-01-16T08:13:57.6115583+07:00",
+    "IncidentId": "INC-35DC3B",
+    "ReportedDate": "2026-01-04T17:45:32.680Z",
     "Type": null,
-    "Title": "Barrier Fail",
-    "Description": "Barrier Fail detected at gate.",
+    "Title": "Payment Error",
+    "Description": "Payment Error detected at gate.",
     "Status": "Resolved",
     "ReportedBy": "System",
     "ReferenceId": null,
-    "ResolutionNotes": null
+    "ResolutionNotes": "Fixed by restarting device"
   },
   {
-    "IncidentId": "INC-3CBDB2",
-    "ReportedDate": "2026-01-16T09:13:57.6115583+07:00",
-    "Type": null,
-    "Title": "Barrier Fail",
-    "Description": "Barrier Fail detected at gate.",
-    "Status": "Resolved",
-    "ReportedBy": "System",
-    "ReferenceId": null,
-    "ResolutionNotes": null
-  },
-  {
-    "IncidentId": "INC-E36C76",
-    "ReportedDate": "2026-01-16T10:13:57.6115583+07:00",
+    "IncidentId": "INC-BDB43D",
+    "ReportedDate": "2026-01-04T05:21:29.516Z",
     "Type": null,
     "Title": "Lost Ticket",
     "Description": "Lost Ticket detected at gate.",
@@ -77,47 +187,91 @@
     "ResolutionNotes": null
   },
   {
-    "IncidentId": "INC-60094B",
-    "ReportedDate": "2026-01-15T08:13:57.6115583+07:00",
+    "IncidentId": "INC-D96F81",
+    "ReportedDate": "2026-01-04T04:31:28.112Z",
+    "Type": null,
+    "Title": "Camera Offline",
+    "Description": "Camera Offline detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-B2C1BB",
+    "ReportedDate": "2026-01-03T17:16:04.808Z",
+    "Type": null,
+    "Title": "Barrier Fail",
+    "Description": "Barrier Fail detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": null
+  },
+  {
+    "IncidentId": "INC-8137BB",
+    "ReportedDate": "2026-01-03T09:31:12.064Z",
     "Type": null,
     "Title": "Barrier Fail",
     "Description": "Barrier Fail detected at gate.",
     "Status": "Resolved",
     "ReportedBy": "System",
     "ReferenceId": null,
+    "ResolutionNotes": "Fixed by restarting device"
+  },
+  {
+    "IncidentId": "INC-274F41",
+    "ReportedDate": "2026-01-02T23:19:12.110Z",
+    "Type": null,
+    "Title": "Barrier Fail",
+    "Description": "Barrier Fail detected at gate.",
+    "Status": "Resolved",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": "Fixed by restarting device"
+  },
+  {
+    "IncidentId": "INC-93838B",
+    "ReportedDate": "2026-01-02T21:06:51.353Z",
+    "Type": null,
+    "Title": "Payment Error",
+    "Description": "Payment Error detected at gate.",
+    "Status": "Open",
+    "ReportedBy": "System",
+    "ReferenceId": null,
     "ResolutionNotes": null
   },
   {
-    "IncidentId": "INC-F3A4C2",
-    "ReportedDate": "2026-01-15T13:13:57.6115583+07:00",
+    "IncidentId": "INC-44411A",
+    "ReportedDate": "2026-01-02T00:37:21.053Z",
+    "Type": null,
+    "Title": "Barrier Fail",
+    "Description": "Barrier Fail detected at gate.",
+    "Status": "Resolved",
+    "ReportedBy": "System",
+    "ReferenceId": null,
+    "ResolutionNotes": "Fixed by restarting device"
+  },
+  {
+    "IncidentId": "INC-CF947D",
+    "ReportedDate": "2026-01-01T16:09:30.226Z",
     "Type": null,
     "Title": "Lost Ticket",
     "Description": "Lost Ticket detected at gate.",
     "Status": "Resolved",
     "ReportedBy": "System",
     "ReferenceId": null,
-    "ResolutionNotes": null
+    "ResolutionNotes": "Fixed by restarting device"
   },
   {
-    "IncidentId": "INC-79D99C",
-    "ReportedDate": "2026-01-15T04:13:57.6115583+07:00",
+    "IncidentId": "INC-83B11B",
+    "ReportedDate": "2026-01-01T13:06:47.352Z",
     "Type": null,
-    "Title": "Barrier Fail",
-    "Description": "Barrier Fail detected at gate.",
-    "Status": "Open",
+    "Title": "Camera Offline",
+    "Description": "Camera Offline detected at gate.",
+    "Status": "Resolved",
     "ReportedBy": "System",
     "ReferenceId": null,
-    "ResolutionNotes": null
-  },
-  {
-    "IncidentId": "INC-D09513A3",
-    "ReportedDate": "2026-01-16T15:45:06.0605837+07:00",
-    "Type": null,
-    "Title": "M\u1EA5t v\u00E9 - 50A-2678728",
-    "Description": "Gate GATE-OUT-01, lo\u1EA1i xe CAR, ph\u00ED c\u01A1 b\u1EA3n 12000, ph\u1EE5 thu m\u1EA5t v\u00E9 200000, t\u1ED5ng 212000. ",
-    "Status": "Open",
-    "ReportedBy": "GATE-OUT-01",
-    "ReferenceId": "200FF66F",
-    "ResolutionNotes": null
+    "ResolutionNotes": "Fixed by restarting device"
   }
 ]

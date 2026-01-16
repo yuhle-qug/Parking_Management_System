@@ -27,9 +27,15 @@ namespace Parking.API.Controllers
         {
             try
             {
-                var session = await _parkingService.CheckInAsync(request.PlateNumber, request.VehicleType, request.GateId, request.CardId);
+                // [Validation]: Validate using Domain Value Object -> Fixes Primitive Obsession
+                // If invalid, Create() throws ArgumentException which is caught below.
+                var licensePlate = Parking.Core.ValueObjects.LicensePlate.Create(request.PlateNumber);
 
-                var isMonthly = session.Ticket.TicketId.StartsWith("M-");
+                var session = await _parkingService.CheckInAsync(licensePlate.Value, request.VehicleType, request.GateId, request.CardId);
+                
+                // Check if it's monthly (don't print ticket)
+                // Logic: TicketType="Monthly" OR Legacy StartsWith("M-")
+                var isMonthly = session.Ticket.TicketType == "Monthly" || session.Ticket.TicketId.StartsWith("M-");
                 var shouldPrint = !isMonthly;
 
                 var print = shouldPrint

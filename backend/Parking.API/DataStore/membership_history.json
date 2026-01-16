@@ -1,42 +1,12 @@
 [
   {
-    "HistoryId": "87610f0f-106b-47ca-b699-fd81b8cd6b5e",
-    "TicketId": "M-526619FE",
+    "HistoryId": "759b6239-37cb-4af0-be21-3b71c7bbf96e",
+    "TicketId": "7736B027AD99C029",
     "Action": "Register",
-    "Months": 12,
-    "Amount": 15300000,
-    "PerformedBy": "L\u00EA Quang Huy",
-    "Time": "2026-01-16T11:59:38.0003639+07:00",
-    "Note": "Plan P-CAR"
-  },
-  {
-    "HistoryId": "0310e958-3ddf-4cd2-b3cf-0087bdf3a29f",
-    "TicketId": "M-45D4C798",
-    "Action": "Extend",
-    "Months": 1,
-    "Amount": 1000000,
-    "PerformedBy": "staff",
-    "Time": "2026-01-16T15:46:02.0650144+07:00",
-    "Note": "Gia h\u1EA1n 1 th\u00E1ng"
-  },
-  {
-    "HistoryId": "584330a9-074a-4be2-852b-5188141f86cb",
-    "TicketId": "M-45D4C798",
-    "Action": "Extend",
-    "Months": 1,
-    "Amount": 1000000,
-    "PerformedBy": "staff",
-    "Time": "2026-01-16T15:46:02.5803695+07:00",
-    "Note": "Gia h\u1EA1n 1 th\u00E1ng"
-  },
-  {
-    "HistoryId": "3fffec93-2e00-43df-b1b2-a5eef7bc09ad",
-    "TicketId": "M-45D4C798",
-    "Action": "Extend",
-    "Months": 12,
-    "Amount": 10200000,
-    "PerformedBy": "staff",
-    "Time": "2026-01-16T15:46:20.0264202+07:00",
-    "Note": "Gia h\u1EA1n 12 th\u00E1ng"
+    "Months": 6,
+    "Amount": 648000,
+    "PerformedBy": "l\u00EA quang huy",
+    "Time": "2026-01-16T16:26:32.0557135+07:00",
+    "Note": "Plan P-MOTO - Generated Card: 7736B027AD99C029"
   }
 ]

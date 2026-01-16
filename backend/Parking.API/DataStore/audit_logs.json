@@ -1,272 +1,722 @@
 [
   {
-    "LogId": "e5c39d47-5c69-4f1c-ad28-01e44cba88f4",
-    "Timestamp": "2026-01-16T09:21:28.5679328+07:00",
+    "LogId": "9dc2ab5c-a7c0-47f5-9df2-99fb08fb8338",
+    "Timestamp": "2026-01-16T08:58:26.101Z",
     "Action": "Login",
     "Username": "admin",
-    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
-    "Details": "Login success",
+    "ReferenceId": "f9814803-a1b0-4e93-9c53-94822addbc8c",
+    "Details": "Login successful",
     "Success": true
   },
   {
-    "LogId": "bc5998d1-948d-4d2b-8736-2ce7147342f1",
-    "Timestamp": "2026-01-16T09:21:54.5601298+07:00",
+    "LogId": "8c647121-da0c-4179-b88f-708372d8d0dd",
+    "Timestamp": "2026-01-16T07:47:45.795Z",
     "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
-    "Details": "Login success",
+    "Username": "staff01",
+    "ReferenceId": "c73318ce-ebbc-42b0-a13d-fff68622e183",
+    "Details": "Login successful",
     "Success": true
   },
   {
-    "LogId": "e41fee24-b7db-4deb-84fa-f8768e5ef536",
-    "Timestamp": "2026-01-16T09:22:20.5239531+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
-    "Details": "Login success",
-    "Success": true
-  },
-  {
-    "LogId": "9b00a17e-1f9c-4555-850a-2bdc5e3e3e8b",
-    "Timestamp": "2026-01-16T09:28:08.1613383+07:00",
-    "Action": "Login",
-    "Username": "NV1",
-    "ReferenceId": "ec01439b-e68c-4287-bef1-4a134ce0cac5",
-    "Details": "Login success",
-    "Success": true
-  },
-  {
-    "LogId": "2cea9242-1f0d-4fc3-a74c-8907939ed528",
-    "Timestamp": "2026-01-16T11:19:59.3838248+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
-    "Details": "Login success",
-    "Success": true
-  },
-  {
-    "LogId": "db66e5af-a58d-4af6-874f-4e09f3d81250",
-    "Timestamp": "2026-01-16T11:25:57.2825445+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
-    "Details": "Login success",
-    "Success": true
-  },
-  {
-    "LogId": "97cf66fd-6675-4dd4-ac3e-4fe1fe9ac9b5",
-    "Timestamp": "2026-01-16T11:26:00.6863116+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
-    "Details": "Login success",
-    "Success": true
-  },
-  {
-    "LogId": "2da7ec3a-5e79-4a34-9988-bc37ea563d76",
-    "Timestamp": "2026-01-16T14:33:18.3677377+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": "7ba6b30f-3c9a-496e-8638-ca9810e9aeab",
-    "Details": "Login success",
-    "Success": true
-  },
-  {
-    "LogId": "6fdabe00-c11c-49f1-b041-25b992246c79",
-    "Timestamp": "2026-01-16T15:28:41.0356134+07:00",
-    "Action": "Login",
+    "LogId": "ca7757b7-c5bf-4375-b676-5ebc890f207b",
+    "Timestamp": "2026-01-16T07:47:26.107Z",
+    "Action": "UpdatePolicy",
     "Username": "admin",
     "ReferenceId": null,
-    "Details": "Failed login attempt",
+    "Details": "UpdatePolicy failed",
     "Success": false
   },
   {
-    "LogId": "615ee4fd-2586-49c1-a112-6b84a468ade8",
-    "Timestamp": "2026-01-16T15:28:44.411915+07:00",
+    "LogId": "4150fad0-9a78-4aa2-89b3-4ce570c5bafc",
+    "Timestamp": "2026-01-16T07:22:46.642Z",
+    "Action": "CreateUser",
+    "Username": "admin",
+    "ReferenceId": "9b09e2b0-9d9f-4179-8585-b93249f00c7f",
+    "Details": "CreateUser successful",
+    "Success": true
+  },
+  {
+    "LogId": "93301981-f4a7-441c-bb88-6832be2a1d38",
+    "Timestamp": "2026-01-16T06:41:50.196Z",
+    "Action": "UpdatePolicy",
+    "Username": "manager",
+    "ReferenceId": "3236562e-9585-4bf8-a70c-1b8b677d4ed7",
+    "Details": "UpdatePolicy successful",
+    "Success": true
+  },
+  {
+    "LogId": "9d0863fa-8807-4ac9-a069-0cd3de2fec67",
+    "Timestamp": "2026-01-16T03:53:47.037Z",
     "Action": "Login",
     "Username": "admin",
+    "ReferenceId": "9a9e176e-15b8-492a-975b-ee62f4606d38",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "169b6951-b7e8-41bd-b685-126776efc324",
+    "Timestamp": "2026-01-15T20:41:02.786Z",
+    "Action": "UpdatePolicy",
+    "Username": "admin",
     "ReferenceId": null,
-    "Details": "Failed login attempt",
+    "Details": "UpdatePolicy failed",
     "Success": false
   },
   {
-    "LogId": "e91a55f1-f820-4b7f-98e0-0430501408f0",
-    "Timestamp": "2026-01-16T15:30:37.5125575+07:00",
+    "LogId": "cb803420-73ee-4036-bfd4-a920f4e03ecb",
+    "Timestamp": "2026-01-15T19:45:19.010Z",
+    "Action": "Logout",
+    "Username": "admin",
+    "ReferenceId": "bb671293-54bd-4f3b-bb0c-8c8dad12bdd9",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "a91f3a47-c9f2-4274-ad7d-070ca2550225",
+    "Timestamp": "2026-01-15T19:04:21.986Z",
     "Action": "Login",
+    "Username": "staff01",
+    "ReferenceId": "f42d0b31-7025-4611-843f-698491889f10",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "37e28e60-32c6-4e68-9460-1ad0f06ce810",
+    "Timestamp": "2026-01-15T17:25:41.963Z",
+    "Action": "Login",
+    "Username": "manager",
+    "ReferenceId": "deab06c5-9d97-4535-a7fe-0a71ea527d79",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "7c19fb46-8b66-4755-938c-9e51c07f50a0",
+    "Timestamp": "2026-01-15T13:59:53.765Z",
+    "Action": "Logout",
     "Username": "admin",
     "ReferenceId": null,
-    "Details": "Failed login attempt",
+    "Details": "Logout failed",
     "Success": false
   },
   {
-    "LogId": "e5c22d80-1409-470d-9dd3-f9022cbbf4f5",
-    "Timestamp": "2026-01-16T15:30:59.8036091+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "LogId": "b94bf3b6-e565-4563-a3a1-98658021c0cc",
+    "Timestamp": "2026-01-14T22:13:47.278Z",
+    "Action": "CreateUser",
+    "Username": "manager",
+    "ReferenceId": "85424219-5d88-427b-b9bd-fcc3f9d9ac3a",
+    "Details": "CreateUser successful",
+    "Success": true
   },
   {
-    "LogId": "2a300131-4db8-44ef-b999-5278942746ae",
-    "Timestamp": "2026-01-16T15:31:00.8097001+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "LogId": "1e1c19ef-61d6-431a-a07b-31be0a8a60c4",
+    "Timestamp": "2026-01-14T20:54:06.434Z",
+    "Action": "OpenGate",
+    "Username": "manager",
+    "ReferenceId": "1ba76f9f-6af2-41ff-8b8a-c07ac89f4884",
+    "Details": "OpenGate successful",
+    "Success": true
   },
   {
-    "LogId": "96343008-41d6-422a-b1db-0c8ea27a05ec",
-    "Timestamp": "2026-01-16T15:31:30.1199282+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "LogId": "7794b972-d483-4ece-9920-9df893447532",
+    "Timestamp": "2026-01-14T11:08:33.578Z",
+    "Action": "OpenGate",
+    "Username": "staff02",
+    "ReferenceId": "e8ea6461-4a15-4199-a6f5-b8d01204d75c",
+    "Details": "OpenGate successful",
+    "Success": true
   },
   {
-    "LogId": "f50b0d48-a1dd-429a-97cb-cbd29323a982",
-    "Timestamp": "2026-01-16T15:31:34.9818314+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
-  },
-  {
-    "LogId": "e07a0c3a-3409-4d2d-9e6f-80426adef760",
-    "Timestamp": "2026-01-16T15:31:55.7866345+07:00",
+    "LogId": "5f3c9bdf-3966-4c66-89cc-336b9ff9deef",
+    "Timestamp": "2026-01-14T08:07:32.877Z",
     "Action": "Login",
     "Username": "staff01",
     "ReferenceId": null,
-    "Details": "Failed login attempt",
+    "Details": "Login failed",
     "Success": false
   },
   {
-    "LogId": "20a9ddd5-46b5-4432-ab2d-4955dc918bf3",
-    "Timestamp": "2026-01-16T15:37:36.879476+07:00",
+    "LogId": "acb024f0-a381-4592-a850-f15c5f17095b",
+    "Timestamp": "2026-01-14T03:19:02.053Z",
+    "Action": "Logout",
+    "Username": "staff02",
+    "ReferenceId": "076c3706-b628-4424-8f7f-0d4b18b9dc27",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "b73aa661-460e-492c-8396-784c75bb631f",
+    "Timestamp": "2026-01-13T23:45:41.485Z",
+    "Action": "OpenGate",
+    "Username": "staff02",
+    "ReferenceId": "35e4b49e-1605-4f71-9643-40886bacaf02",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "8c254d32-29ee-40b4-8ebf-f6602d28c8e5",
+    "Timestamp": "2026-01-13T23:18:29.074Z",
+    "Action": "UpdatePolicy",
+    "Username": "manager",
+    "ReferenceId": "ec6cf5ab-ae2e-4bb8-886b-c2915cd82b27",
+    "Details": "UpdatePolicy successful",
+    "Success": true
+  },
+  {
+    "LogId": "0f18643b-2ec1-49c6-a94b-6f200e799731",
+    "Timestamp": "2026-01-13T23:13:25.316Z",
+    "Action": "CreateUser",
+    "Username": "manager",
+    "ReferenceId": "27d5e6a3-5f24-4e5b-a2ec-1dfa37c1553c",
+    "Details": "CreateUser successful",
+    "Success": true
+  },
+  {
+    "LogId": "f34e62aa-4179-4657-ac16-ec64e9df1758",
+    "Timestamp": "2026-01-13T12:26:50.203Z",
+    "Action": "Logout",
+    "Username": "staff01",
+    "ReferenceId": "899c94f1-4d40-411d-a4ab-2752d8ce265a",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "e6d7740f-e7d6-423e-9b59-ed2acfca5142",
+    "Timestamp": "2026-01-13T05:20:27.219Z",
+    "Action": "CreateUser",
+    "Username": "manager",
+    "ReferenceId": "e71e1701-4244-47b3-9050-cbcd70a4a9ac",
+    "Details": "CreateUser successful",
+    "Success": true
+  },
+  {
+    "LogId": "1d871641-282e-447e-9f9f-1b5e78db547f",
+    "Timestamp": "2026-01-13T04:16:33.794Z",
+    "Action": "OpenGate",
+    "Username": "admin",
+    "ReferenceId": "e2820dcb-f5a9-4eb2-a66f-4fe84c7e1123",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "102f3ba7-d7ce-419d-a84e-7da0e6059030",
+    "Timestamp": "2026-01-13T00:27:14.456Z",
+    "Action": "OpenGate",
+    "Username": "admin",
+    "ReferenceId": "d23e98d6-560c-48d3-9c28-c914fff06a80",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "89799843-8332-4fda-87c8-b7ea4b2fbba9",
+    "Timestamp": "2026-01-12T21:43:15.946Z",
     "Action": "Login",
     "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "ReferenceId": "2a9cb57d-61c8-43e2-b1c5-ace8a0576bad",
+    "Details": "Login successful",
+    "Success": true
   },
   {
-    "LogId": "0d4468c5-0138-4857-889e-66308447b9bf",
-    "Timestamp": "2026-01-16T15:37:42.1282656+07:00",
-    "Action": "Login",
+    "LogId": "0e1e04d3-7917-4f0e-8b81-8ea35f5e1b37",
+    "Timestamp": "2026-01-12T15:07:20.955Z",
+    "Action": "OpenGate",
     "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "ReferenceId": "944a75b2-2b9d-4d44-af14-35821f5d3532",
+    "Details": "OpenGate successful",
+    "Success": true
   },
   {
-    "LogId": "63848506-bdc0-4d77-b32a-0e25d7d31f4d",
-    "Timestamp": "2026-01-16T15:38:07.0381752+07:00",
+    "LogId": "25df08f9-f582-4d7e-a9ba-a40adf9d20ea",
+    "Timestamp": "2026-01-12T12:30:08.455Z",
+    "Action": "CreateUser",
+    "Username": "admin",
+    "ReferenceId": "9ba74b04-f93e-4031-a133-0e4ba1ce01eb",
+    "Details": "CreateUser successful",
+    "Success": true
+  },
+  {
+    "LogId": "0015380e-40e9-4dee-ac9e-d2afe283131e",
+    "Timestamp": "2026-01-12T11:10:02.877Z",
+    "Action": "Logout",
+    "Username": "admin",
+    "ReferenceId": "61390c11-4e28-44c5-bc64-aa472015e769",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "bae72cd0-fb90-4b01-84a1-73b1cbcd27ab",
+    "Timestamp": "2026-01-12T07:39:51.374Z",
+    "Action": "OpenGate",
+    "Username": "admin",
+    "ReferenceId": "756f44c8-afa0-41c2-bb70-74dd8f07cb85",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "6101b636-0f7d-4aef-8a7e-9d040085c1ae",
+    "Timestamp": "2026-01-12T03:37:45.129Z",
+    "Action": "OpenGate",
+    "Username": "staff01",
+    "ReferenceId": "1b6affc5-1ac1-4561-925e-5769e68cebf2",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "9aaee025-59cd-4dba-90e2-76fd6eae0a7d",
+    "Timestamp": "2026-01-11T12:19:00.748Z",
+    "Action": "OpenGate",
+    "Username": "staff01",
+    "ReferenceId": "7c2797ff-f54b-494e-a95f-2c3f96ed05fb",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "0bf96d62-b8d5-4904-91bb-5a7204b2a5b1",
+    "Timestamp": "2026-01-11T11:20:51.196Z",
+    "Action": "Login",
+    "Username": "staff02",
+    "ReferenceId": "dbc22202-a475-482e-b199-519111c0cca2",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "939a0e9f-2a43-4547-bf3e-a11f2158db0e",
+    "Timestamp": "2026-01-11T08:10:17.753Z",
+    "Action": "CreateUser",
+    "Username": "staff01",
+    "ReferenceId": "62d200a3-0e6f-49d8-adc6-6e90d53d0726",
+    "Details": "CreateUser successful",
+    "Success": true
+  },
+  {
+    "LogId": "23b30a06-aebb-41db-8e12-57bcd7289f2a",
+    "Timestamp": "2026-01-11T06:47:26.523Z",
+    "Action": "Login",
+    "Username": "manager",
+    "ReferenceId": "50befd7c-321f-463d-a7d4-4a0486640a0e",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "f002c66b-964b-4771-8b71-5b42bdcbc1ec",
+    "Timestamp": "2026-01-11T06:30:08.614Z",
+    "Action": "UpdatePolicy",
+    "Username": "manager",
+    "ReferenceId": "8b6453d2-8d5f-4a47-837c-e2de538be17b",
+    "Details": "UpdatePolicy successful",
+    "Success": true
+  },
+  {
+    "LogId": "030aaf2c-c595-49f3-be74-473b4eb5c978",
+    "Timestamp": "2026-01-11T05:19:43.815Z",
+    "Action": "OpenGate",
+    "Username": "admin",
+    "ReferenceId": "54024d1b-9686-4245-8aff-e926c84014b9",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "702fe86a-526f-400b-8d5f-bdf883a561dd",
+    "Timestamp": "2026-01-10T23:14:41.394Z",
+    "Action": "OpenGate",
+    "Username": "staff02",
+    "ReferenceId": "f421b1af-a75c-4972-8590-292de284fcb7",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "38438827-0e9e-474b-b7d2-0ca9c8939121",
+    "Timestamp": "2026-01-10T19:42:56.874Z",
+    "Action": "Logout",
+    "Username": "staff02",
+    "ReferenceId": "59852441-cf39-45a0-ace0-488310b5337a",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "972a478e-70c8-432d-80ee-e9325d349764",
+    "Timestamp": "2026-01-10T18:23:51.812Z",
+    "Action": "Logout",
+    "Username": "admin",
+    "ReferenceId": "c0840ccc-0877-4234-b361-dcda68f42083",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "064df881-bf85-4b86-9a50-ba2da3234250",
+    "Timestamp": "2026-01-10T14:39:25.981Z",
+    "Action": "UpdatePolicy",
+    "Username": "manager",
+    "ReferenceId": "290c6963-2232-4a22-90d5-dce89b6c6043",
+    "Details": "UpdatePolicy successful",
+    "Success": true
+  },
+  {
+    "LogId": "b10c9431-9a93-47f0-bf72-69fc38123497",
+    "Timestamp": "2026-01-10T13:36:26.119Z",
+    "Action": "UpdatePolicy",
+    "Username": "manager",
+    "ReferenceId": "95c31814-76f4-416e-a8a2-0a6f135c22ce",
+    "Details": "UpdatePolicy successful",
+    "Success": true
+  },
+  {
+    "LogId": "98ca0db3-8373-468e-a69d-93166c778efc",
+    "Timestamp": "2026-01-10T12:30:17.245Z",
+    "Action": "Login",
+    "Username": "manager",
+    "ReferenceId": "8dfeb9a7-202c-4773-ab2f-f06d3a1f0566",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "9e9b65d8-2ae2-4989-83f2-85ad4e9995e2",
+    "Timestamp": "2026-01-09T22:11:00.529Z",
+    "Action": "Login",
+    "Username": "staff02",
+    "ReferenceId": "d01542c8-3d50-4f32-8a9f-eab2662efb1b",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "0cc49b11-5599-4b35-b0f6-b6387e581ec7",
+    "Timestamp": "2026-01-09T19:30:41.508Z",
+    "Action": "Logout",
+    "Username": "staff02",
+    "ReferenceId": "71ffeba0-cb13-44c9-8152-7fc6143ac173",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "fd9ef2f5-fa2d-49ae-a452-d5ef7c826076",
+    "Timestamp": "2026-01-09T17:57:45.572Z",
+    "Action": "OpenGate",
+    "Username": "admin",
+    "ReferenceId": "eda106ba-c188-4382-ae42-e5a811800e84",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "29b08546-dd3f-4b36-8a8c-a505b3e5d8e4",
+    "Timestamp": "2026-01-08T12:34:42.988Z",
     "Action": "Login",
     "Username": "staff01",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "ReferenceId": "cf43c987-4ec0-49fb-a5db-b2776c8e205d",
+    "Details": "Login successful",
+    "Success": true
   },
   {
-    "LogId": "83cc862f-d0e8-48ed-81b0-5f858014e53d",
-    "Timestamp": "2026-01-16T15:38:08.2584344+07:00",
+    "LogId": "9f09917e-d76c-4407-a8b4-b1880ffeaf63",
+    "Timestamp": "2026-01-08T02:44:42.394Z",
+    "Action": "Logout",
+    "Username": "staff01",
+    "ReferenceId": "065fdf7b-ea10-4f11-9f6f-8256009f5ceb",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "4ea82ef4-7a35-43a9-be4b-68e72d963418",
+    "Timestamp": "2026-01-07T20:29:58.344Z",
+    "Action": "UpdatePolicy",
+    "Username": "staff01",
+    "ReferenceId": "d6dd1ef4-9830-4918-bb90-b12b6ad366c6",
+    "Details": "UpdatePolicy successful",
+    "Success": true
+  },
+  {
+    "LogId": "d763bc47-a2a8-488c-a7ed-cb8df9bd7613",
+    "Timestamp": "2026-01-07T17:47:08.207Z",
+    "Action": "Logout",
+    "Username": "manager",
+    "ReferenceId": "ccc45ba1-f527-4ff5-b735-425b61f43d99",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "5381810f-d010-4457-baa2-4c73998703b4",
+    "Timestamp": "2026-01-07T14:32:31.928Z",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "3b0ec0f4-6fb0-426f-9a45-0ce38cffd4d9",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "32c4cd5c-0966-44e7-b890-99e14b384259",
+    "Timestamp": "2026-01-07T08:30:10.481Z",
     "Action": "Login",
     "Username": "staff01",
+    "ReferenceId": "75150fe8-51f1-4762-981b-f308426524c5",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "1478a99b-9815-4647-9318-fe59f8ff66ab",
+    "Timestamp": "2026-01-07T04:51:37.247Z",
+    "Action": "Login",
+    "Username": "admin",
+    "ReferenceId": "c1f5a350-87b8-4acc-b6c0-5556260cc46c",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "452861d7-10a9-4b42-92da-d8da48ff054b",
+    "Timestamp": "2026-01-07T02:41:22.497Z",
+    "Action": "CreateUser",
+    "Username": "staff01",
+    "ReferenceId": "c60b7c93-376d-45d2-b6d6-3e7c09052a9e",
+    "Details": "CreateUser successful",
+    "Success": true
+  },
+  {
+    "LogId": "1a93fb1b-6f3d-4d24-abda-bbaa7a38030d",
+    "Timestamp": "2026-01-06T21:38:54.897Z",
+    "Action": "UpdatePolicy",
+    "Username": "admin",
+    "ReferenceId": "6f292e3e-b2c2-4533-bc86-ff904752c9bf",
+    "Details": "UpdatePolicy successful",
+    "Success": true
+  },
+  {
+    "LogId": "6805659e-5a52-458b-b791-7f3cb0657d71",
+    "Timestamp": "2026-01-06T15:29:02.366Z",
+    "Action": "CreateUser",
+    "Username": "staff02",
+    "ReferenceId": "5b0c2dd7-1ff5-4270-94f2-8aab6b730215",
+    "Details": "CreateUser successful",
+    "Success": true
+  },
+  {
+    "LogId": "ffaacc86-b363-4d5f-9b6b-4f339b7e1f87",
+    "Timestamp": "2026-01-06T10:43:57.760Z",
+    "Action": "CreateUser",
+    "Username": "manager",
+    "ReferenceId": "ff5411fb-d06e-475a-8889-1a625b24f798",
+    "Details": "CreateUser successful",
+    "Success": true
+  },
+  {
+    "LogId": "8851bc01-11af-4855-ad52-48a777aea67e",
+    "Timestamp": "2026-01-06T07:36:48.923Z",
+    "Action": "UpdatePolicy",
+    "Username": "staff01",
     "ReferenceId": null,
-    "Details": "Failed login attempt",
+    "Details": "UpdatePolicy failed",
     "Success": false
   },
   {
-    "LogId": "887700ad-7d55-40f8-a95c-bf3ea6313fc8",
-    "Timestamp": "2026-01-16T15:38:47.0601249+07:00",
-    "Action": "Login",
-    "Username": "admin",
+    "LogId": "ff2b84f3-5d18-44a3-b8f3-11adcd136655",
+    "Timestamp": "2026-01-05T21:27:55.560Z",
+    "Action": "Logout",
+    "Username": "staff02",
+    "ReferenceId": "cd63343f-db38-4d90-9b39-42bfa2d62635",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "196b3f76-8206-4313-ab63-10edf328d656",
+    "Timestamp": "2026-01-05T19:27:17.859Z",
+    "Action": "UpdatePolicy",
+    "Username": "manager",
+    "ReferenceId": "4a63e813-1296-4e05-96ac-78038ed922e5",
+    "Details": "UpdatePolicy successful",
+    "Success": true
+  },
+  {
+    "LogId": "946a8c35-4cd2-41a9-9ccc-6e65df5f4e30",
+    "Timestamp": "2026-01-05T18:08:11.392Z",
+    "Action": "UpdatePolicy",
+    "Username": "staff02",
+    "ReferenceId": "10603916-2669-4413-bc25-5e4a3e90ba56",
+    "Details": "UpdatePolicy successful",
+    "Success": true
+  },
+  {
+    "LogId": "cc5b3282-71f4-44af-bde0-5678a48e713d",
+    "Timestamp": "2026-01-04T21:28:16.512Z",
+    "Action": "OpenGate",
+    "Username": "staff02",
+    "ReferenceId": "f99ec27b-ad48-4c56-9f84-09d914b808cb",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "1c99bd4a-a2db-40c4-bcaa-7aa8107e0f6b",
+    "Timestamp": "2026-01-04T18:50:50.451Z",
+    "Action": "UpdatePolicy",
+    "Username": "staff02",
     "ReferenceId": null,
-    "Details": "Failed login attempt",
+    "Details": "UpdatePolicy failed",
     "Success": false
   },
   {
-    "LogId": "e3a10cce-c0c7-4f90-825d-4553041f9f6b",
-    "Timestamp": "2026-01-16T15:41:19.5563062+07:00",
+    "LogId": "fd99805e-5c49-4d92-aec8-32b7019495d9",
+    "Timestamp": "2026-01-04T18:43:47.780Z",
     "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "Username": "staff01",
+    "ReferenceId": "fb824be5-2c69-420c-9ae1-bc3a6aa6d32c",
+    "Details": "Login successful",
+    "Success": true
   },
   {
-    "LogId": "4a1de933-1821-4ce4-b04b-32c0dc13c162",
-    "Timestamp": "2026-01-16T15:41:37.1213534+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "LogId": "3fc9d3fa-e0bf-49db-8fcb-d2e3437582a3",
+    "Timestamp": "2026-01-04T18:31:54.315Z",
+    "Action": "Logout",
+    "Username": "staff01",
+    "ReferenceId": "ed811a3b-b833-417c-9f26-553c82245f57",
+    "Details": "Logout successful",
+    "Success": true
   },
   {
-    "LogId": "ed66fb8d-fa1a-4438-8e13-246e7922f468",
-    "Timestamp": "2026-01-16T15:41:40.823688+07:00",
+    "LogId": "12ec039e-7140-4301-b638-c719ce717f49",
+    "Timestamp": "2026-01-04T01:25:34.031Z",
     "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "Username": "staff02",
+    "ReferenceId": "710ed9f9-741a-4e97-a637-f9bac1843c30",
+    "Details": "Login successful",
+    "Success": true
   },
   {
-    "LogId": "e802d023-1786-4d34-a876-7c297a37e363",
-    "Timestamp": "2026-01-16T15:42:53.1962903+07:00",
+    "LogId": "dd486221-3d68-4214-8114-98e9eda6f985",
+    "Timestamp": "2026-01-03T23:11:03.089Z",
     "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "Username": "staff01",
+    "ReferenceId": "8291ddb9-512e-40a6-85db-ec9114e95617",
+    "Details": "Login successful",
+    "Success": true
   },
   {
-    "LogId": "18c72cda-fd6d-477a-ace4-766a008b5227",
-    "Timestamp": "2026-01-16T15:43:04.5447296+07:00",
-    "Action": "Login",
+    "LogId": "5a36c0af-50e4-46b0-bd0a-8f998b9bd2f9",
+    "Timestamp": "2026-01-03T19:47:26.575Z",
+    "Action": "UpdatePolicy",
     "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "ReferenceId": "211315be-7f8f-4fd2-8def-cbcc34f8c5d6",
+    "Details": "UpdatePolicy successful",
+    "Success": true
   },
   {
-    "LogId": "bf01175c-0f16-4d47-8250-158ace226d03",
-    "Timestamp": "2026-01-16T15:43:05.6540952+07:00",
-    "Action": "Login",
+    "LogId": "940699b4-b858-4887-8362-9c62a99741a1",
+    "Timestamp": "2026-01-03T18:37:48.363Z",
+    "Action": "CreateUser",
     "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "ReferenceId": "f0d26e94-9907-41f1-9eda-d02490fae5dc",
+    "Details": "CreateUser successful",
+    "Success": true
   },
   {
-    "LogId": "62c0fe7c-f4b7-4e27-ac2f-c1c2e728cff7",
-    "Timestamp": "2026-01-16T15:43:06.0704119+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "LogId": "9fe31bab-9dc8-403b-8358-5d0193c518e2",
+    "Timestamp": "2026-01-03T18:31:40.045Z",
+    "Action": "UpdatePolicy",
+    "Username": "staff01",
+    "ReferenceId": "d7681ce5-83eb-4ee2-9d27-37cdbe7777ab",
+    "Details": "UpdatePolicy successful",
+    "Success": true
   },
   {
-    "LogId": "9c0b702f-9902-4247-9a24-e488cc3bfd89",
-    "Timestamp": "2026-01-16T15:43:06.270369+07:00",
-    "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": null,
-    "Details": "Failed login attempt",
-    "Success": false
+    "LogId": "34750d94-f577-437b-99b6-fa4fcc06fc7d",
+    "Timestamp": "2026-01-03T07:41:26.924Z",
+    "Action": "CreateUser",
+    "Username": "staff02",
+    "ReferenceId": "fbb9cfad-d1c4-48fc-83f3-39c2463820af",
+    "Details": "CreateUser successful",
+    "Success": true
   },
   {
-    "LogId": "202cb66b-a93b-4340-a4f9-72b8881da477",
-    "Timestamp": "2026-01-16T15:44:28.7908669+07:00",
+    "LogId": "f41d835b-0d49-4a0c-826d-2bed15dec869",
+    "Timestamp": "2026-01-03T01:49:25.201Z",
+    "Action": "OpenGate",
+    "Username": "manager",
+    "ReferenceId": "63936dc2-0b13-4c32-9684-9d22f4807e02",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "97061cb8-d20d-4115-a3cc-641fd04dc6bf",
+    "Timestamp": "2026-01-02T20:31:02.769Z",
+    "Action": "UpdatePolicy",
+    "Username": "manager",
+    "ReferenceId": "2c8fd168-47bc-4c13-ae45-71ac41c67076",
+    "Details": "UpdatePolicy successful",
+    "Success": true
+  },
+  {
+    "LogId": "0edfdebc-9102-446c-86cf-e75e039e1fb0",
+    "Timestamp": "2026-01-02T15:33:37.038Z",
+    "Action": "CreateUser",
+    "Username": "staff01",
+    "ReferenceId": "96f5560c-044a-4c73-883a-ed612c8acd00",
+    "Details": "CreateUser successful",
+    "Success": true
+  },
+  {
+    "LogId": "af72bfb3-bb94-4232-9859-98ffebd033ff",
+    "Timestamp": "2026-01-02T09:09:42.009Z",
+    "Action": "OpenGate",
+    "Username": "manager",
+    "ReferenceId": "75cc34d4-84fc-4ed3-81fa-45c3e0b09d38",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "8cfe514a-0ebd-4a4e-8005-7f8bd7be9dc9",
+    "Timestamp": "2026-01-02T04:35:14.406Z",
     "Action": "Login",
-    "Username": "admin",
-    "ReferenceId": "USER001",
-    "Details": "Login success",
+    "Username": "staff01",
+    "ReferenceId": "51482c09-4e45-4fd4-9b4e-87ec88927c42",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "f899354e-bea4-49ea-b835-e1912a5df8be",
+    "Timestamp": "2026-01-01T14:21:47.215Z",
+    "Action": "Logout",
+    "Username": "staff02",
+    "ReferenceId": "7d6b1747-7a9f-4b24-bd9f-91fca1611bc0",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "317bdd3c-0ad3-40df-8b06-d3383d843314",
+    "Timestamp": "2026-01-01T12:03:45.655Z",
+    "Action": "Login",
+    "Username": "manager",
+    "ReferenceId": "15e58441-7406-49b4-ae0c-17b1f5e00fbe",
+    "Details": "Login successful",
+    "Success": true
+  },
+  {
+    "LogId": "481ab6d7-c85c-4e04-be01-7e9a310e2a5f",
+    "Timestamp": "2026-01-01T07:10:53.749Z",
+    "Action": "Logout",
+    "Username": "staff02",
+    "ReferenceId": "12dbd1cd-0eec-4a25-a25d-18b5ea152d54",
+    "Details": "Logout successful",
+    "Success": true
+  },
+  {
+    "LogId": "73576875-627a-480d-9565-9ab33c7c2240",
+    "Timestamp": "2026-01-01T06:51:49.227Z",
+    "Action": "OpenGate",
+    "Username": "manager",
+    "ReferenceId": "68b143a5-3006-43fc-a5ba-b0a5f468bda3",
+    "Details": "OpenGate successful",
+    "Success": true
+  },
+  {
+    "LogId": "050852f8-a477-417b-8967-8108f2444c05",
+    "Timestamp": "2026-01-01T05:11:51.243Z",
+    "Action": "UpdatePolicy",
+    "Username": "manager",
+    "ReferenceId": "e42db6b2-0b46-48b6-b323-f4d6d112fa3b",
+    "Details": "UpdatePolicy successful",
+    "Success": true
+  },
+  {
+    "LogId": "8be55b4e-b9ed-4b70-8316-5f2922cd39df",
+    "Timestamp": "2026-01-01T02:01:04.005Z",
+    "Action": "Login",
+    "Username": "manager",
+    "ReferenceId": "0db8f4e3-6fcf-4331-82aa-3f8334dbc4b7",
+    "Details": "Login successful",
     "Success": true
   }
 ]

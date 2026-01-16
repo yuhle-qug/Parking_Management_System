@@ -22,5 +22,6 @@ namespace Parking.Core.Entities
         public int TotalVehiclesIn { get; set; }
         public int TotalVehiclesOut { get; set; }
         public Dictionary<string, int> VehiclesByType { get; set; } = new Dictionary<string, int>();
+        public object HourlyTraffic { get; set; } // List<HourlyTrafficParam>
     }
 }

@@ -1,40 +1,78 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Parking.Core.Entities
 {
-    public abstract class PricePolicy
+    public class PricePolicy
     {
         public required string PolicyId { get; set; }
         public required string Name { get; set; }
+        public string VehicleType { get; set; } = "CAR"; // CAR, MOTORBIKE, BICYCLE, ELECTRIC_CAR, ...
+        public double RatePerHour { get; set; } = 10000;
+        public double OvernightSurcharge { get; set; } = 30000;
+        public double DailyMax { get; set; } = 200000;
+        public double LostTicketFee { get; set; } = 200000;
+        public List<PeakRange> PeakRanges { get; set; } = new(); // e.g., 17-21h *1.5
 
-        // Phương thức trừu tượng tính tiền dựa trên phiên gửi xe
-        public abstract double CalculateFee(ParkingSession session);
-    }
-
-    public class ParkingFeePolicy : PricePolicy
-    {
-        private const double BASE_RATE_PER_HOUR = 10000; // 10k/giờ
-
-        public override double CalculateFee(ParkingSession session)
+        public double CalculateFee(ParkingSession session)
         {
             if (session.ExitTime == null) return 0;
 
-            var duration = session.ExitTime.Value - session.EntryTime;
-            double hours = Math.Ceiling(duration.TotalHours); // Làm tròn lên
+            var entry = session.EntryTime;
+            var exit = session.ExitTime.Value;
+            var duration = exit - entry;
 
-            // Công thức: Giờ * Giá cơ bản * Hệ số xe
-            return hours * BASE_RATE_PER_HOUR * session.Vehicle.GetFeeFactor();
+            var hours = Math.Ceiling(duration.TotalHours);
+            var fee = hours * RatePerHour * session.Vehicle.GetFeeFactor();
+
+            var rateMultiplier = GetPeakMultiplier(entry, exit);
+            fee *= rateMultiplier;
+
+            if (exit.Date > entry.Date && OvernightSurcharge > 0)
+            {
+                fee += OvernightSurcharge;
+            }
+
+            if (DailyMax > 0)
+            {
+                fee = Math.Min(fee, DailyMax);
+            }
+
+            return fee;
+        }
+
+        public double CalculateLostTicketFee(ParkingSession session)
+        {
+            var baseFee = CalculateFee(session);
+            return baseFee + LostTicketFee;
+        }
+
+        private double GetPeakMultiplier(DateTime entry, DateTime exit)
+        {
+            if (PeakRanges == null || PeakRanges.Count == 0) return 1.0;
+
+            bool InRange(DateTime time, PeakRange range)
+            {
+                var h = time.Hour + time.Minute / 60.0;
+                return h >= range.StartHour && h < range.EndHour;
+            }
+
+            var maxMultiplier = PeakRanges
+                .Where(r => r.Multiplier > 0)
+                .Where(r => InRange(entry, r) || InRange(exit, r))
+                .Select(r => r.Multiplier)
+                .DefaultIfEmpty(1.0)
+                .Max();
+
+            return maxMultiplier;
         }
     }
 
-    public class LostTicketFeePolicy : PricePolicy
+    public class PeakRange
     {
-        private const double PENALTY_FEE = 200000; // Phạt 200k
-
-        public override double CalculateFee(ParkingSession session)
-        {
-            // Phí phạt cố định + phí gửi xe thực tế (nếu tính được)
-            return PENALTY_FEE;
-        }
+        public double StartHour { get; set; }
+        public double EndHour { get; set; }
+        public double Multiplier { get; set; } = 1.5;
     }
 }

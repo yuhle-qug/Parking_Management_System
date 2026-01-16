@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import axios from 'axios'
-import { CreditCard, User, Car, Calendar, CheckCircle, Clock, Trash2 } from 'lucide-react'
+import { CreditCard, User, Car, Calendar, CheckCircle, Clock, Trash2, Search, X, History, XCircle, CalendarPlus } from 'lucide-react'
 import { API_BASE } from '../config/api'
 const formatCurrency = (n) => (n || 0).toLocaleString('vi-VN')
 
@@ -28,20 +28,32 @@ export default function Membership() {
   const [tickets, setTickets] = useState([])
   const [policies, setPolicies] = useState([])
   const [loading, setLoading] = useState(false)
+  const [search, setSearch] = useState('')
   const [form, setForm] = useState({
     ownerName: '',
     phone: '',
     licensePlate: '',
     vehicleType: 'CAR',
     months: 1,
-    policyId: ''
+    policyId: '',
+    identityNumber: ''
   })
+  const [qrModal, setQrModal] = useState(null)
+  const [renewModal, setRenewModal] = useState(null)
+  const [historyModal, setHistoryModal] = useState(null)
+  const [confirmModal, setConfirmModal] = useState(null)
+  const [history, setHistory] = useState([])
 
   const defaultPolicies = [
     { policyId: 'P-CAR', policyName: 'Vé tháng Ô tô', monthlyPrice: 1500000, vehicleType: 'CAR' },
     { policyId: 'P-MOTO', policyName: 'Vé tháng Xe máy', monthlyPrice: 120000, vehicleType: 'MOTORBIKE' },
-    { policyId: 'P-ELEC', policyName: 'Vé tháng Xe điện', monthlyPrice: 1000000, vehicleType: 'ELECTRIC_CAR' }
+    { policyId: 'P-ELEC', policyName: 'Vé tháng Xe điện', monthlyPrice: 1000000, vehicleType: 'ELECTRIC_CAR' },
+    { policyId: 'P-BIKE', policyName: 'Vé tháng Xe đạp', monthlyPrice: 80000, vehicleType: 'BICYCLE' }
   ]
+
+  const filteredPolicies = useMemo(() => {
+    return policies.filter(p => (p.vehicleType || '').toUpperCase() === form.vehicleType.toUpperCase())
+  }, [policies, form.vehicleType])
 
   const fetchData = async () => {
     setLoading(true)
@@ -57,13 +69,16 @@ export default function Membership() {
         policyId: p.policyId ?? p.PolicyId,
         policyName: p.policyName ?? p.Name,
         monthlyPrice: p.monthlyPrice ?? p.MonthlyPrice ?? 0,
-        vehicleType: (p.vehicleType ?? p.VehicleType ?? '').toString()
+        vehicleType: (p.vehicleType ?? p.VehicleType ?? '').toString().toUpperCase()
       })).filter(p => !!p.policyId)
 
       const finalPolicies = mappedPolicies.length ? mappedPolicies : defaultPolicies
       setPolicies(finalPolicies)
-      if (!form.policyId && finalPolicies[0]?.policyId) {
-        setForm(prev => ({ ...prev, policyId: finalPolicies[0].policyId }))
+      if (!form.policyId) {
+        const firstForType = finalPolicies.find(p => p.vehicleType === form.vehicleType) || finalPolicies[0]
+        if (firstForType?.policyId) {
+          setForm(prev => ({ ...prev, policyId: firstForType.policyId }))
+        }
       }
 
       const rawTickets = Array.isArray(ticketRes.data) ? ticketRes.data : []
@@ -71,27 +86,39 @@ export default function Membership() {
       const mappedTickets = rawTickets.map(t => {
         const ticketId = t.ticketId ?? t.TicketId
         const startDate = t.startDate ?? t.StartDate
-        const endDate = t.endDate ?? t.ExpiryDate
+        const endDate = t.endDate ?? t.ExpiryDate ?? t.expiryDate
         const status = (t.status ?? t.Status ?? '').toString()
+        const paymentStatus = (t.paymentStatus ?? t.PaymentStatus ?? '').toString()
+        const transactionCode = t.transactionCode ?? t.TransactionCode
+        const qrContent = t.qrContent ?? t.QrContent
+        const providerLog = t.providerLog ?? t.ProviderLog
         const end = parseDate(endDate)
-        const isActive = status.trim().toLowerCase() === 'active' && !!end && end >= now
+        const statusLower = status.trim().toLowerCase()
+        // Nếu parseDate thất bại, vẫn giữ vé Active để tránh lọc nhầm.
+        const isActive = statusLower === 'active' && (!end || end >= now)
+        const daysLeft = end ? Math.ceil((end.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)) : null
 
         return {
           ticketId,
           ownerName: t.ownerName ?? t.OwnerName ?? t.customerName ?? t.CustomerName ?? (t.customerId ?? t.CustomerId ?? '').toString(),
           phone: t.phone ?? t.Phone ?? '',
-          licensePlate: t.licensePlate ?? t.VehiclePlate ?? '',
+          licensePlate: t.licensePlate ?? t.VehiclePlate ?? t.vehiclePlate ?? '',
           startDate,
           endDate,
           isActive,
           vehicleType: t.vehicleType ?? t.VehicleType ?? '',
           monthlyFee: t.monthlyFee ?? t.MonthlyFee ?? 0,
-          status
+          status,
+          paymentStatus,
+          transactionCode,
+          qrContent,
+          providerLog,
+          daysLeft
         }
       }).filter(t => !!t.ticketId)
 
-      // Chỉ giữ các vé còn hiệu lực để hiển thị
-      setTickets(mappedTickets.filter(t => t.isActive))
+      // Hiển thị cả vé đang chờ thanh toán để tiện theo dõi
+      setTickets(mappedTickets)
     } catch (err) {
       // fallback: at least show something (no localStorage anymore)
       setPolicies(defaultPolicies)
@@ -114,37 +141,308 @@ export default function Membership() {
     if (!form.ownerName || !form.licensePlate || !form.policyId) {
       return alert('Vui lòng điền đầy đủ thông tin')
     }
+    // Set confirm modal instead of API call
+    setConfirmModal({ ...form, displayPrice: estimatedPrice })
+  }
+
+  const handleConfirmSubmit = async () => {
+    if (!confirmModal) return
     try {
-      // Gọi API backend: name, phone, identityNumber, plateNumber, vehicleType
+      // Gọi API backend
       const res = await axios.post(`${API_BASE}/Membership/register`, {
-        name: form.ownerName,
-        phone: form.phone,
-        identityNumber: '',
-        plateNumber: form.licensePlate.toUpperCase(),
-        vehicleType: form.vehicleType
+        name: confirmModal.ownerName,
+        phone: confirmModal.phone,
+        identityNumber: confirmModal.identityNumber,
+        plateNumber: confirmModal.licensePlate.toUpperCase(),
+        vehicleType: confirmModal.vehicleType,
+        planId: confirmModal.policyId,
+        months: confirmModal.months
       })
 
-      alert('Đăng ký thành công!')
-      setForm({ ownerName: '', phone: '', licensePlate: '', vehicleType: 'CAR', months: 1, policyId: policies[0]?.policyId || '' })
+      const payment = res.data?.payment || res.data?.Payment
+      const ticket = res.data?.ticket || res.data?.Ticket || res.data
+
+      if (payment?.qrContent || payment?.QrContent) {
+        const qrContent = payment.qrContent || payment.QrContent
+        setQrModal({
+          content: qrContent,
+          title: `Thanh toán vé ${ticket?.ticketId || ''}`,
+          subtitle: payment.transactionCode || payment.TransactionCode || 'Quét mã để thanh toán'
+        })
+      } else {
+        alert('Đăng ký thành công, chờ xác nhận thanh toán.')
+      }
+
+      setForm({ ownerName: '', phone: '', licensePlate: '', vehicleType: 'CAR', months: 1, policyId: policies[0]?.policyId || '', identityNumber: '' })
+      setConfirmModal(null)
       await fetchData()
     } catch (err) {
       alert(err.response?.data?.error || err.response?.data?.Error || 'Lỗi đăng ký')
     }
   }
 
+  const filteredTickets = useMemo(() => {
+    const q = search.trim().toUpperCase()
+    if (!q) return tickets
+    return tickets.filter(t =>
+      (t.licensePlate || '').toUpperCase().includes(q) ||
+      (t.ticketId || '').toUpperCase().includes(q) ||
+      (t.phone || '').toUpperCase().includes(q) ||
+      (t.ownerName || '').toUpperCase().includes(q)
+    )
+  }, [search, tickets])
+
   const handleCancel = async (ticketId) => {
-    if (!window.confirm('Bạn có chắc muốn hủy vé này?')) return
+    const note = window.prompt('Lý do hủy (không bắt buộc):')
+    if (note === null) return // User clicked Cancel
 
     try {
-      await axios.delete(`${API_BASE}/Membership/tickets/${ticketId}`)
+      await axios.post(`${API_BASE}/Membership/tickets/${ticketId}/cancel`, {
+        performedBy: 'staff',
+        note: note || 'Hủy bởi quản lý'
+      })
+      alert('Đã hủy vé tháng thành công')
       await fetchData()
     } catch (err) {
-      alert(err.response?.data?.error || err.response?.data?.Error || 'Backend chưa hỗ trợ hủy vé tháng')
+      alert(err.response?.data?.error || err.response?.data?.Error || 'Hủy vé thất bại')
     }
   }
 
+  const handleConfirmPayment = async (ticketId) => {
+    try {
+      await axios.post(`${API_BASE}/Membership/confirm-payment`, {
+        ticketId,
+        status: 'SUCCESS',
+        transactionCode: `MANUAL-${Date.now()}`
+      })
+      alert('Đã xác nhận thanh toán cho vé tháng')
+      await fetchData()
+    } catch (err) {
+      alert(err.response?.data?.error || err.response?.data?.Error || 'Xác nhận thanh toán thất bại')
+    }
+  }
+
+  const handleRenew = (ticket) => {
+    setRenewModal({ ticket, months: 1 })
+  }
+
+  const handleRenewSubmit = async () => {
+    if (!renewModal?.ticket) return
+    const { ticket, months } = renewModal
+    try {
+      const res = await axios.post(`${API_BASE}/Membership/tickets/${ticket.ticketId}/extend`, {
+        months,
+        performedBy: 'staff',
+        note: `Gia hạn ${months} tháng`
+      })
+
+      const payment = res.data?.payment || res.data?.Payment
+      const updatedTicket = res.data?.ticket || res.data?.Ticket || res.data
+
+      if (payment?.qrContent || payment?.QrContent) {
+        const qrContent = payment.qrContent || payment.QrContent
+        setQrModal({
+          content: qrContent,
+          title: `Thanh toán gia hạn vé ${updatedTicket?.ticketId || ticket.ticketId}`,
+          subtitle: payment.transactionCode || payment.TransactionCode || 'Quét mã để thanh toán'
+        })
+      } else {
+        alert('Gia hạn thành công, chờ xác nhận thanh toán.')
+      }
+
+      setRenewModal(null)
+      await fetchData()
+    } catch (err) {
+      alert(err.response?.data?.error || err.response?.data?.Error || 'Gia hạn thất bại')
+    }
+  }
+
+  const handleViewHistory = async (ticketId) => {
+    try {
+      const res = await axios.get(`${API_BASE}/Membership/tickets/${ticketId}/history`)
+      const rawHistory = Array.isArray(res.data) ? res.data : []
+      const mappedHistory = rawHistory.map(h => ({
+        historyId: h.historyId || h.HistoryId,
+        action: h.action || h.Action,
+        months: h.months || h.Months || 0,
+        amount: h.amount || h.Amount || 0,
+        performedBy: h.performedBy || h.PerformedBy,
+        time: h.time || h.Time,
+        note: h.note || h.Note
+      }))
+      setHistory(mappedHistory)
+      setHistoryModal(ticketId)
+    } catch (err) {
+      alert(err.response?.data?.error || err.response?.data?.Error || 'Tải lịch sử thất bại')
+    }
+  }
+
+  const renderQrModal = () => {
+    if (!qrModal?.content) return null
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="bg-white rounded-xl shadow-2xl p-6 w-[360px] space-y-4 border border-gray-100">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <div className="text-xs text-gray-500">{qrModal.subtitle || 'Quét mã để thanh toán'}</div>
+              <div className="text-base font-semibold text-gray-800">{qrModal.title || 'Mã QR'}</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setQrModal(null)}
+              className="text-gray-500 hover:text-gray-800"
+            >
+              <X size={18} />
+            </button>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <img
+              className="w-64 h-64 rounded-lg border"
+              alt="QR"
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(qrModal.content)}`}
+            />
+            <div className="text-[11px] text-gray-500 break-all text-center leading-tight">{qrModal.content}</div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const renderRenewModal = () => {
+    if (!renewModal?.ticket) return null
+    const { ticket, months } = renewModal
+    const policy = policies.find(p => p.vehicleType === ticket.vehicleType)
+    const estimatedFee = policy ? policy.monthlyPrice * months * (months >= 12 ? 0.85 : months >= 6 ? 0.9 : months >= 3 ? 0.95 : 1) : 0
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="bg-white rounded-xl shadow-2xl p-6 w-[400px] space-y-4 border border-gray-100">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <div className="text-base font-semibold text-gray-800">Gia hạn vé tháng</div>
+              <div className="text-xs text-gray-500">Vé: {ticket.ticketId} - {ticket.licensePlate}</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setRenewModal(null)}
+              className="text-gray-500 hover:text-gray-800"
+            >
+              <X size={18} />
+            </button>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">Số tháng gia hạn</label>
+            <select
+              className="w-full bg-gray-50 rounded-lg px-3 py-2.5 text-sm outline-none"
+              value={months}
+              onChange={(e) => setRenewModal({ ...renewModal, months: parseInt(e.target.value) })}
+            >
+              <option value={1}>1 tháng</option>
+              <option value={3}>3 tháng (tiết kiệm 5%)</option>
+              <option value={6}>6 tháng (tiết kiệm 10%)</option>
+              <option value={12}>12 tháng (tiết kiệm 15%)</option>
+            </select>
+          </div>
+          <div className="bg-indigo-50 rounded-lg p-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Phí gia hạn:</span>
+              <span className="text-xl font-bold text-indigo-600">{formatCurrency(estimatedFee)} đ</span>
+            </div>
+          </div>
+          <button
+            onClick={handleRenewSubmit}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition"
+          >
+            Xác nhận gia hạn
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  const renderHistoryModal = () => {
+    if (!historyModal) return null
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="bg-white rounded-xl shadow-2xl p-6 w-[600px] max-h-[80vh] overflow-auto space-y-4 border border-gray-100">
+          <div className="flex items-start justify-between gap-3 sticky top-0 bg-white pb-3">
+            <div>
+              <div className="text-base font-semibold text-gray-800">Lịch sử vé tháng</div>
+              <div className="text-xs text-gray-500">Vé: {historyModal}</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setHistoryModal(null)}
+              className="text-gray-500 hover:text-gray-800"
+            >
+              <X size={18} />
+            </button>
+          </div>
+          {history.length === 0 ? (
+            <div className="text-center py-12 text-gray-400">
+              <History size={48} className="mx-auto mb-3 opacity-30" />
+              <p>Chưa có lịch sử giao dịch</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {history.map(h => (
+                <div key={h.historyId} className="border border-gray-100 rounded-lg p-4 hover:bg-gray-50">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className={`text-xs px-2 py-1 rounded-full font-semibold ${h.action === 'Register' ? 'bg-green-100 text-green-700' : h.action === 'Extend' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}`}>
+                          {h.action === 'Register' ? '📝 Đăng ký' : h.action === 'Extend' ? '🔄 Gia hạn' : '❌ Hủy'}
+                        </span>
+                        <span className="text-xs text-gray-500">{formatDate(h.time)}</span>
+                      </div>
+                      <div className="text-sm text-gray-700">
+                        {h.action === 'Extend' && `Gia hạn ${h.months} tháng`}
+                        {h.action === 'Register' && `Đăng ký ${h.months} tháng`}
+                        {h.action === 'Cancel' && 'Hủy vé tháng'}
+                      </div>
+                      {h.note && <div className="text-xs text-gray-500 mt-1">Ghi chú: {h.note}</div>}
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-semibold text-gray-800">{formatCurrency(h.amount)} đ</div>
+                      <div className="text-xs text-gray-500">Bởi: {h.performedBy}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  const renderConfirmModal = () => {
+    if (!confirmModal) return null
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="bg-white rounded-xl shadow-2xl p-6 w-[400px] space-y-4 border border-gray-100">
+           <h3 className="text-lg font-bold text-gray-800">Xác nhận thông tin</h3>
+           <div className="space-y-2 text-sm bg-gray-50 p-4 rounded-lg">
+              <div className="flex justify-between"><span className="text-gray-500">Chủ xe:</span><span className="font-semibold">{confirmModal.ownerName}</span></div>
+              <div className="flex justify-between"><span className="text-gray-500">Biển số:</span><span className="font-bold">{confirmModal.licensePlate}</span></div>
+              <div className="flex justify-between"><span className="text-gray-500">Loại xe:</span><span>{confirmModal.vehicleType}</span></div>
+              <div className="flex justify-between"><span className="text-gray-500">Gói đăng ký:</span><span>{confirmModal.months} tháng</span></div>
+              <div className="border-t border-gray-200 mt-2 pt-2 flex justify-between"><span className="text-gray-600 font-medium">Tổng phí:</span><span className="text-indigo-600 font-bold text-lg">{formatCurrency(confirmModal.displayPrice)} đ</span></div>
+           </div>
+           <div className="flex gap-3">
+             <button onClick={() => setConfirmModal(null)} className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 rounded-lg transition">Sửa lại</button>
+             <button onClick={handleConfirmSubmit} className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition">Xác nhận</button>
+           </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="grid lg:grid-cols-3 gap-6">
+    <div className="grid lg:grid-cols-3 gap-6 relative">
+      {renderQrModal()}
+      {renderRenewModal()}
+      {renderHistoryModal()}
+      {renderConfirmModal()}
       {/* Registration Form */}
       <div className="lg:col-span-1">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -195,6 +493,16 @@ export default function Membership() {
               </div>
             </div>
             <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">Số CMND/CCCD</label>
+              <input
+                type="text"
+                className="w-full bg-gray-50 rounded-lg px-3 py-2 text-sm outline-none"
+                placeholder="0123456789"
+                value={form.identityNumber}
+                onChange={(e) => setForm({ ...form, identityNumber: e.target.value })}
+              />
+            </div>
+            <div>
               <label className="block text-sm font-medium text-gray-600 mb-1">Loại xe</label>
               <select
                 className="w-full bg-gray-50 rounded-lg px-3 py-2.5 text-sm outline-none"
@@ -203,22 +511,29 @@ export default function Membership() {
               >
                 <option value="CAR">🚗 Ô tô</option>
                 <option value="MOTORBIKE">🛵 Xe máy</option>
-                <option value="ELECTRIC_CAR">⚡ Xe điện</option>
+                <option value="ELECTRIC_CAR">⚡ Ô tô điện</option>
+                <option value="ELECTRIC_MOTORBIKE">🔋 Xe máy điện</option>
+                <option value="BICYCLE">🚲 Xe đạp</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">Gói đăng ký</label>
-              <select
-                className="w-full bg-gray-50 rounded-lg px-3 py-2.5 text-sm outline-none"
-                value={form.policyId}
-                onChange={(e) => setForm({ ...form, policyId: e.target.value })}
-              >
-                {policies.map(p => (
-                  <option key={p.policyId} value={p.policyId}>
-                    {p.policyName} - {formatCurrency(p.monthlyPrice)}đ/tháng
-                  </option>
+              <label className="block text-sm font-medium text-gray-600 mb-2">Gói đăng ký</label>
+              <div className="grid grid-cols-2 gap-2">
+                {filteredPolicies.map(p => (
+                  <button
+                    key={p.policyId}
+                    type="button"
+                    onClick={() => setForm({ ...form, policyId: p.policyId })}
+                    className={`rounded-lg border px-3 py-3 text-left text-sm font-semibold transition ${form.policyId === p.policyId ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-gray-200 bg-gray-50 text-gray-700'}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span>{p.policyName}</span>
+                      <span className="text-xs font-mono">{p.vehicleType}</span>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">{formatCurrency(p.monthlyPrice)} đ/tháng</div>
+                  </button>
                 ))}
-              </select>
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-600 mb-1">Số tháng</label>
@@ -264,7 +579,19 @@ export default function Membership() {
                 <p className="text-xs text-gray-500">{tickets.filter(t => t.isActive).length} vé còn hiệu lực</p>
               </div>
             </div>
-            {loading && <span className="text-xs text-gray-400">Đang tải...</span>}
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-8 pr-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:border-indigo-200 outline-none"
+                  placeholder="Tìm mã vé / biển số"
+                />
+              </div>
+              {loading && <span className="text-xs text-gray-400">Đang tải...</span>}
+            </div>
           </div>
 
           {tickets.length === 0 ? (
@@ -273,50 +600,72 @@ export default function Membership() {
               <p>Chưa có vé tháng nào được đăng ký</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-4">
-              {tickets.map(ticket => (
-                <div
-                  key={ticket.ticketId}
-                  className={`p-4 rounded-xl border ${ticket.isActive ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200 opacity-60'}`}
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <p className="font-bold text-gray-800">{ticket.ownerName}</p>
-                      <p className="text-sm text-gray-500">{ticket.phone}</p>
-                    </div>
-                    <span className={`text-xs px-2 py-1 rounded-full font-medium ${ticket.isActive ? 'bg-green-200 text-green-700' : 'bg-gray-300 text-gray-600'}`}>
-                      {ticket.isActive ? 'Hoạt động' : 'Hết hạn'}
-                    </span>
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Car size={14} />
-                      <span className="font-mono font-semibold">{ticket.licensePlate}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Calendar size={14} />
-                      <span>{formatDate(ticket.startDate)} - {formatDate(ticket.endDate)}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Clock size={14} />
-
-                      <span>
-                        Còn {Math.max(0, Math.ceil(((parseDate(ticket.endDate)?.getTime() ?? 0) - Date.now()) / (1000 * 60 * 60 * 24)))} ngày
-                      </span>
-                    </div>
-                      <div className="flex items-center justify-between text-gray-600">
-                        <span className="text-xs">Phí/tháng:</span>
-                        <span className="text-xs font-semibold">{formatCurrency(ticket.monthlyFee)} đ</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 h-[600px] overflow-y-auto pr-2">
+              {filteredTickets.map((t) => (
+                <div key={t.ticketId} className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                   <div>
+                      <div className="flex justify-between items-start mb-3">
+                         <span className="font-mono text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded">{t.ticketId}</span>
+                         {(() => {
+                            const s = (t.status || '').toString().toLowerCase()
+                            const pay = (t.paymentStatus || '').toString().toLowerCase()
+                            const cls = pay === 'completed' || s === 'active'
+                              ? 'bg-green-100 text-green-700'
+                              : pay === 'failed'
+                                ? 'bg-red-100 text-red-700'
+                                : pay === 'pendingexternal'
+                                  ? 'bg-amber-100 text-amber-700'
+                                  : 'bg-gray-100 text-gray-500'
+                            const label = pay === 'pendingexternal' ? 'Chờ thanh toán' : pay === 'failed' ? 'Lỗi thanh toán' : t.status
+                            return <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${cls}`}>{label}</span>
+                         })()}
                       </div>
-                  </div>
-                  {ticket.isActive && (
-                    <button
-                      onClick={() => handleCancel(ticket.ticketId)}
-                      className="mt-3 flex items-center gap-1 text-xs text-red-500 hover:text-red-700"
-                    >
-                      <Trash2 size={14} /> Hủy vé
-                    </button>
-                  )}
+                      
+                      <div className="text-center py-2">
+                         <div className="text-2xl font-bold text-gray-800 tracking-tight">{t.licensePlate || '---'}</div>
+                         <div className="text-sm text-gray-500 truncate">{t.ownerName}</div>
+                      </div>
+
+                      <div className="mt-2 space-y-2 text-xs text-gray-600 bg-gray-50 p-2 rounded-lg">
+                          <div className="flex justify-between">
+                             <span>Hạn dùng:</span>
+                             <span className="font-medium">{formatDate(t.endDate)}</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                             <span>Còn lại:</span>
+                             {t.daysLeft != null ? (
+                                <span className={`font-bold ${t.daysLeft <= 7 ? 'text-amber-600' : 'text-emerald-600'}`}>
+                                   {t.daysLeft} ngày
+                                </span>
+                             ) : <span>--</span>}
+                          </div>
+                      </div>
+                   </div>
+
+                   <div className="mt-4 pt-3 border-t border-gray-100 grid grid-cols-2 gap-2">
+                      {t.isActive ? (
+                         <>
+                            <button onClick={() => handleRenew(t)} className="flex items-center justify-center gap-1 text-xs font-semibold py-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition">
+                               <CalendarPlus size={14} /> Gia hạn
+                            </button>
+                            <button onClick={() => handleCancel(t.ticketId)} className="flex items-center justify-center gap-1 text-xs font-semibold py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition">
+                               <XCircle size={14} /> Hủy vé
+                            </button>
+                         </>
+                      ) : (
+                         <div className="col-span-2 text-center text-xs text-gray-400 italic py-2">Vé không khả dụng</div>
+                      )}
+                      
+                      {(t.paymentStatus?.toLowerCase() === 'pendingexternal' || t.paymentStatus?.toLowerCase() === 'failed') && (
+                          <button onClick={() => handleConfirmPayment(t.ticketId)} className="col-span-2 flex items-center justify-center gap-1 text-xs font-semibold py-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition">
+                             <CheckCircle size={14} /> Xác nhận thanh toán
+                          </button>
+                      )}
+
+                      <button onClick={() => handleViewHistory(t.ticketId)} className="col-span-2 flex items-center justify-center gap-1 text-xs font-semibold py-1 text-gray-400 hover:text-gray-600 transition">
+                         <History size={12} /> Lịch sử
+                      </button>
+                   </div>
                 </div>
               ))}
             </div>

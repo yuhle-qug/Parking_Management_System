@@ -1,0 +1,147 @@
+\section{Giới thiệu hệ thống}
+\subsection{Mô tả bối cảnh bãi gửi xe trong tòa nhà phức hợp thương mại – chung cư}
+\hi{Tòa nhà phức hợp thương mại – chung cư} là mô hình kết hợp nhiều chức năng trong cùng một công trình, trong đó các tầng dưới được sử dụng cho hoạt động trung tâm thương mại và dịch vụ, còn các tầng trên là khu căn hộ chung cư. Bãi gửi xe của tòa nhà phục vụ đồng thời hai nhóm đối tượng chính: khách vãng lai đến khu thương mại và cư dân sinh sống trong tòa nhà.
+
+Do tính chất sử dụng đa dạng, bãi gửi xe cần đáp ứng nhiều hình thức gửi xe khác nhau, bao gồm gửi xe theo lượt cho khách vãng lai và gửi xe theo vé tháng cho cư dân. Lượng phương tiện ra vào lớn, thời gian gửi xe không đồng đều và yêu cầu kiểm soát chặt chẽ việc thu phí, ra vào bãi xe đặt ra nhu cầu cần có một hệ thống quản lý thống nhất và chính xác.
+
+Hệ thống quản lý bãi gửi xe được xây dựng nhằm hỗ trợ tự động hóa các nghiệp vụ như tiếp nhận xe vào bãi, cho xe ra khỏi bãi, tính phí gửi xe, quản lý vé tháng và tổng hợp báo cáo. Qua đó, hệ thống giúp giảm sai sót trong vận hành, nâng cao hiệu quả quản lý và đảm bảo quá trình gửi – lấy xe diễn ra thuận tiện, minh bạch.
+
+\subsection{Phạm vi của bài toán}
+Phạm vi của hệ thống bao gồm:
+\begin{itemize}
+    \item Quản lý lượt gửi xe.
+    \item Tính phí gửi xe và xử lý thanh toán.
+    \item Quản lý vé tháng/thành viên (đăng ký, gia hạn, hủy).
+    \item Xử lý trường hợp mất vé.
+    \item Quản lý tài khoản người dùng, xem báo cáo và thống kê
+\end{itemize}
+
+\subsection{Đối tượng sử dụng hệ thống}
+Hệ thống quản lý bãi gửi xe phục vụ các nhóm đối tượng sau:
+\begin{itemize}
+    \item \hi{Nhân viên bãi xe:} Là đối tượng trực tiếp vận hành hệ thống trong quá trình làm việc hằng ngày. Nhân viên thực hiện các chức năng như tiếp nhận xe vào bãi, cho xe ra, kiểm tra vé, xử lý trường hợp mất vé và hỗ trợ khách hàng trong quá trình gửi xe.
+    \item \hi{Quản trị viên hệ thống:} Là đối tượng chịu trách nhiệm quản lý và cấu hình hệ thống. Quản trị viên thực hiện các chức năng như quản lý tài khoản người dùng, quản lý bảng giá gửi xe, theo dõi báo cáo và thống kê, cũng như giám sát tình trạng hoạt động của bãi gửi xe.
+    \item \hi{Khách gửi xe và cư dân:} Là đối tượng gián tiếp sử dụng hệ thống. Khách vãng lai gửi xe theo lượt, trong khi cư dân có thể sử dụng vé tháng để gửi xe thường xuyên. Hệ thống cần đảm bảo quá trình kiểm tra vé, tính phí và thanh toán được thực hiện nhanh chóng và chính xác đối với cả hai nhóm đối tượng này.
+\end{itemize}
+\subsection{Đối tượng quản lý chính trong hệ thống}
+Dựa trên phạm vi và các chức năng của hệ thống, các đối tượng quản lý chính bao gồm:
+\hi{Đối tượng quản lý chính}
+\begin{itemize}
+    \item Xe (loại xe, biển số).
+    \item Vé xe lượt.
+    \item Thẻ tháng.
+    \item Phiên gửi xe (từ lúc vào đến lúc ra).
+    \item Chỗ đỗ và khu đỗ xe.
+\end{itemize}
+
+\subsection{Các giả định và ràng buộc của hệ thống}
+Trong phạm vi đề tài, hệ thống quản lý bãi gửi xe được xây dựng dựa trên các giả định và ràng buộc sau:
+\begin{itemize}
+    \item Hệ thống hỗ trợ hai hình thức gửi xe: gửi xe theo lượt và gửi xe theo vé tháng.
+    \item Vé gửi xe được quản lý dưới dạng thẻ từ, chưa triển khai quét mã QR qua ứng dụng di động cho khách hàng.
+    \item Khi phương tiện vào hoặc ra khỏi bãi, hệ thống thực hiện ghi nhận thông tin thông qua thẻ từ và đọc biển số xe nhằm hỗ trợ đối chiếu phương tiện. Việc kiểm tra và xác nhận cuối cùng vẫn do nhân viên bãi xe thực hiện để đảm bảo tính chính xác và an toàn trong quá trình vận hành.
+    \item Phí gửi xe được tính dựa trên bảng giá do quản trị viên định giá từ trước, áp dụng khác nhau cho xe gửi theo lượt và vé tháng, và cho các giờ khác nhau.
+    \item Thanh toán phí gửi xe được thực hiện thông qua cổng thanh toán bên ngoài, hệ thống \textbf{\textcolor{red}{KHÔNG}} hỗ trợ thanh toán tiền mặt. Trong trường hợp người dùng không thể tự thực hiện thanh toán trực tuyến, nhân viên bãi xe có thể hỗ trợ thực hiện thanh toán thay trên hệ thống.
+    \item Hệ thống được xây dựng phục vụ mục đích học tập môn Lập trình hướng đối tượng, tập trung vào phân tích và thiết kế hệ thống bằng các sơ đồ UML, không yêu cầu triển khai đầy đủ các tính năng bảo mật và hạ tầng thực tế.
+\end{itemize}
+Các giả định và ràng buộc trên giúp xác định rõ phạm vi bài toán, đảm bảo hệ thống phù hợp với yêu cầu môn học và thuận lợi cho việc phân tích, thiết kế và mô hình hóa.
+
+\section{Phân tích yêu cầu}
+\subsection{Yêu cầu chức năng}
+Hệ thống quản lý bãi gửi xe tòa nhà phức hợp thương mại – chung cư cần đáp ứng các yêu cầu chức năng sau:
+\begin{itemize}
+    \item \hi{Tiếp nhận xe vào bãi:} Hệ thống cho phép ghi nhận thông tin phương tiện khi xe vào bãi thông qua thẻ từ, bao gồm thời gian vào, biển số xe và loại phương tiện.
+    \item \hi{Cho xe ra khỏi bãi: }
+Hệ thống hỗ trợ xác nhận thông tin thẻ từ và biển số xe khi xe ra khỏi bãi, xác định thời gian gửi xe và trạng thái của lượt gửi.
+    \item \hi{Tính phí gửi xe:} Hệ thống tự động tính phí gửi xe dựa trên thời gian gửi, loại vé (theo lượt hoặc vé tháng) và bảng giá đã được cấu hình.
+    \item \hi{Xử lý thanh toán:} Hệ thống hỗ trợ ghi nhận thông tin thanh toán phí gửi xe, bao gồm thanh toán thông qua cổng thanh toán bên ngoài.
+    \item \hi{Quản lý vé tháng/thành viên:} Hệ thống cho phép đăng ký vé tháng mới, gia hạn vé tháng, hủy vé tháng và kiểm tra hiệu lực vé tháng khi phương tiện ra vào bãi.
+    \item \hi{Xử lý trường hợp mất vé:} Hệ thống hỗ trợ ghi nhận và xử lý các trường hợp mất thẻ từ theo quy trình và mức phí quy định.
+    \item \hi{Quản lý tài khoản người dùng:} Hệ thống cho phép quản lý tài khoản nhân viên và quản trị viên, bao gồm tạo, chỉnh sửa và phân quyền sử dụng chức năng.
+    \item \hi{Quản lý bảng giá:} Hệ thống cho phép quản trị viên thiết lập và điều chỉnh bảng giá gửi xe theo từng loại phương tiện và khung thời gian.
+
+    \item \hi{Báo cáo và thống kê:} Hệ thống cung cấp các báo cáo về số lượt gửi xe, doanh thu theo thời gian và tình trạng sử dụng vé tháng, phục vụ công tác quản lý và giám sát.
+\end{itemize}
+
+\subsection{Yêu cầu phi chức năng}
+Bên cạnh các yêu cầu chức năng, hệ thống cần đáp ứng các yêu cầu phi chức năng sau:
+\begin{itemize}
+    \item \hi{Hiệu năng:} Thời gian xử lý các thao tác tiếp nhận xe vào và cho xe ra phải nhanh chóng, đáp ứng yêu cầu vận hành tại bãi gửi xe có lưu lượng lớn.
+    \item \hi{Độ chính xác và tin cậy:} Dữ liệu về thời gian gửi xe, biển số xe, vé tháng và thanh toán phải được lưu trữ chính xác, hạn chế tối đa sai sót trong quá trình vận hành.
+    \item \hi{Khả năng sử dụng:} Giao diện hệ thống cần đơn giản, dễ hiểu, phù hợp với nhân viên bãi xe, hạn chế các thao tác phức tạp.
+    \item \hi{Bảo mật:} Hệ thống cần phân quyền rõ ràng giữa các loại người dùng, đảm bảo chỉ người có thẩm quyền mới được truy cập và chỉnh sửa các chức năng quản trị.
+    \item \hi{Khả năng mở rộng:} Hệ thống có khả năng mở rộng để bổ sung thêm các chức năng mới trong tương lai như tích hợp công nghệ nhận diện tự động hoặc các hình thức thanh toán khác.
+    \item \hi{Sao lưu và phục hồi dữ liệu:} Dữ liệu hệ thống cần được sao lưu định kỳ để đảm bảo an toàn và có thể phục hồi khi xảy ra sự cố.
+\end{itemize}
+
+\subsection{Quy tắc nghiệp vụ}
+Hệ thống quản lý bãi gửi xe tuân theo các quy tắc nghiệp vụ sau:
+\begin{itemize}
+    \item \hi{Quy tắc tính phí gửi xe theo lượt:} Phí gửi xe được tính dựa trên tổng thời gian gửi xe, có thể bao gồm chia theo các khung giờ khác nhau trong ngày theo bảng giá quy định.
+    \item \hi{Quy tắc áp dụng vé tháng:} Phương tiện có vé tháng còn hiệu lực được phép ra vào bãi mà không phát sinh phí gửi xe theo lượt.
+     \item \hi{Quy tắc gia hạn và hủy vé tháng:} Vé tháng chỉ có hiệu lực trong thời gian đã đăng ký. Khi hết hạn, phương tiện được xử lý như xe gửi theo lượt. Vé tháng có thể được gia hạn hoặc bị hủy (sau khi hết hạn quá 12 tháng) theo quy định của ban quản lý.
+     \item \hi{Quy tắc xử lý mất vé:} Trường hợp mất thẻ từ, hệ thống áp dụng mức phí xử lý riêng theo quy định và yêu cầu xác minh thông tin phương tiện trước khi cho xe ra khỏi bãi.
+    \item \hi{Quy tắc xe gửi qua đêm:} Xe gửi qua ngày được tính phí theo quy định riêng, có thể áp dụng mức phí tối đa cho mỗi ngày gửi xe.
+    \item \hi{Quy tắc phân quyền người dùng:} Nhân viên bãi xe chỉ được phép thực hiện các chức năng vận hành, trong khi các chức năng cấu hình hệ thống và xem báo cáo tổng hợp chỉ dành cho quản trị viên.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -16,13 +16,34 @@ namespace Parking.Infrastructure.Repositories
 
 		protected BaseJsonRepository(IHostEnvironment hostEnvironment, string fileName)
 		{
-			_filePath = Path.Combine(hostEnvironment.ContentRootPath, "DataStore", fileName);
+			_filePath = ResolveDataStorePath(hostEnvironment.ContentRootPath, fileName);
 		}
 
 		protected BaseJsonRepository(string fileName)
 		{
-			var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-			_filePath = Path.Combine(baseDir, "DataStore", fileName);
+			_filePath = ResolveDataStorePath(AppDomain.CurrentDomain.BaseDirectory, fileName);
+		}
+
+		private static string ResolveDataStorePath(string contentRootPath, string fileName)
+		{
+			var candidates = new[]
+			{
+				Path.Combine(contentRootPath, "DataStore", fileName),
+				Path.Combine(contentRootPath, "backend", "Parking.API", "DataStore", fileName),
+				Path.Combine(AppContext.BaseDirectory, "DataStore", fileName)
+			};
+
+			foreach (var path in candidates)
+			{
+				var directory = Path.GetDirectoryName(path);
+				if (File.Exists(path) || (directory != null && Directory.Exists(directory)))
+				{
+					return path;
+				}
+			}
+
+			// Fallback to the first candidate; WriteListAsync will create the directory if needed.
+			return candidates[0];
 		}
 
 		protected string? GetId(T entity)

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Parking.Core.Entities;
 
@@ -5,23 +8,28 @@ namespace Parking.Core.Interfaces
 {
 	public interface IParkingService
 	{
-		Task<ParkingSession> CheckInAsync(string plateNumber, string vehicleType, string gateId);
-		Task<ParkingSession> CheckOutAsync(string ticketIdOrPlate, string gateId);
+		Task<ParkingSession> CheckInAsync(string plateNumber, string vehicleType, string gateId, string? cardId = null);
+		Task<ParkingSession> CheckOutAsync(string ticketIdOrPlate, string gateId, string? plateNumber = null, string? cardId = null);
+		Task<ParkingSession> ProcessLostTicketAsync(string plateNumber, string vehicleType, string gateId);
 	}
 
 	public interface IPaymentService
 	{
-		Task<bool> ProcessPaymentAsync(string sessionId, double amount, string method);
+		Task<PaymentResult> ProcessPaymentAsync(string sessionId, double amount, string method, string? exitGateId = null, int maxRetry = 3, int timeoutSeconds = 5);
+		Task<PaymentResult> ConfirmExternalPaymentAsync(string sessionId, string transactionCode, bool success, string? providerLog = null, string? exitGateId = null);
+		Task<PaymentResult> CancelPaymentAsync(string sessionId, string reason = "User cancelled");
 	}
 
 	public interface IMembershipService
 	{
-		Task<MonthlyTicket> RegisterMonthlyTicketAsync(Customer customerInfo, Vehicle vehicle, string planId);
-		Task<bool> ExtendMonthlyTicketAsync(string ticketId, int months);
+		Task<MonthlyTicket> RegisterMonthlyTicketAsync(Customer customerInfo, Vehicle vehicle, string planId, int months = 1);
+		Task<MonthlyTicket> ExtendMonthlyTicketAsync(string ticketId, int months, string performedBy, string? note = null);
+		Task<MonthlyTicket> CancelMonthlyTicketAsync(string ticketId, string performedBy, string? note = null);
 		
 		// [NEW] Thêm 2 hàm lấy dữ liệu
-		Task<IEnumerable<MonthlyTicket>> GetAllTicketsAsync();
+		Task<IEnumerable<MonthlyTicketDto>> GetAllTicketsAsync();
 		Task<IEnumerable<MembershipPolicy>> GetAllPoliciesAsync();
+		Task<IEnumerable<MembershipHistory>> GetHistoryAsync(string ticketId);
 	}
 
 	// External device abstraction for opening gates.
@@ -33,6 +41,16 @@ namespace Parking.Core.Interfaces
 	// Payment gateway adapter contract.
 	public interface IPaymentGateway
 	{
-		Task<bool> RequestPaymentAsync(double amount, string orderInfo);
+		Task<PaymentGatewayResult> RequestPaymentAsync(double amount, string orderInfo, CancellationToken cancellationToken = default);
+	}
+
+	public interface IPlateRecognitionClient
+	{
+		Task<PlateRecognitionResult> RecognizeAsync(Stream imageStream, string fileName, string contentType, CancellationToken cancellationToken = default);
+	}
+
+	public interface ITicketTemplateService
+	{
+		TicketPrintResult RenderHtml(TicketPrintData data);
 	}
 }

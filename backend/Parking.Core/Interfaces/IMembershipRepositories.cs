@@ -20,4 +20,10 @@ namespace Parking.Core.Interfaces
 	{
 		Task<MembershipPolicy?> GetPolicyAsync(string vehicleType);
 	}
+
+	public interface IMembershipHistoryRepository : IRepository<MembershipHistory>
+	{
+		Task<IEnumerable<MembershipHistory>> GetHistoryAsync(string ticketId);
+		Task AddHistoryAsync(MembershipHistory history);
+	}
 }

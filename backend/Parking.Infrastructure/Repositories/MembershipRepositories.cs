@@ -38,4 +38,22 @@ namespace Parking.Infrastructure.Repositories
             return list.Where(t => t.ExpiryDate < date && t.Status == "Active");
         }
     }
+
+    public class MembershipHistoryRepository : BaseJsonRepository<MembershipHistory>, IMembershipHistoryRepository
+    {
+        public MembershipHistoryRepository(IHostEnvironment hostEnvironment) : base(hostEnvironment, "membership_history.json") { }
+
+        public async Task<IEnumerable<MembershipHistory>> GetHistoryAsync(string ticketId)
+        {
+            var list = await GetAllAsync();
+            return list
+                .Where(h => h.TicketId.Equals(ticketId, StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(h => h.Time);
+        }
+
+        public async Task AddHistoryAsync(MembershipHistory history)
+        {
+            await AddAsync(history);
+        }
+    }
 }

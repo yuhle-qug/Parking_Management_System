@@ -6,6 +6,7 @@ namespace Parking.Core.Entities
     {
         public string IncidentId { get; set; }
         public DateTime ReportedDate { get; set; } = DateTime.Now;
+        public string Type { get; set; }        // "LostTicket", "Damage", "Other"
         public string Title { get; set; }       // VD: Mất vé xe 30A-12345
         public string Description { get; set; } // Chi tiết sự việc
         public string Status { get; set; }      // "Open", "Processing", "Resolved"

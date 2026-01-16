@@ -19,6 +19,13 @@ namespace Parking.Infrastructure.Repositories
 			return result;
 		}
 
+		public async Task<int> CountActiveByZoneAsync(string zoneId)
+		{
+			var list = await GetAllAsync();
+			// Active means occupied slot: Active (parked) or PendingPayment (waiting to exit)
+			return list.Count(s => (s.Status == "Active" || s.Status == "PendingPayment") && s.ParkingZoneId == zoneId);
+		}
+
 		public async Task<ParkingSession?> FindByTicketIdAsync(string ticketId)
 		{
 			var list = await GetAllAsync();

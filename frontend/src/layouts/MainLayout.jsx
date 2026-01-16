@@ -23,11 +23,20 @@ export default function MainLayout({ user, onLogout }) {
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
       <header className="bg-white shadow flex items-center justify-between px-6 py-4">
-        <div className="flex items-center gap-2 text-xl font-bold">
-          <span className="text-blue-600">🅿️</span> Parking Pro
+        <div className="flex items-center gap-3 text-xl font-bold">
+          <img src="/logo.png" alt="SmartPark" className="h-10 w-auto" />
+          <span className="text-gray-800">SmartPark</span>
         </div>
         <div className="flex items-center gap-4 text-sm">
           <span className="text-gray-600">Xin chào, <b>{user?.username}</b> ({user?.role})</span>
+          {user?.gateId && (
+            <span className="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 font-semibold border border-blue-100">Gate: {user.gateId}</span>
+          )}
+          {user?.gateVehicleGroup && (
+            <span className="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-100">
+              Luồng: {user.gateVehicleGroup === 'CAR' ? 'Ô tô' : 'Xe máy'}
+            </span>
+          )}
           <button
             onClick={handleLogout}
             className="flex items-center gap-1 text-red-600 hover:bg-red-50 px-3 py-2 rounded-md"
@@ -57,7 +66,7 @@ export default function MainLayout({ user, onLogout }) {
         </aside>
 
         <main className="flex-1 p-6">
-          <Outlet />
+          <Outlet context={{ user }} />
         </main>
       </div>
     </div>

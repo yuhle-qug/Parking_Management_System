@@ -14,6 +14,8 @@ export default function Report() {
   const [vehicleTypeData, setVehicleTypeData] = useState([])
   const [hourlyData, setHourlyData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [membershipStats, setMembershipStats] = useState({ active: 0, expiring: 0 })
+  const [lostTicketStats, setLostTicketStats] = useState({ count: 0 })
 
   // Set default date range to last 7 days
   useEffect(() => {
@@ -30,72 +32,56 @@ export default function Report() {
     if (!dateRange.start || !dateRange.end) return
     setLoading(true)
     try {
-      // Gọi các API backend có sẵn
-      const [revenueRes, trafficRes] = await Promise.all([
+      const [revenueRes, trafficRes, lostTicketRes, membershipRes] = await Promise.all([
         axios.get(`${API_BASE}/Report/revenue`, { params: { from: dateRange.start, to: dateRange.end } }),
-        axios.get(`${API_BASE}/Report/traffic`, { params: { from: dateRange.start, to: dateRange.end } })
+        axios.get(`${API_BASE}/Report/traffic`, { params: { from: dateRange.start, to: dateRange.end } }),
+        axios.get(`${API_BASE}/Report/lost-tickets`, { params: { from: dateRange.start, to: dateRange.end } }),
+        axios.get(`${API_BASE}/Report/membership`, { params: { from: dateRange.start, to: dateRange.end } })
       ])
       
-      // Map response từ backend
-      const revenueData = revenueRes.data
-      const trafficData = trafficRes.data
+      const rev = revenueRes.data
+      const traf = trafficRes.data
+      const lost = lostTicketRes.data
+      const mem = membershipRes.data
       
       setSummary({
-        revenue: revenueData.totalRevenue || 0,
-        vehicles: trafficData.totalVehiclesIn || 0,
-        sessions: revenueData.totalTransactions || 0,
-        avgDuration: 2.5 // Mock
+        revenue: rev.totalRevenue || 0,
+        vehicles: traf.totalVehiclesIn || 0,
+        sessions: rev.totalTransactions || 0,
+        avgDuration: 0 // Not calculated yet
       })
+
+      // Revenue Chart Data (Simplify: just show total revenue by day if backend supported daily breakdown, 
+      // but backend currently sends aggregate. For now, let's just show Payment Method breakdown in a Pie)
+      // If we want daily revenue, backend needs update. 
+      // Reuse existing chart logic loosely or switch to Payment Method chart.
+      // Let's repurpose the Revenue Chart to show mock daily distribution of the REAL total (since backend doesn't give daily series yet)
+      // OR better: Visualize Payment Methods which WE HAVE real data for.
       
-      // Mock chart data từ summary
+      // Show Total Revenue by Day (if backend provides daily series) logic... 
+      // Currently just showing Total.
       setRevenueData([
-        { date: 'T2', revenue: (revenueData.totalRevenue || 0) * 0.15 },
-        { date: 'T3', revenue: (revenueData.totalRevenue || 0) * 0.18 },
-        { date: 'T4', revenue: (revenueData.totalRevenue || 0) * 0.14 },
-        { date: 'T5', revenue: (revenueData.totalRevenue || 0) * 0.16 },
-        { date: 'T6', revenue: (revenueData.totalRevenue || 0) * 0.20 },
-        { date: 'T7', revenue: (revenueData.totalRevenue || 0) * 0.10 },
-        { date: 'CN', revenue: (revenueData.totalRevenue || 0) * 0.07 }
+        { date: 'Tổng', revenue: rev.totalRevenue || 0 }
       ])
       
-      // Map vehicle types từ traffic report
-      const vehicleTypes = trafficData.vehiclesByType || {}
-      setVehicleTypeData(
-        Object.entries(vehicleTypes).map(([type, count]) => ({ type, count }))
-      )
+      const vTypes = traf.vehiclesByType || {}
+      setVehicleTypeData(Object.entries(vTypes).map(([k, v]) => ({ type: k, count: v })))
       
-      setHourlyData(
-        Array.from({ length: 24 }, (_, i) => ({
-          hour: `${i}h`,
-          entries: Math.floor(Math.random() * 50) + (i >= 7 && i <= 18 ? 30 : 5),
-          exits: Math.floor(Math.random() * 45) + (i >= 7 && i <= 18 ? 25 : 3)
-        }))
-      )
+      setLostTicketStats({ count: lost.count || 0 })
+      setMembershipStats({ active: mem.activeCount || 0, expiring: mem.expiringSoon || 0 })
+
+      // Map hourly data from backend
+      const hourly = traf.hourlyTraffic || traf.HourlyTraffic || []
+      const mappedHourly = hourly.map(h => ({
+        hour: h.hour || h.Hour,
+        entries: h.entries || h.Entries || 0,
+        exits: h.exits || h.Exits || 0
+      }))
+      setHourlyData(mappedHourly.length ? mappedHourly : []) 
+
     } catch (err) {
       console.error('Error fetching reports:', err)
-      // Generate mock data for demo
-      setSummary({ revenue: 12500000, vehicles: 856, sessions: 1024, avgDuration: 2.5 })
-      setRevenueData([
-        { date: 'T2', revenue: 1800000 },
-        { date: 'T3', revenue: 2100000 },
-        { date: 'T4', revenue: 1950000 },
-        { date: 'T5', revenue: 2300000 },
-        { date: 'T6', revenue: 2650000 },
-        { date: 'T7', revenue: 1200000 },
-        { date: 'CN', revenue: 500000 }
-      ])
-      setVehicleTypeData([
-        { type: 'Ô tô', count: 450 },
-        { type: 'Xe máy', count: 320 },
-        { type: 'Xe điện', count: 86 }
-      ])
-      setHourlyData(
-        Array.from({ length: 24 }, (_, i) => ({
-          hour: `${i}h`,
-          entries: Math.floor(Math.random() * 50) + (i >= 7 && i <= 18 ? 30 : 5),
-          exits: Math.floor(Math.random() * 45) + (i >= 7 && i <= 18 ? 25 : 3)
-        }))
-      )
+      alert("Không thể tải dữ liệu báo cáo!")
     } finally {
       setLoading(false)
     }
@@ -107,9 +93,9 @@ export default function Report() {
 
   const statCards = [
     { label: 'Tổng doanh thu', value: `${formatCurrency(summary.revenue)} đ`, icon: DollarSign, color: 'green' },
-    { label: 'Lượt xe', value: summary.vehicles, icon: Car, color: 'blue' },
-    { label: 'Phiên gửi', value: summary.sessions, icon: BarChart3, color: 'purple' },
-    { label: 'Thời gian TB', value: `${summary.avgDuration}h`, icon: TrendingUp, color: 'amber' }
+    { label: 'Lượt xe vào', value: summary.vehicles, icon: Car, color: 'blue' },
+    { label: 'Vé tháng (Active)', value: membershipStats.active, icon: Calendar, color: 'purple' },
+    { label: 'Mất vé / Sự cố', value: lostTicketStats.count, icon: TrendingUp, color: 'amber' }
   ]
 
   const colorClasses = {
@@ -174,11 +160,11 @@ export default function Report() {
 
       {/* Charts Row */}
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Revenue Chart */}
+        {/* Revenue Chart - Full width of its column */}
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <h3 className="font-semibold text-gray-800 mb-4">Doanh thu theo ngày</h3>
+          <h3 className="font-semibold text-gray-800 mb-4">Tổng Doanh thu</h3>
           <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={revenueData}>
+             <BarChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="date" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} />

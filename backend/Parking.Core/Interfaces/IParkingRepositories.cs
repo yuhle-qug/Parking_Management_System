@@ -8,11 +8,18 @@ namespace Parking.Core.Interfaces
 	{
 		Task<IEnumerable<ParkingSession>> FindActiveByPlateAsync(string plateNumber);
 		Task<ParkingSession?> FindByTicketIdAsync(string ticketId);
+		Task<int> CountActiveByZoneAsync(string zoneId);
 	}
 
 	public interface IParkingZoneRepository : IRepository<ParkingZone>
 	{
-		Task<ParkingZone?> FindSuitableZoneAsync(string vehicleType, bool isElectric);
+		Task<ParkingZone?> FindSuitableZoneAsync(string vehicleType, bool isElectric, string gateId);
+	}
+
+	public interface IPricePolicyRepository : IRepository<PricePolicy>
+	{
+		Task<PricePolicy?> GetPolicyAsync(string policyId);
+		Task<PricePolicy?> GetPolicyByVehicleTypeAsync(string vehicleType);
 	}
 
 	public interface ITicketRepository : IRepository<Ticket>

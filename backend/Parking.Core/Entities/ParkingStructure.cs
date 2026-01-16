@@ -7,13 +7,14 @@ namespace Parking.Core.Entities
     {
         public string ZoneId { get; set; }
         public string Name { get; set; }
-        public required string VehicleCategory { get; set; } // CAR, MOTORBIKE
+        public required string VehicleCategory { get; set; } // CAR, MOTORBIKE, BICYCLE
         public bool ElectricOnly { get; set; }
         public int Capacity { get; set; }
+        public List<string> GateIds { get; set; } = new List<string>(); // Gate(s) phục vụ zone này
+        public string? PricePolicyId { get; set; }
 
         // Quan hệ 1-n: Một khu vực chứa nhiều phiên gửi xe
         public List<ParkingSession> ActiveSessions { get; set; } = new List<ParkingSession>();
-        public PricePolicy? PricePolicy { get; set; }
 
         public bool IsFull()
         {
@@ -46,7 +47,7 @@ namespace Parking.Core.Entities
             // Logic đơn giản: Tìm khu vực khớp loại xe và còn chỗ
             // (Trong thực tế có thể phức tạp hơn dựa trên gateId)
 
-            bool isElectric = vehicle is ElectricCar || vehicle is ElectricMotorbike || vehicle is ElectricBicycle;
+            bool isElectric = vehicle is ElectricCar || vehicle is ElectricMotorbike;
             string category = GetVehicleCategory(vehicle);
 
             return Zones.FirstOrDefault(z =>

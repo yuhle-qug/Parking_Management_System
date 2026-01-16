@@ -8,6 +8,7 @@ namespace Parking.Core.Entities
         public string TicketId { get; set; }
         public DateTime IssueTime { get; set; }
         public string GateId { get; set; }
+        public string? CardId { get; set; }
     }
 
     // Thanh toán
@@ -16,14 +17,29 @@ namespace Parking.Core.Entities
         public string PaymentId { get; set; }
         public double Amount { get; set; }
         public DateTime Time { get; set; }
-        public string Method { get; set; } // Cash, CreditCard, QR
-        public string Status { get; set; } // Pending, Completed
+        public string Method { get; set; } // Online methods only (e.g., QR)
+        public string Status { get; set; } // Pending, Completed, Failed, Cancelled
+        public string TransactionCode { get; set; } = string.Empty; // Mã giao dịch từ gateway
+        public string? ErrorMessage { get; set; }
+        public int Attempts { get; set; }
+        public string? ProviderLog { get; set; }
 
         public void MarkCompleted()
         {
             Status = "Completed";
             Time = DateTime.Now;
         }
+    }
+
+    public class PaymentResult
+    {
+        public bool Success { get; set; }
+        public string Status { get; set; } = string.Empty;
+        public string TransactionCode { get; set; } = string.Empty;
+        public string? Error { get; set; }
+        public int Attempts { get; set; }
+        public string? QrContent { get; set; }
+        public string? ProviderLog { get; set; }
     }
 
     // Phiên gửi xe (Quan trọng nhất)
@@ -34,6 +50,7 @@ namespace Parking.Core.Entities
         public DateTime? ExitTime { get; set; } // Nullable vì xe đang gửi chưa ra
         public double FeeAmount { get; set; }
         public string Status { get; set; } // Active, Completed, LostTicket
+        public string? CardId { get; set; }
 
         // [OOP - Composition/Aggregation]: Các đối tượng liên quan
         public Vehicle Vehicle { get; set; }
@@ -45,6 +62,8 @@ namespace Parking.Core.Entities
         {
             ExitTime = time;
         }
+
+        public string? ExitGateId { get; set; }
 
         public void Close()
         {

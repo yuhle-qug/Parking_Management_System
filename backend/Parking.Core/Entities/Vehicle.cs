@@ -51,13 +51,7 @@
     {
         public Bicycle() { }
         public Bicycle(string plate) : base(plate) { }
-        public override double GetFeeFactor() => 0.1;
+        public override double GetFeeFactor() => 0.2; // Xe đạp phí thấp nhất
     }
 
-    public class ElectricBicycle : Bicycle
-    {
-        public ElectricBicycle() { }
-        public ElectricBicycle(string plate) : base(plate) { }
-        public override double GetFeeFactor() => 0.1; // Xe đạp điện bằng xe đạp thường
-    }
 }

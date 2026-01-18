@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Parking.Core.Entities;
 using Parking.Core.Interfaces;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace Parking.API.Controllers
 {
+    [Authorize(Roles = "ATTENDANT, ADMIN")]
     [ApiController]
     [Route("api/[controller]")] // URL: api/CheckIn
     public class CheckInController : ControllerBase

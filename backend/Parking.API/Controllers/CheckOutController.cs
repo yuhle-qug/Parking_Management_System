@@ -4,17 +4,22 @@ using Microsoft.AspNetCore.Mvc;
 using Parking.Core.Entities;
 using Parking.Core.Interfaces;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace Parking.API.Controllers
 {
+    [Authorize(Roles = "ATTENDANT, ADMIN")]
     [ApiController]
     [Route("api/[controller]")] // URL: api/CheckOut
     public class CheckOutController : ControllerBase
     {
         private readonly IParkingService _parkingService;
+        private readonly ICheckOutService _checkOutService;
 
-        public CheckOutController(IParkingService parkingService)
+        public CheckOutController(IParkingService parkingService, ICheckOutService checkOutService)
         {
             _parkingService = parkingService;
+            _checkOutService = checkOutService;
         }
 
         [HttpPost]
@@ -22,7 +27,8 @@ namespace Parking.API.Controllers
         {
             try
             {
-                var session = await _parkingService.CheckOutAsync(request.TicketIdOrPlate, request.GateId, request.PlateNumber, request.CardId);
+                // [P3] Use new CheckOutService
+                var session = await _checkOutService.CheckOutAsync(request.TicketIdOrPlate, request.GateId, request.PlateNumber, request.CardId);
                 var lostPenalty = 0d;
                 var baseAmount = session.FeeAmount;
                 return Ok(new
@@ -47,9 +53,9 @@ namespace Parking.API.Controllers
         {
             try
             {
-                var session = await _parkingService.ProcessLostTicketAsync(request.PlateNumber, request.VehicleType, request.GateId);
-                var lostPenalty = session.FeeAmount;
-                var baseAmount = 0d;
+                var session = await _checkOutService.ProcessLostTicketAsync(request.PlateNumber, request.VehicleType ?? string.Empty, request.GateId);
+                var baseAmount = session.BaseFee ?? 0d;
+                var lostPenalty = session.LostTicketFee ?? Math.Max(0d, session.FeeAmount - baseAmount);
                 var reportPath = request.PrintReport
                     ? @"D:\ParkingManagementSystem\backend\Mau_bien_ban_mat_ve.pdf"
                     : null;
@@ -76,6 +82,7 @@ namespace Parking.API.Controllers
         }
 
         // GET api/CheckOut/lost-ticket/report
+        [AllowAnonymous]
         [HttpGet("lost-ticket/report")]
         public IActionResult DownloadLostTicketReport()
         {
@@ -101,7 +108,7 @@ namespace Parking.API.Controllers
     public class LostTicketRequest
     {
         public string PlateNumber { get; set; }
-        public string VehicleType { get; set; }
+        public string? VehicleType { get; set; }
         public string GateId { get; set; }
         public bool PrintReport { get; set; } = false;
     }

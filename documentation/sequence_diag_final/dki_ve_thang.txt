@@ -1,0 +1,60 @@
+@startuml
+actor Attendant
+
+boundary MembershipUI
+control MembershipController
+control PaymentController
+Entity Customers
+Entity Vehicles
+Entity MonthlyTicket
+Entity PricePolicy
+Entity Payments
+Entity "PaymentGateway" as ExternalPayment
+
+Attendant -> MembershipUI : Chọn "Đăng ký vé mới"
+MembershipUI -> Attendant : Hiển thị form nhập
+Attendant -> MembershipUI : Nhập customersInfo
+
+MembershipUI -> MembershipController : registerMonthlyTicket(customersInfo)
+
+MembershipController -> Customers : findOrCreateCustomers()
+Customers --> MembershipController : Customers
+
+MembershipController -> Vehicles : createOrUpdate()
+Vehicles --> MembershipController : Vehicles
+
+MembershipController -> MonthlyTicket : hasActiveTicket()
+MonthlyTicket --> MembershipController : true / false
+
+alt Đã có vé
+    MembershipController -> MembershipUI : Thông báo "Khách đã có vé"
+else Chưa có vé
+    MembershipController -> PricePolicy : createMembershipFee()
+    PricePolicy --> MembershipController : MembershipFee
+
+    MembershipController -> MembershipUI : Hiển thị thông tin vé\n+ yêu cầu thanh toán
+    Attendant -> MembershipUI : Check thông tin và thanh toán
+    Attendant -> MembershipUI : Xác nhận thanh toán
+
+    MembershipUI -> PaymentController : processPaymentForMembership()
+
+    PaymentController -> ExternalPayment : requestPayment()
+    ExternalPayment --> PaymentController : paymentResult (success / fail)
+
+    alt Thanh toán thất bại
+        PaymentController -> MembershipUI : showError("Thanh toán thất bại,\nvui lòng thử lại")
+    else Thanh toán thành công
+        PaymentController -> Payments : createPayment(amount)
+        Payments --> PaymentController : markedCompleted
+
+        PaymentController -> MembershipUI : paymentCompleted
+
+        MembershipController -> MonthlyTicket : createMonthlyTicket()
+        MonthlyTicket --> MembershipController : newTicket
+
+        MembershipController -> MembershipUI : Trả về thông tin vé
+        MembershipUI -> Attendant : Hiển thị vé / In vé
+    end
+end
+
+@enduml

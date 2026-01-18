@@ -36,7 +36,7 @@ namespace Parking.Services.Services
 
             // 1. Kiểm tra session
             var session = await _sessionRepo.GetByIdAsync(sessionId);
-            if (session == null) throw new ArgumentException("Session not found");
+            if (session == null) throw new KeyNotFoundException($"Không tìm thấy phiên gửi xe với ID: {sessionId}");
 
             if (session.Status == "Completed")
             {
@@ -161,7 +161,7 @@ namespace Parking.Services.Services
         public async Task<PaymentResult> CancelPaymentAsync(string sessionId, string reason = "User cancelled")
         {
             var session = await _sessionRepo.GetByIdAsync(sessionId);
-            if (session == null) throw new ArgumentException("Session not found");
+            if (session == null) throw new KeyNotFoundException($"Không tìm thấy phiên gửi xe với ID: {sessionId}");
 
             var payment = session.Payment ?? new Payment
             {

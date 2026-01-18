@@ -83,8 +83,8 @@ namespace Parking.Services.Services
             }
 
             var sessionTicket = isMonthly
-                ? new Ticket { TicketId = monthlyTicket!.TicketId, IssueTime = DateTime.Now, GateId = gateId, CardId = cardId }
-                : new Ticket { TicketId = Guid.NewGuid().ToString().Substring(0, 8).ToUpper(), IssueTime = DateTime.Now, GateId = gateId, CardId = cardId };
+                ? new Ticket { TicketId = monthlyTicket!.TicketId, IssueTime = DateTime.Now, GateId = gateId, CardId = cardId, TicketType = "Monthly" }
+                : new Ticket { TicketId = Guid.NewGuid().ToString().Substring(0, 8).ToUpper(), IssueTime = DateTime.Now, GateId = gateId, CardId = cardId, TicketType = "Daily" };
 
             var session = new ParkingSession
             {
@@ -131,10 +131,11 @@ namespace Parking.Services.Services
             }
 
             // Đối chiếu biển số (bắt buộc)
-            var normalizedPlate = plateNumber.Trim().ToUpperInvariant();
-            if (!string.Equals(normalizedPlate, session.Vehicle.LicensePlate?.Value, StringComparison.OrdinalIgnoreCase))
+            var normalizedPlate = NormalizePlate(plateNumber);
+            var storedPlate = NormalizePlate(session.Vehicle.LicensePlate?.Value);
+            if (!string.Equals(normalizedPlate, storedPlate, StringComparison.OrdinalIgnoreCase))
             {
-                _logger.LogWarning("Biển số không khớp ticket {TicketId}: nhập {InputPlate}, lưu {StoredPlate}", session.Ticket?.TicketId, normalizedPlate, session.Vehicle.LicensePlate?.Value);
+                _logger.LogWarning("Biển số không khớp ticket {TicketId}: nhập {InputPlate}, lưu {StoredPlate}", session.Ticket?.TicketId, normalizedPlate, storedPlate);
                 throw new InvalidOperationException("Biển số không khớp, cần xác minh hoặc xử lý mất vé.");
             }
 
@@ -209,7 +210,10 @@ namespace Parking.Services.Services
             }
 
             // Cập nhật loại xe nếu khác và set giờ ra
-            session.Vehicle = CreateVehicle(vehicleType, session.Vehicle?.LicensePlate ?? plateNumber);
+            var resolvedVehicleType = string.IsNullOrWhiteSpace(vehicleType)
+                ? GetVehicleTypeCode(session.Vehicle)
+                : vehicleType;
+            session.Vehicle = CreateVehicle(resolvedVehicleType, session.Vehicle?.LicensePlate ?? plateNumber);
             session.SetExitTime(DateTime.Now);
 
             bool isMonthly = session.Ticket.TicketId.StartsWith("M-");
@@ -219,6 +223,8 @@ namespace Parking.Services.Services
             double fee = isMonthly ? 0 : baseFee + lostFee;
 
             session.FeeAmount = fee;
+            session.BaseFee = baseFee;
+            session.LostTicketFee = lostFee;
             session.Status = "PendingPayment";
 
             await _sessionRepo.UpdateAsync(session);
@@ -230,7 +236,7 @@ namespace Parking.Services.Services
                 var cardNote = string.IsNullOrWhiteSpace(storedCard) ? string.Empty : $" Thẻ: {storedCard}.";
                 await _incidentService.ReportIncidentAsync(
                     title: $"Mất vé - {plateNumber}",
-                    description: $"Gate {gateId}, loại xe {vehicleType}, phí cơ bản {baseFee:0}, phụ thu mất vé {lostFee:0}, tổng {fee:0}.{cardNote} {(isMonthly ? "Vé tháng: miễn phụ thu" : string.Empty)}",
+                    description: $"Gate {gateId}, loại xe {resolvedVehicleType}, phí cơ bản {baseFee:0}, phụ thu mất vé {lostFee:0}, tổng {fee:0}.{cardNote} {(isMonthly ? "Vé tháng: miễn phụ thu" : string.Empty)}",
                     reportedBy: gateId,
                     referenceId: session.Ticket.TicketId ?? plateNumber);
             }
@@ -266,15 +272,7 @@ namespace Parking.Services.Services
 
             if (policy == null)
             {
-                var vehicleType = session.Vehicle switch
-                {
-                    ElectricCar => "ELECTRIC_CAR",
-                    Car => "CAR",
-                    ElectricMotorbike => "ELECTRIC_MOTORBIKE",
-                    Motorbike => "MOTORBIKE",
-                    Bicycle => "BICYCLE",
-                    _ => "CAR"
-                };
+                var vehicleType = GetVehicleTypeCode(session.Vehicle);
                 policy = await _pricePolicyRepo.GetPolicyByVehicleTypeAsync(vehicleType);
             }
 
@@ -295,33 +293,24 @@ namespace Parking.Services.Services
             };
         }
 
-        public async Task<PaymentResult> ConfirmPaymentAsync(string sessionId, string transactionCode, bool success, string? providerLog = null, string? exitGateId = null)
+        private static string NormalizePlate(string? plate)
         {
-             var session = await _sessionRepo.GetByIdAsync(sessionId);
-             if (session == null)
-             {
-                 return new PaymentResult { Success = false, Message = "Session not found" };
-             }
+            if (string.IsNullOrWhiteSpace(plate)) return string.Empty;
+            var normalized = new string(plate.Where(char.IsLetterOrDigit).ToArray());
+            return normalized.Trim().ToUpperInvariant();
+        }
 
-             if (success)
-             {
-                 session.Status = "Completed";
-                 session.ExitTime = DateTime.Now;
-                 // session.PaymentTransactionId = transactionCode; // If Entity has this field
-                 await _sessionRepo.UpdateAsync(session);
-
-                 if (!string.IsNullOrWhiteSpace(exitGateId))
-                 {
-                     await _gateDevice.OpenGateAsync(exitGateId);
-                 }
-                 return new PaymentResult { Success = true, Message = "Payment confirmed and gate opened" };
-             }
-             else
-             {
-                 // Log failure but keep session Active/PendingPayment
-                 // session.Status = "PaymentFailed"; 
-                 return new PaymentResult { Success = false, Message = $"Payment failed: {providerLog}" };
-             }
+        private static string GetVehicleTypeCode(Vehicle? vehicle)
+        {
+            return vehicle switch
+            {
+                ElectricCar => "ELECTRIC_CAR",
+                Car => "CAR",
+                ElectricMotorbike => "ELECTRIC_MOTORBIKE",
+                Motorbike => "MOTORBIKE",
+                Bicycle => "BICYCLE",
+                _ => "CAR"
+            };
         }
     }
 }

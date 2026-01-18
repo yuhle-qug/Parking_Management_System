@@ -8,8 +8,11 @@ using Parking.Core.Interfaces;
 using Parking.Services.Interfaces; // Add this
 using Parking.Services.Strategies; // Add this
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace Parking.API.Controllers
 {
+    [Authorize(Roles = "ADMIN, ATTENDANT")]
     [ApiController]
     [Route("api/[controller]")]
     public class ReportController : ControllerBase
@@ -48,6 +51,7 @@ namespace Parking.API.Controllers
 
         // [REFACTORED] Generic Endpoint using Strategy Pattern
         // Replaces old /revenue and /traffic endpoints
+        [Authorize(Roles = "ADMIN")]
         [HttpGet]
         public async Task<IActionResult> RequestReport(
             [FromQuery] string type, 
@@ -77,32 +81,8 @@ namespace Parking.API.Controllers
             }
         }
 
-        // --- LEGACY/SPECIFIC ENDPOINTS (To be refactored later) ---
-
-        // [New] GET: api/Report/revenue/summary
-        [HttpGet("revenue/summary")]
-        public async Task<IActionResult> GetRevenueSummary()
-        {
-            var allSessions = await _sessionRepo.GetAllAsync();
-            var completed = allSessions.Where(s => s.Status == "Completed" && s.Payment != null).ToList();
-
-            var today = DateTime.Today;
-            var startOfWeek = today.AddDays(-(int)today.DayOfWeek + 1); // Monday
-            var startOfMonth = new DateTime(today.Year, today.Month, 1);
-            var startOfYear = new DateTime(today.Year, 1, 1);
-
-            double SumRevenue(DateTime from) 
-                => completed.Where(s => s.Payment.Time >= from).Sum(s => s.Payment.Amount);
-
-            return Ok(new
-            {
-                Today = SumRevenue(today),
-                ThisWeek = SumRevenue(startOfWeek),
-                ThisMonth = SumRevenue(startOfMonth),
-                ThisYear = SumRevenue(startOfYear)
-            });
-        }
-
+        // --- LEGACY/SPECIFIC ENDPOINTS (Refactored to Strategies) ---
+        
         [HttpGet("lost-tickets")]
         public async Task<IActionResult> GetLostTickets([FromQuery] DateTime? from, [FromQuery] DateTime? to)
         {
@@ -152,92 +132,6 @@ namespace Parking.API.Controllers
                 ActiveCount = activeCount,
                 ExpiringSoon = expiringSoon
             });
-        }
-
-        // WARNING: hourlyStats/HourlyTrafficParam helper class was removed from Controller body.
-        // It's used in 'chart' endpoint logic? No, chart is different.
-        // But TrafficReportStrategy now handles 'traffic'.
-        // So GetTrafficReport is GONE.
-        // However, I need to check if GetRevenueChart uses HourlyTrafficParam. No, it uses ChartDataPoint.
-
-
-        
-        public class HourlyTrafficParam
-        {
-            public string Hour { get; set; }
-            public int Entries { get; set; }
-            public int Exits { get; set; }
-        }
-        [HttpGet("revenue/chart")]
-        public async Task<IActionResult> GetRevenueChart([FromQuery] string type = "week", [FromQuery] DateTime? date = null)
-        {
-            var sessions = await _sessionRepo.GetAllAsync();
-            var membershipHistory = await _membershipHistoryRepo.GetAllAsync();
-
-            var anchorDate = date ?? DateTime.Now;
-            var chartData = new List<ChartDataPoint>();
-
-            if (type.ToLower() == "week") 
-            {
-                // Logic: Mon-Sun of the ANCHOR week
-                var startOfWeek = anchorDate.AddDays(-(int)anchorDate.DayOfWeek + 1).Date; // Mon
-                if (anchorDate.DayOfWeek == DayOfWeek.Sunday) startOfWeek = anchorDate.AddDays(-6).Date;
-
-                for (int i = 0; i < 7; i++)
-                {
-                    var currentDate = startOfWeek.AddDays(i);
-                    var endOfDay = currentDate.AddDays(1).AddTicks(-1);
-
-                    var sessionRev = (decimal)sessions
-                        .Where(s => s.Status == "Completed" && s.Payment?.Time >= currentDate && s.Payment?.Time <= endOfDay)
-                        .Sum(s => s.Payment?.Amount ?? 0);
-
-                    var membershipRev = (decimal)membershipHistory
-                        .Where(h => h.Time >= currentDate && h.Time <= endOfDay && (h.Action == "Register" || h.Action == "Extend"))
-                        .Sum(h => h.Amount);
-
-                    chartData.Add(new ChartDataPoint 
-                    { 
-                        Label = currentDate.ToString("dd/MM"), // e.g. 27/01
-                        Value = sessionRev + membershipRev,
-                        Date = currentDate
-                    });
-                }
-            }
-            else // "year" -> 12 months of the ANCHOR year
-            {
-                var startOfYear = new DateTime(anchorDate.Year, 1, 1);
-                
-                for (int m = 1; m <= 12; m++)
-                {
-                    var startOfMonth = new DateTime(anchorDate.Year, m, 1);
-                    var endOfMonth = startOfMonth.AddMonths(1).AddTicks(-1);
-
-                    var sessionRev = (decimal)sessions
-                        .Where(s => s.Status == "Completed" && s.Payment?.Time >= startOfMonth && s.Payment?.Time <= endOfMonth)
-                        .Sum(s => s.Payment?.Amount ?? 0);
-
-                    var membershipRev = (decimal)membershipHistory
-                        .Where(h => h.Time >= startOfMonth && h.Time <= endOfMonth && (h.Action == "Register" || h.Action == "Extend"))
-                        .Sum(h => h.Amount);
-
-                    chartData.Add(new ChartDataPoint
-                    {
-                        Label = $"T{m}",
-                        Value = sessionRev + membershipRev,
-                        Date = startOfMonth
-                    });
-                }
-            }
-
-            return Ok(chartData);
-        }
-
-        public class ChartDataPoint
-        {
-            public string Label { get; set; }
-            public decimal Value { get; set; }
-            public DateTime Date { get; set; }
         }
     }
 }

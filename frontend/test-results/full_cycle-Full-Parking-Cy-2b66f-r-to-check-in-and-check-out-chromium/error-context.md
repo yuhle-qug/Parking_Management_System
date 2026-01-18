@@ -1,0 +1,74 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img "SmartPark" [ref=e6]
+      - generic [ref=e7]: SmartPark
+    - generic [ref=e8]:
+      - generic [ref=e9]: Xin chào, admin (ADMIN)
+      - generic [ref=e10]: "Gate: GATE-IN-CAR-01"
+      - generic [ref=e11]: "Luồng: Ô tô"
+      - button "Thoát" [ref=e12]:
+        - img [ref=e13]
+        - text: Thoát
+  - generic [ref=e16]:
+    - complementary [ref=e17]:
+      - navigation [ref=e18]:
+        - link "Dashboard" [ref=e19] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e20]
+          - text: Dashboard
+        - link "Cổng Vào (Check-In)" [ref=e25] [cursor=pointer]:
+          - /url: /checkin
+          - img [ref=e26]
+          - text: Cổng Vào (Check-In)
+        - link "Vé Tháng" [ref=e29] [cursor=pointer]:
+          - /url: /membership
+          - img [ref=e30]
+          - text: Vé Tháng
+        - link "Báo Cáo" [ref=e32] [cursor=pointer]:
+          - /url: /report
+          - img [ref=e33]
+          - text: Báo Cáo
+        - link "Quản Trị" [ref=e35] [cursor=pointer]:
+          - /url: /admin
+          - img [ref=e36]
+          - text: Quản Trị
+    - main [ref=e38]:
+      - generic [ref=e39]:
+        - generic [ref=e41]:
+          - generic [ref=e43]:
+            - img [ref=e45]
+            - generic [ref=e48]:
+              - heading "Cổng Ra" [level=2] [ref=e49]
+              - paragraph [ref=e50]: GATE-IN-CAR-01
+          - generic [ref=e51]:
+            - generic [ref=e52]: Sẵn sàng kiểm tra xe ra. Vui lòng nhập thông tin.
+            - generic [ref=e53]:
+              - generic [ref=e54]:
+                - generic [ref=e55]: Biển số xe
+                - generic [ref=e56]:
+                  - img [ref=e57]
+                  - textbox "30A-..." [ref=e61]
+              - generic [ref=e62]:
+                - button "Vé Lượt" [ref=e63]
+                - button "Vé Tháng" [ref=e64]
+                - button "Mất Vé" [ref=e65]
+              - generic [ref=e66]:
+                - generic [ref=e67]: Mã vé giấy
+                - generic [ref=e68]:
+                  - img [ref=e69]
+                  - textbox "Nhập mã vé..." [ref=e71]: 30FULL-3780
+            - button "KIỂM TRA XE RA" [active] [ref=e72]:
+              - img [ref=e73]
+              - text: KIỂM TRA XE RA
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - img [ref=e79]
+              - generic [ref=e82]: CHECKOUT LOGS
+            - generic [ref=e83]: LIVE
+          - generic [ref=e85]: Chờ lệnh kiểm tra xe...
+```

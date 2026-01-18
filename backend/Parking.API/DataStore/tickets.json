@@ -1,1100 +1,211 @@
 [
   {
-    "TicketId": "2955E5C2",
-    "IssueTime": "2026-01-12T00:27:29.524Z",
-    "GateId": "GATE-02",
-    "CardId": null,
+    "TicketId": "VL-260117-1001",
+    "IssueTime": "2026-01-17T07:15:00Z",
+    "GateId": "GATE-IN-MOTO-01",
+    "CardId": "CARD-A1B2C3D4",
     "TicketType": "Daily"
   },
   {
-    "TicketId": "69604E7C",
-    "IssueTime": "2026-01-13T21:19:54.367Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "42166A81",
-    "IssueTime": "2026-01-14T22:05:15.214Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "0741317F",
-    "IssueTime": "2026-01-15T20:10:56.033Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "2140F761",
-    "IssueTime": "2026-01-15T13:58:19.713Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "018556AD",
-    "IssueTime": "2026-01-14T07:57:26.117Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "AF24838C",
-    "IssueTime": "2026-01-14T02:19:47.729Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "2CCFBEE0",
-    "IssueTime": "2026-01-15T21:54:02.636Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "B3DE4E04",
-    "IssueTime": "2026-01-10T04:28:42.763Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "74F99C46",
-    "IssueTime": "2026-01-11T03:58:20.873Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "61034737",
-    "IssueTime": "2026-01-10T23:50:05.424Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "C71CEFE0",
-    "IssueTime": "2026-01-12T22:16:40.082Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "EB9635BD",
-    "IssueTime": "2026-01-10T14:34:00.413Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "5B7C11D0",
-    "IssueTime": "2026-01-14T14:56:13.846Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "86A86F0E",
-    "IssueTime": "2026-01-10T04:39:46.133Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "2E07EFCB",
-    "IssueTime": "2026-01-11T05:57:45.937Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "09D134B1",
-    "IssueTime": "2026-01-14T06:55:57.614Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "B07B60FC",
-    "IssueTime": "2026-01-10T15:20:44.937Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "AA09AECD",
-    "IssueTime": "2026-01-13T17:59:58.406Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "9846719A",
-    "IssueTime": "2026-01-15T22:18:12.53Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "42A8F1FE",
-    "IssueTime": "2026-01-11T17:55:45.339Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "E5B70F70",
-    "IssueTime": "2026-01-12T14:07:45.541Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "62ABA202",
-    "IssueTime": "2026-01-13T07:17:26.824Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "F6B9C5EF",
-    "IssueTime": "2026-01-10T01:59:46.556Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "56E56BFF",
-    "IssueTime": "2026-01-10T15:29:55.876Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "38DE411A",
-    "IssueTime": "2026-01-10T09:12:36.43Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "ABF69553",
-    "IssueTime": "2026-01-15T14:20:39.742Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "10206514",
-    "IssueTime": "2026-01-12T19:21:51.619Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "EE73F151",
-    "IssueTime": "2026-01-13T01:50:33.796Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "FDFE53FC",
-    "IssueTime": "2026-01-13T14:23:10.752Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "A824CEE3",
-    "IssueTime": "2026-01-10T06:29:24.854Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "E35030CB",
-    "IssueTime": "2026-01-15T11:03:01.988Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "41D1751D",
-    "IssueTime": "2026-01-11T18:20:23.355Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "204E1C82",
-    "IssueTime": "2026-01-11T16:02:42.431Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "786D473C",
-    "IssueTime": "2026-01-10T03:41:45.32Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "1ECBDB8B",
-    "IssueTime": "2026-01-11T11:27:32.699Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "2DE0868E",
-    "IssueTime": "2026-01-15T15:49:12.817Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "D02F6B2D",
-    "IssueTime": "2026-01-11T02:41:23.251Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "AA8372C3",
-    "IssueTime": "2026-01-15T06:23:35.184Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "A6DDCDB2",
-    "IssueTime": "2026-01-12T07:20:58.133Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "4289DA33",
-    "IssueTime": "2026-01-13T04:15:23.735Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "251A764A",
-    "IssueTime": "2026-01-11T23:27:11.578Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "D5C040BA",
-    "IssueTime": "2026-01-11T18:19:04.067Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "83181253",
-    "IssueTime": "2026-01-10T08:21:28.511Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "3341CAB2",
-    "IssueTime": "2026-01-14T18:37:36.282Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "E77BFB13",
-    "IssueTime": "2026-01-12T21:33:52.26Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "B93981C8",
-    "IssueTime": "2026-01-14T19:42:12.609Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "C559B5FB",
-    "IssueTime": "2026-01-10T03:44:55.338Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "8CBC924E",
-    "IssueTime": "2026-01-15T18:14:23.864Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "AF92DAD7",
-    "IssueTime": "2026-01-15T23:16:23.062Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "381CF5A9",
-    "IssueTime": "2026-01-10T00:27:50.255Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "81D03941",
-    "IssueTime": "2026-01-13T15:38:00.575Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "3139F551",
-    "IssueTime": "2026-01-11T14:35:05.72Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "87047201",
-    "IssueTime": "2026-01-16T01:53:24.916Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "48297B2F",
-    "IssueTime": "2026-01-13T21:41:58.757Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "18DA748C",
-    "IssueTime": "2026-01-12T06:04:11.694Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "5F55DDF2",
-    "IssueTime": "2026-01-10T06:27:29.825Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "FEA84B18",
-    "IssueTime": "2026-01-13T08:11:53.573Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "7CB9C2F9",
-    "IssueTime": "2026-01-15T11:52:50.243Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "6A784685",
-    "IssueTime": "2026-01-16T01:03:03.391Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "4D0CF58F",
-    "IssueTime": "2026-01-10T06:33:53.625Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "CF1DB0E5",
-    "IssueTime": "2026-01-13T04:16:59.933Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "04F7E5C5",
-    "IssueTime": "2026-01-16T08:12:47.625Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "D2575628",
-    "IssueTime": "2026-01-13T17:04:45.254Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "2CB0C51C",
-    "IssueTime": "2026-01-12T02:55:35.044Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "11804CC0",
-    "IssueTime": "2026-01-12T17:13:39.54Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "BB7A00C5",
-    "IssueTime": "2026-01-12T19:28:31.507Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "03F99C44",
-    "IssueTime": "2026-01-15T01:53:59.135Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "A45FC5C5",
-    "IssueTime": "2026-01-10T06:50:57.429Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "5EE0B649",
-    "IssueTime": "2026-01-12T18:33:33.562Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "A4CCC112",
-    "IssueTime": "2026-01-11T03:13:13.393Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "65E95043",
-    "IssueTime": "2026-01-15T13:20:13.19Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "5E00CCDA",
-    "IssueTime": "2026-01-15T05:06:38.213Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "8D0BB5FF",
-    "IssueTime": "2026-01-16T00:58:18.738Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "E87392B1",
-    "IssueTime": "2026-01-12T17:08:47.253Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "2B9C79F6",
-    "IssueTime": "2026-01-11T00:35:38.545Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "A1484B1E",
-    "IssueTime": "2026-01-13T14:40:17.392Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "45F48654",
-    "IssueTime": "2026-01-13T19:19:57.977Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "67449CFE",
-    "IssueTime": "2026-01-11T02:37:07.715Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "BF1BA576",
-    "IssueTime": "2026-01-12T20:27:01.637Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "8D214E62",
-    "IssueTime": "2026-01-12T23:04:01.326Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "10A2A575",
-    "IssueTime": "2026-01-10T23:45:50.325Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "4C09C138",
-    "IssueTime": "2026-01-13T12:23:06.443Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "44E48B46",
-    "IssueTime": "2026-01-13T09:27:46.519Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "7B662D1D",
-    "IssueTime": "2026-01-14T08:19:10.796Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "DF91FCB9",
-    "IssueTime": "2026-01-13T22:28:12.732Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "158B904D",
-    "IssueTime": "2026-01-13T04:52:35.158Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "551AD017",
-    "IssueTime": "2026-01-12T00:44:46.503Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "C28FD6C4",
-    "IssueTime": "2026-01-12T21:55:10.607Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "4EEE0798",
-    "IssueTime": "2026-01-11T21:23:27.722Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "EB9606BA",
-    "IssueTime": "2026-01-12T20:39:29.207Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "2FF8CD8A",
-    "IssueTime": "2026-01-14T11:48:23.101Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "D966046F",
-    "IssueTime": "2026-01-15T17:04:22.74Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "14116645",
-    "IssueTime": "2026-01-14T07:41:27.228Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "7F8AEF4C",
-    "IssueTime": "2026-01-11T14:51:22.538Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "9345743E",
-    "IssueTime": "2026-01-11T19:27:12.462Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "29C33B3B",
-    "IssueTime": "2026-01-16T04:32:08.57Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "1646DCA8",
-    "IssueTime": "2026-01-14T08:09:34.512Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "89E3EFAD",
-    "IssueTime": "2026-01-13T23:22:32.135Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "5E4A1BAA",
-    "IssueTime": "2026-01-15T16:50:14.92Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "D773F77E",
-    "IssueTime": "2026-01-10T22:59:22.62Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "1AF0AAD9",
-    "IssueTime": "2026-01-13T14:53:47.509Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "B72D0165",
-    "IssueTime": "2026-01-11T21:08:26.504Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "032FBD4C",
-    "IssueTime": "2026-01-15T21:23:06.428Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "FDE152B0",
-    "IssueTime": "2026-01-13T16:36:17.272Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "1931DE48",
-    "IssueTime": "2026-01-10T03:31:35.154Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "0C9E1DD8",
-    "IssueTime": "2026-01-10T08:03:29.473Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "15A64F46",
-    "IssueTime": "2026-01-11T20:03:33.085Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "A0168DE6",
-    "IssueTime": "2026-01-14T01:21:15.122Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "77CB1041",
-    "IssueTime": "2026-01-12T11:11:29.055Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "D59E8CAC",
-    "IssueTime": "2026-01-12T19:14:28.011Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "78AE6855",
-    "IssueTime": "2026-01-10T09:26:42.975Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "55045B2C",
-    "IssueTime": "2026-01-15T02:17:52.727Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "F24F59A6",
-    "IssueTime": "2026-01-15T00:26:59.111Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "F4BB923A",
-    "IssueTime": "2026-01-16T09:17:34.217Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "DE092FDF",
-    "IssueTime": "2026-01-11T23:04:43.456Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "9A2EE9B7",
-    "IssueTime": "2026-01-12T16:52:06.922Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "2A46D579",
-    "IssueTime": "2026-01-11T05:48:32.924Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "891F7FBF",
-    "IssueTime": "2026-01-10T09:25:48.136Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "129687A3",
-    "IssueTime": "2026-01-16T06:56:50.1Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "DAD65301",
-    "IssueTime": "2026-01-14T21:38:58.439Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "2FA8559E",
-    "IssueTime": "2026-01-14T04:09:39.888Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "EBDEA634",
-    "IssueTime": "2026-01-10T21:02:00.242Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "18DC48B0",
-    "IssueTime": "2026-01-16T08:28:28.779Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "7E0D3A6E",
-    "IssueTime": "2026-01-12T08:00:31.819Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "21BADC37",
-    "IssueTime": "2026-01-11T08:02:40.537Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "0622A6E6",
-    "IssueTime": "2026-01-14T22:41:47.739Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "BDCFCA31",
-    "IssueTime": "2026-01-14T05:53:00.192Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "B6A003A2",
-    "IssueTime": "2026-01-10T16:17:51.34Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "97D6BCA0",
-    "IssueTime": "2026-01-11T19:55:35.846Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "AB2FA63A",
-    "IssueTime": "2026-01-12T21:50:33.215Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "E99BDDD2",
-    "IssueTime": "2026-01-15T08:11:59.795Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "34428CFC",
-    "IssueTime": "2026-01-12T14:27:46.644Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "DB68C60B",
-    "IssueTime": "2026-01-10T02:45:40.408Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "E5AE4DFB",
-    "IssueTime": "2026-01-13T22:57:53.305Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "35767C49",
-    "IssueTime": "2026-01-14T22:49:56.013Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "FFC534CB",
-    "IssueTime": "2026-01-12T23:06:39.358Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "C72D469B",
-    "IssueTime": "2026-01-13T06:30:21.28Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "A1F29EEF",
-    "IssueTime": "2026-01-16T00:03:03.739Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "C305B489",
-    "IssueTime": "2026-01-15T02:10:15.878Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "0DC2D0BD",
-    "IssueTime": "2026-01-13T05:53:28.795Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "160E046E",
-    "IssueTime": "2026-01-11T01:55:54.137Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "D94587C4",
-    "IssueTime": "2026-01-15T15:38:07.169Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "C07E83CA",
-    "IssueTime": "2026-01-14T18:06:26.427Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "3A9C9FCF",
-    "IssueTime": "2026-01-13T17:52:46.045Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "42317AC8",
-    "IssueTime": "2026-01-14T09:58:08.755Z",
-    "GateId": "GATE-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "6F03A58A",
-    "IssueTime": "2026-01-16T07:29:49.651Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "7E032439",
-    "IssueTime": "2026-01-11T20:08:56.623Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "18100436",
-    "IssueTime": "2026-01-13T23:49:38.223Z",
-    "GateId": "GATE-03",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "AD3BC02D",
-    "IssueTime": "2026-01-11T11:56:01.147Z",
-    "GateId": "GATE-02",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "GIN-01-260116-0011-A49F",
-    "IssueTime": "2026-01-16T17:37:33.7114476+07:00",
-    "GateId": "GATE-IN-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "GIN-CAR-01-260116-0012-1471",
-    "IssueTime": "2026-01-16T19:31:10.2049669+07:00",
+    "TicketId": "VL-260117-1002",
+    "IssueTime": "2026-01-17T07:30:00Z",
     "GateId": "GATE-IN-CAR-01",
-    "CardId": null,
+    "CardId": "CARD-E5F6G7H8",
     "TicketType": "Daily"
   },
   {
-    "TicketId": "25CB1737",
-    "IssueTime": "2026-01-17T00:24:52.6143202+07:00",
-    "GateId": "GATE-IN-CAR-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "8495191E",
-    "IssueTime": "2026-01-17T00:25:15.4376616+07:00",
-    "GateId": "GATE-IN-CAR-01",
-    "CardId": null,
-    "TicketType": "Daily"
-  },
-  {
-    "TicketId": "E627C1C5",
-    "IssueTime": "2026-01-17T00:27:21.6290942+07:00",
+    "TicketId": "VL-260117-1003",
+    "IssueTime": "2026-01-17T08:00:00Z",
     "GateId": "GATE-IN-MOTO-01",
     "CardId": null,
     "TicketType": "Daily"
   },
   {
-    "TicketId": "75498AF9",
-    "IssueTime": "2026-01-17T00:49:31.849837+07:00",
+    "TicketId": "VL-260117-1004",
+    "IssueTime": "2026-01-17T08:15:00Z",
+    "GateId": "GATE-IN-CAR-02",
+    "CardId": "CARD-I9J0K1L2",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260117-1005",
+    "IssueTime": "2026-01-17T08:30:00Z",
+    "GateId": "GATE-IN-BICYCLE-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260116-2001",
+    "IssueTime": "2026-01-16T09:00:00Z",
+    "GateId": "GATE-IN-MOTO-01",
+    "CardId": "CARD-M3N4O5P6",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260116-2002",
+    "IssueTime": "2026-01-16T09:30:00Z",
     "GateId": "GATE-IN-CAR-01",
     "CardId": null,
     "TicketType": "Daily"
   },
   {
-    "TicketId": "B6D9FE81",
-    "IssueTime": "2026-01-17T00:53:13.171554+07:00",
+    "TicketId": "VL-260116-2003",
+    "IssueTime": "2026-01-16T10:00:00Z",
+    "GateId": "GATE-IN-MOTO-02",
+    "CardId": "CARD-Q7R8S9T0",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260116-2004",
+    "IssueTime": "2026-01-16T10:30:00Z",
+    "GateId": "GATE-IN-CAR-02",
+    "CardId": "CARD-U1V2W3X4",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260116-2005",
+    "IssueTime": "2026-01-16T11:00:00Z",
+    "GateId": "GATE-IN-BICYCLE-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260115-3001",
+    "IssueTime": "2026-01-15T07:00:00Z",
     "GateId": "GATE-IN-MOTO-01",
+    "CardId": "CARD-Y5Z6A7B8",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260115-3002",
+    "IssueTime": "2026-01-15T07:45:00Z",
+    "GateId": "GATE-IN-CAR-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260115-3003",
+    "IssueTime": "2026-01-15T08:30:00Z",
+    "GateId": "GATE-IN-MOTO-02",
+    "CardId": "CARD-C9D0E1F2",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260115-3004",
+    "IssueTime": "2026-01-15T09:15:00Z",
+    "GateId": "GATE-IN-CAR-02",
+    "CardId": "CARD-G3H4I5J6",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260115-3005",
+    "IssueTime": "2026-01-15T10:00:00Z",
+    "GateId": "GATE-IN-BICYCLE-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260114-4001",
+    "IssueTime": "2026-01-14T06:30:00Z",
+    "GateId": "GATE-IN-MOTO-01",
+    "CardId": "CARD-K7L8M9N0",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260114-4002",
+    "IssueTime": "2026-01-14T07:00:00Z",
+    "GateId": "GATE-IN-CAR-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260114-4003",
+    "IssueTime": "2026-01-14T07:30:00Z",
+    "GateId": "GATE-IN-MOTO-02",
+    "CardId": "CARD-O1P2Q3R4",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260114-4004",
+    "IssueTime": "2026-01-14T08:00:00Z",
+    "GateId": "GATE-IN-CAR-02",
+    "CardId": "CARD-S5T6U7V8",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260114-4005",
+    "IssueTime": "2026-01-14T08:30:00Z",
+    "GateId": "GATE-IN-BICYCLE-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260113-5001",
+    "IssueTime": "2026-01-13T07:00:00Z",
+    "GateId": "GATE-IN-MOTO-01",
+    "CardId": "CARD-W9X0Y1Z2",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260113-5002",
+    "IssueTime": "2026-01-13T07:30:00Z",
+    "GateId": "GATE-IN-CAR-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260113-5003",
+    "IssueTime": "2026-01-13T08:00:00Z",
+    "GateId": "GATE-IN-MOTO-02",
+    "CardId": "CARD-A3B4C5D6",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260113-5004",
+    "IssueTime": "2026-01-13T08:30:00Z",
+    "GateId": "GATE-IN-CAR-02",
+    "CardId": "CARD-E7F8G9H0",
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "VL-260113-5005",
+    "IssueTime": "2026-01-13T09:00:00Z",
+    "GateId": "GATE-IN-BICYCLE-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "E3FEA436",
+    "IssueTime": "2026-01-17T13:17:21.2869293+07:00",
+    "GateId": "GATE-IN-CAR-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "9F5C229F",
+    "IssueTime": "2026-01-17T13:17:30.0820388+07:00",
+    "GateId": "GATE-IN-CAR-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "C628931C",
+    "IssueTime": "2026-01-17T13:17:46.101794+07:00",
+    "GateId": "GATE-IN-CAR-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "C03080C4",
+    "IssueTime": "2026-01-17T13:29:37.6386737+07:00",
+    "GateId": "GATE-IN-CAR-01",
+    "CardId": null,
+    "TicketType": "Daily"
+  },
+  {
+    "TicketId": "A02D0DB7",
+    "IssueTime": "2026-01-18T00:40:20.6199746+07:00",
+    "GateId": "GATE-IN-CAR-01",
     "CardId": null,
     "TicketType": "Daily"
   }

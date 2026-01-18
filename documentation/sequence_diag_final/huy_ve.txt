@@ -1,0 +1,54 @@
+@startuml
+skinparam lifelineStrategy solid
+skinparam responseMessageBelowArrow true
+
+actor "Attendance" as Staff
+actor Admin
+boundary MembershipUI
+control MembershipController
+control MembershipService
+entity MonthlyTicket
+entity MonthlyTicketRepo as TicketRepo
+
+'==================== YÊU CẦU HỦY (STAFF) ====================
+Staff -> MembershipUI: Chọn "Hủy vé tháng"
+MembershipUI -> MembershipController: CancelTicket(ticketId, note)
+
+MembershipController -> MembershipService: CancelMonthlyTicketAsync(ticketId, userRole="Staff")
+
+MembershipService -> TicketRepo: GetById(ticketId)
+TicketRepo --> MembershipService: ticket
+
+alt Vé không tồn tại
+    MembershipService --> MembershipController: Error("Not Found")
+    MembershipController --> MembershipUI: ShowError
+else Vé tồn tại
+    ' Staff không có quyền hủy ngay -> Pending
+    MembershipService -> MembershipService: ticket.Status = "PendingCancellation"
+    
+    MembershipService --> MembershipController: ticket (Pending)
+    MembershipController --> MembershipUI: ShowMessage("Đã gửi yêu cầu hủy. Chờ duyệt.")
+end
+
+'==================== DUYỆT HỦY (ADMIN) ====================
+Admin -> MembershipUI: Xem danh sách chờ hủy
+Admin -> MembershipUI: Chọn vé -> "Duyệt Hủy" (Approve)
+
+MembershipUI -> MembershipController: ApproveCancelTicket(ticketId)
+MembershipController -> MembershipService: ApproveCancellationAsync(ticketId, adminId)
+
+MembershipService -> TicketRepo: GetById(ticketId)
+TicketRepo --> MembershipService: ticket
+
+alt Status == PendingCancellation
+    MembershipService -> MembershipService: ticket.Status = "Cancelled"
+    MembershipService -> MembershipService: ticket.PaymentStatus = "Cancelled"
+    
+    MembershipService --> MembershipController: ticket (Cancelled)
+    MembershipController --> MembershipUI: ShowSuccess("Đã hủy vé tháng thành công")
+else Status != PendingCancellation
+    MembershipService --> MembershipController: Error("Invalid Status")
+    MembershipController --> MembershipUI: ShowError("Vé không ở trạng thái chờ hủy")
+end
+
+@enduml

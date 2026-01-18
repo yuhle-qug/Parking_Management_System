@@ -1,0 +1,50 @@
+@startuml
+title Revenue Report - Sequence Diagram
+
+actor Admin
+boundary ReportUI
+control ReportController
+entity "report:RevenueReport" as RevenueReport
+entity ParkingSession
+
+' 1
+Admin -> ReportUI : 1. Chọn "Báo cáo Doanh thu"\n   và nhập (startDate, endDate)
+
+' 2
+ReportUI -> ReportController : 2. requestReport("REVENUE", startDate, endDate)
+
+note right of ReportController
+Factory Method đơn giản:
+Dựa vào loại báo cáo để tạo
+Object tương ứng (Strategy)
+end note
+
+' 3
+ReportController -> RevenueReport : 3. create(startDate, endDate)
+
+' 4
+ReportController -> RevenueReport : 4. generateData()
+
+' Business logic box
+box "Logic Tính toán (Business Logic)" #FFFFFF
+  ' 5
+  RevenueReport -> ParkingSession : 5. getCompletedSessions(startDate, endDate)
+  ' 6
+  ParkingSession --> RevenueReport : 6. trả về listSessions
+
+  loop for each session in listSessions
+    RevenueReport -> RevenueReport : 7. calculateTotal(session.fee)
+    RevenueReport -> RevenueReport : 8. groupByDate()
+  end
+end box
+
+' 9
+RevenueReport --> ReportController : 9. trả về reportData (DTO/Model)
+
+' 10
+ReportController --> ReportUI : 10. hiển thị dữ liệu (renderChart/Table)
+
+' 11
+ReportUI --> Admin : 11. Hiển thị biểu đồ doanh thu
+
+@enduml

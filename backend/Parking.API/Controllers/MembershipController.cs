@@ -4,8 +4,11 @@ using Parking.Core.Entities;
 using Parking.Core.Interfaces;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace Parking.API.Controllers
 {
+    [Authorize(Roles = "ATTENDANT, ADMIN")]
     [ApiController]
     [Route("api/[controller]")]
     public class MembershipController : ControllerBase
@@ -162,6 +165,7 @@ namespace Parking.API.Controllers
             });
         }
 
+        [AllowAnonymous]
         [HttpPost("payment-callback")]
         public async Task<IActionResult> PaymentCallback([FromBody] MembershipPaymentCallbackRequest request)
         {
@@ -298,7 +302,7 @@ namespace Parking.API.Controllers
         }
 
         [HttpPost("tickets/{ticketId}/approve-cancel")]
-        // [Authorize(Roles = "ADMIN")] // Uncomment when Auth is fully active
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> ApproveCancelTicket(string ticketId)
         {
             try

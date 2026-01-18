@@ -1,0 +1,821 @@
+{
+  "config": {
+    "configFile": "D:\\ParkingManagementSystem\\frontend\\playwright.config.ts",
+    "rootDir": "D:/ParkingManagementSystem/frontend/tests/e2e/specs",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "D:/ParkingManagementSystem/frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "D:/ParkingManagementSystem/frontend/tests/e2e/specs",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 2,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:5173",
+      "reuseExistingServer": true,
+      "timeout": 180000
+    }
+  },
+  "suites": [
+    {
+      "title": "checkin_monthly.spec.ts",
+      "file": "checkin_monthly.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Check-In - Monthly Ticket",
+          "file": "checkin_monthly.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should allow monthly ticket check-in with card id",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 64666,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\BasePage.ts",
+                            "column": 25,
+                            "line": 29
+                          },
+                          "message": "Error: page.fill: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[placeholder=\"Nguyễn Văn A\"]')\u001b[22m\n\u001b[2m    - locator resolved to <input value=\"\" type=\"text\" placeholder=\"Nguyễn Văn A\" class=\"flex-1 bg-transparent outline-none text-sm\"/>\u001b[22m\n\u001b[2m    - fill(\"Auto Test\")\u001b[22m\n\u001b[2m  - attempting fill action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and editable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\pages\\BasePage.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mprotected\u001b[39m \u001b[36masync\u001b[39m fill(selector\u001b[33m:\u001b[39m string\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m string) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m         \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mfill(selector\u001b[33m,\u001b[39m value)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m     }\n \u001b[90m 31 |\u001b[39m\n \u001b[90m 32 |\u001b[39m     \u001b[36mprotected\u001b[39m \u001b[36masync\u001b[39m click(selector\u001b[33m:\u001b[39m string) {\u001b[0m\n\u001b[2m    at MembershipPage.fill (D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\BasePage.ts:29:25)\u001b[22m\n\u001b[2m    at MembershipPage.registerTicket (D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\MembershipPage.ts:26:20)\u001b[22m\n\u001b[2m    at D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\checkin_monthly.spec.ts:25:26\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T06:17:14.054Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\checkin_monthly-Check-In---41cfb-icket-check-in-with-card-id-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\checkin_monthly-Check-In---41cfb-icket-check-in-with-card-id-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\checkin_monthly-Check-In---41cfb-icket-check-in-with-card-id-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7a65806931af70f5c6d3-9ceaa959a32a5d9d85fa",
+              "file": "checkin_monthly.spec.ts",
+              "line": 8,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "checkin.spec.ts",
+      "file": "checkin.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication",
+          "file": "checkin.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should login successfully with valid credentials",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4228,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T06:17:14.024Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\checkin-Authentication-sho-a8914-ully-with-valid-credentials-chromium\\test-finished-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "aa38a869995c4c08644d-aeab14c0f3a246282944",
+              "file": "checkin.spec.ts",
+              "line": 13,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "Check-In Flow",
+          "file": "checkin.spec.ts",
+          "line": 20,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should check-in a standard car successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8720,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Screenshot saved: documentation\\screenshots\\checkin-success-30Test-9300.png\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T06:17:19.427Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\checkin-Check-In-Flow-shou-f045b-a-standard-car-successfully-chromium\\test-finished-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "aa38a869995c4c08644d-83b8dcf4facb1e33beea",
+              "file": "checkin.spec.ts",
+              "line": 33,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "checkout_lost_ticket.spec.ts",
+      "file": "checkout_lost_ticket.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Check-Out - Lost Ticket",
+          "file": "checkout_lost_ticket.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should process lost ticket checkout and open gate after payment",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 14679,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Đã mở cổng')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Đã mở cổng')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Đã mở cổng')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Đã mở cổng')\u001b[22m\n\n    at CheckOutPage.verifyGateOpened (D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\CheckOutPage.ts:81:60)\n    at D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\checkout_lost_ticket.spec.ts:36:24",
+                        "location": {
+                          "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\CheckOutPage.ts",
+                          "column": 60,
+                          "line": 81
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39m..\\pages\\CheckOutPage.ts:81\n\n\u001b[0m \u001b[90m 79 |\u001b[39m     \u001b[36masync\u001b[39m verifyGateOpened() {\n \u001b[90m 80 |\u001b[39m         \u001b[90m// Log \"Đã mở cổng\"\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 81 |\u001b[39m         \u001b[36mawait\u001b[39m expect(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mlocator(\u001b[32m`text=Đã mở cổng`\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 82 |\u001b[39m     }\n \u001b[90m 83 |\u001b[39m }\n \u001b[90m 84 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\CheckOutPage.ts",
+                            "column": 60,
+                            "line": 81
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Đã mở cổng')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Đã mở cổng')\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\pages\\CheckOutPage.ts:81\n\n\u001b[0m \u001b[90m 79 |\u001b[39m     \u001b[36masync\u001b[39m verifyGateOpened() {\n \u001b[90m 80 |\u001b[39m         \u001b[90m// Log \"Đã mở cổng\"\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 81 |\u001b[39m         \u001b[36mawait\u001b[39m expect(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mlocator(\u001b[32m`text=Đã mở cổng`\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 82 |\u001b[39m     }\n \u001b[90m 83 |\u001b[39m }\n \u001b[90m 84 |\u001b[39m\u001b[0m\n\u001b[2m    at CheckOutPage.verifyGateOpened (D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\CheckOutPage.ts:81:60)\u001b[22m\n\u001b[2m    at D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\checkout_lost_ticket.spec.ts:36:24\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T06:17:28.215Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\checkout_lost_ticket-Check-95116-and-open-gate-after-payment-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\checkout_lost_ticket-Check-95116-and-open-gate-after-payment-chromium\\test-failed-2.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\checkout_lost_ticket-Check-95116-and-open-gate-after-payment-chromium\\video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\checkout_lost_ticket-Check-95116-and-open-gate-after-payment-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\checkout_lost_ticket-Check-95116-and-open-gate-after-payment-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\CheckOutPage.ts",
+                        "column": 60,
+                        "line": 81
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ad8312c4a93f63bb2e22-b41cc96554c52f3d582d",
+              "file": "checkout_lost_ticket.spec.ts",
+              "line": 8,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "full_cycle.spec.ts",
+      "file": "full_cycle.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Full Parking Cycle",
+          "file": "full_cycle.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should allow a car to check-in and check-out",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 14505,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Đã mở cổng')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Đã mở cổng')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Đã mở cổng')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Đã mở cổng')\u001b[22m\n\n    at CheckOutPage.verifyGateOpened (D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\CheckOutPage.ts:81:60)\n    at D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\full_cycle.spec.ts:39:28",
+                        "location": {
+                          "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\CheckOutPage.ts",
+                          "column": 60,
+                          "line": 81
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39m..\\pages\\CheckOutPage.ts:81\n\n\u001b[0m \u001b[90m 79 |\u001b[39m     \u001b[36masync\u001b[39m verifyGateOpened() {\n \u001b[90m 80 |\u001b[39m         \u001b[90m// Log \"Đã mở cổng\"\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 81 |\u001b[39m         \u001b[36mawait\u001b[39m expect(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mlocator(\u001b[32m`text=Đã mở cổng`\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 82 |\u001b[39m     }\n \u001b[90m 83 |\u001b[39m }\n \u001b[90m 84 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\CheckOutPage.ts",
+                            "column": 60,
+                            "line": 81
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Đã mở cổng')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Đã mở cổng')\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\pages\\CheckOutPage.ts:81\n\n\u001b[0m \u001b[90m 79 |\u001b[39m     \u001b[36masync\u001b[39m verifyGateOpened() {\n \u001b[90m 80 |\u001b[39m         \u001b[90m// Log \"Đã mở cổng\"\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 81 |\u001b[39m         \u001b[36mawait\u001b[39m expect(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mlocator(\u001b[32m`text=Đã mở cổng`\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 82 |\u001b[39m     }\n \u001b[90m 83 |\u001b[39m }\n \u001b[90m 84 |\u001b[39m\u001b[0m\n\u001b[2m    at CheckOutPage.verifyGateOpened (D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\CheckOutPage.ts:81:60)\u001b[22m\n\u001b[2m    at D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\full_cycle.spec.ts:39:28\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "Screenshot saved: documentation\\screenshots\\cycle-1-checkin-30Full-3780.png\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T06:17:44.501Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\full_cycle-Full-Parking-Cy-2b66f-r-to-check-in-and-check-out-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\full_cycle-Full-Parking-Cy-2b66f-r-to-check-in-and-check-out-chromium\\test-failed-2.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\full_cycle-Full-Parking-Cy-2b66f-r-to-check-in-and-check-out-chromium\\video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\full_cycle-Full-Parking-Cy-2b66f-r-to-check-in-and-check-out-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\full_cycle-Full-Parking-Cy-2b66f-r-to-check-in-and-check-out-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\CheckOutPage.ts",
+                        "column": 60,
+                        "line": 81
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "0cabe6e547b9891674af-31b9016507cb72098aeb",
+              "file": "full_cycle.spec.ts",
+              "line": 7,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login_negative.spec.ts",
+      "file": "login_negative.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication - Negative",
+          "file": "login_negative.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should show error with invalid credentials",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 1632,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"Đăng nhập thất bại\"\u001b[39m\nReceived string:    \u001b[31m\"\"\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"Đăng nhập thất bại\"\u001b[39m\nReceived string:    \u001b[31m\"\"\u001b[39m\n    at D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\login_negative.spec.ts:11:22",
+                        "location": {
+                          "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\login_negative.spec.ts",
+                          "column": 22,
+                          "line": 11
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  9 |\u001b[39m\n \u001b[90m 10 |\u001b[39m     \u001b[36mconst\u001b[39m errorMsg \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginPage\u001b[33m.\u001b[39mgetErrorMessage()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 11 |\u001b[39m     expect(errorMsg)\u001b[33m.\u001b[39mtoContain(\u001b[32m'Đăng nhập thất bại'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 12 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 13 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 14 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\login_negative.spec.ts",
+                            "column": 22,
+                            "line": 11
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"Đăng nhập thất bại\"\u001b[39m\nReceived string:    \u001b[31m\"\"\u001b[39m\n\n\u001b[0m \u001b[90m  9 |\u001b[39m\n \u001b[90m 10 |\u001b[39m     \u001b[36mconst\u001b[39m errorMsg \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m loginPage\u001b[33m.\u001b[39mgetErrorMessage()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 11 |\u001b[39m     expect(errorMsg)\u001b[33m.\u001b[39mtoContain(\u001b[32m'Đăng nhập thất bại'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 12 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 13 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 14 |\u001b[39m\u001b[0m\n\u001b[2m    at D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\login_negative.spec.ts:11:22\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T06:18:00.979Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\login_negative-Authenticat-f6417-or-with-invalid-credentials-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\login_negative-Authenticat-f6417-or-with-invalid-credentials-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\login_negative-Authenticat-f6417-or-with-invalid-credentials-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\login_negative.spec.ts",
+                        "column": 22,
+                        "line": 11
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "768f96863018c2eb289c-612d29a07d95991236ab",
+              "file": "login_negative.spec.ts",
+              "line": 5,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "membership_renew_cancel.spec.ts",
+      "file": "membership_renew_cancel.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Membership - Renew & Cancel",
+          "file": "membership_renew_cancel.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should renew and cancel a monthly ticket",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 64552,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\BasePage.ts",
+                            "column": 25,
+                            "line": 29
+                          },
+                          "message": "Error: page.fill: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[placeholder=\"Nguyễn Văn A\"]')\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\pages\\BasePage.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mprotected\u001b[39m \u001b[36masync\u001b[39m fill(selector\u001b[33m:\u001b[39m string\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m string) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m         \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mfill(selector\u001b[33m,\u001b[39m value)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m     }\n \u001b[90m 31 |\u001b[39m\n \u001b[90m 32 |\u001b[39m     \u001b[36mprotected\u001b[39m \u001b[36masync\u001b[39m click(selector\u001b[33m:\u001b[39m string) {\u001b[0m\n\u001b[2m    at MembershipPage.fill (D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\BasePage.ts:29:25)\u001b[22m\n\u001b[2m    at MembershipPage.registerTicket (D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\MembershipPage.ts:26:20)\u001b[22m\n\u001b[2m    at D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\membership_renew_cancel.spec.ts:29:26\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T06:18:05.096Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\membership_renew_cancel-Me-1eb29-and-cancel-a-monthly-ticket-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\membership_renew_cancel-Me-1eb29-and-cancel-a-monthly-ticket-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\membership_renew_cancel-Me-1eb29-and-cancel-a-monthly-ticket-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "67e72b08e5d0e9c33bde-e82bd58e7d014de37520",
+              "file": "membership_renew_cancel.spec.ts",
+              "line": 7,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "membership.spec.ts",
+      "file": "membership.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Membership Management",
+          "file": "membership.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should register a new monthly ticket",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 64652,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\BasePage.ts",
+                            "column": 25,
+                            "line": 29
+                          },
+                          "message": "Error: page.fill: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[placeholder=\"Nguyễn Văn A\"]')\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\pages\\BasePage.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mprotected\u001b[39m \u001b[36masync\u001b[39m fill(selector\u001b[33m:\u001b[39m string\u001b[33m,\u001b[39m value\u001b[33m:\u001b[39m string) {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m         \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mfill(selector\u001b[33m,\u001b[39m value)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m     }\n \u001b[90m 31 |\u001b[39m\n \u001b[90m 32 |\u001b[39m     \u001b[36mprotected\u001b[39m \u001b[36masync\u001b[39m click(selector\u001b[33m:\u001b[39m string) {\u001b[0m\n\u001b[2m    at MembershipPage.fill (D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\BasePage.ts:29:25)\u001b[22m\n\u001b[2m    at MembershipPage.registerTicket (D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\MembershipPage.ts:26:20)\u001b[22m\n\u001b[2m    at D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\membership.spec.ts:32:30\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T06:18:21.523Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\membership-Membership-Mana-1b691-gister-a-new-monthly-ticket-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\membership-Membership-Mana-1b691-gister-a-new-monthly-ticket-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\membership-Membership-Mana-1b691-gister-a-new-monthly-ticket-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "8989d4b11360778fb7be-90298122b4a0072c7acc",
+              "file": "membership.spec.ts",
+              "line": 12,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "reports.spec.ts",
+      "file": "reports.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Reports & Analytics",
+          "file": "reports.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should generate revenue and traffic reports",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 64825,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\ReportPage.ts",
+                            "column": 63,
+                            "line": 15
+                          },
+                          "message": "Error: locator.fill: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[type=\"date\"]').first()\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\pages\\ReportPage.ts:15\n\n\u001b[0m \u001b[90m 13 |\u001b[39m     \u001b[36masync\u001b[39m selectDateRange(start\u001b[33m:\u001b[39m string\u001b[33m,\u001b[39m end\u001b[33m:\u001b[39m string) {\n \u001b[90m 14 |\u001b[39m         \u001b[90m// First date input\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m         \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"date\"]'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m.\u001b[39mfill(start)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m         \u001b[90m// Second date input\u001b[39m\n \u001b[90m 17 |\u001b[39m         \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mlocator(\u001b[32m'input[type=\"date\"]'\u001b[39m)\u001b[33m.\u001b[39mnth(\u001b[35m1\u001b[39m)\u001b[33m.\u001b[39mfill(end)\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m     }\u001b[0m\n\u001b[2m    at ReportPage.selectDateRange (D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\pages\\ReportPage.ts:15:63)\u001b[22m\n\u001b[2m    at D:\\ParkingManagementSystem\\frontend\\tests\\e2e\\specs\\reports.spec.ts:25:26\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-17T06:19:11.402Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\reports-Reports-Analytics--7d175-revenue-and-traffic-reports-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\reports-Reports-Analytics--7d175-revenue-and-traffic-reports-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\ParkingManagementSystem\\frontend\\test-results\\reports-Reports-Analytics--7d175-revenue-and-traffic-reports-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d2ea609703bae19dcdce-109cbff269f6d483face",
+              "file": "reports.spec.ts",
+              "line": 12,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-01-17T06:17:09.519Z",
+    "duration": 188684.31999999998,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 7,
+    "flaky": 0
+  }
+}

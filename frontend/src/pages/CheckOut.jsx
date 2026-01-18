@@ -27,6 +27,9 @@ export default function CheckOut() {
   const [qrModal, setQrModal] = useState(null)
 
   const currentGate = user?.gateId || 'GATE-OUT-CAR-01'
+  const baseAmount = checkoutInfo?.baseAmount ?? checkoutInfo?.BaseAmount ?? 0
+  const lostPenalty = checkoutInfo?.lostPenalty ?? checkoutInfo?.LostPenalty ?? 0
+  const isLostTicketResult = checkoutInfo?.isLostTicket ?? checkoutInfo?.IsLostTicket ?? false
 
   const handleCheckOut = async () => {
     if (!plateOut) return alert('Nhập biển số xe')
@@ -34,7 +37,9 @@ export default function CheckOut() {
     if (!isMonthlyCheckout && !isLostTicket && !ticketIdOut) return alert('Vé lượt cần nhập mã vé giấy')
     
     setCheckingOut(true)
+    let reportWindow = null
     try {
+      reportWindow = isLostTicket ? window.open('', '_blank') : null
       let url = `${API_BASE}/CheckOut`
       let payload = {};
 
@@ -71,9 +76,18 @@ export default function CheckOut() {
       addLog(`🔍 Kiểm tra (${currentGate}): ${res.data.licensePlate} - Phí: ${formatCurrency(res.data.amount)}đ`)
 
       if (isLostTicket && res.data.reportUrl) {
-        window.open(res.data.reportUrl, '_blank')
+        if (reportWindow) {
+          reportWindow.location.href = res.data.reportUrl
+        } else {
+          window.open(res.data.reportUrl, '_blank')
+        }
+      } else if (reportWindow) {
+        reportWindow.close()
       }
     } catch (err) {
+      if (reportWindow) {
+        try { reportWindow.close() } catch { /* no-op */ }
+      }
       addLog('❌ Lỗi: ' + (err.response?.data?.error || 'Không tìm thấy xe'))
     } finally {
       setCheckingOut(false)
@@ -313,6 +327,18 @@ export default function CheckOut() {
                                      <span className="text-gray-500 text-sm">Tổng thanh toán</span>
                                      <span className="text-3xl font-black text-red-600 tracking-tight">{formatCurrency(checkoutInfo.amount)} đ</span>
                                 </div>
+                                {isLostTicketResult && (
+                                  <div className="mt-3 space-y-1 text-sm text-gray-600">
+                                    <div className="flex justify-between">
+                                      <span>Phí gửi xe</span>
+                                      <span className="font-semibold text-gray-800">{formatCurrency(baseAmount)} đ</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                      <span>Phí mất vé</span>
+                                      <span className="font-semibold text-gray-800">{formatCurrency(lostPenalty)} đ</span>
+                                    </div>
+                                  </div>
+                                )}
                              </div>
                         </div>
 

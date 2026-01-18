@@ -10,18 +10,23 @@ namespace Parking.Services.Services
 {
     public class MembershipService : IMembershipService
     {
-        private readonly ICustomerRepository _customerRepo;
+        private readonly ICustomerService _customerService;
         private readonly IMonthlyTicketRepository _ticketRepo;
         private readonly IMembershipPolicyRepository _policyRepo;
         private readonly IMembershipHistoryRepository _historyRepo;
+        private readonly ICustomerRepository _customerRepo; // Still needed for GetAllAsync or move GetAll to Service?
+        // Let's keep Repo for reading/listing if convenient, but logic uses Service.
+        private readonly ITimeProvider _timeProvider;
         private readonly ILogger<MembershipService> _logger;
 
-        public MembershipService(ICustomerRepository customerRepo, IMonthlyTicketRepository ticketRepo, IMembershipPolicyRepository policyRepo, IMembershipHistoryRepository historyRepo, ILogger<MembershipService> logger)
+        public MembershipService(ICustomerService customerService, ICustomerRepository customerRepo, IMonthlyTicketRepository ticketRepo, IMembershipPolicyRepository policyRepo, IMembershipHistoryRepository historyRepo, ITimeProvider timeProvider, ILogger<MembershipService> logger)
         {
-            _customerRepo = customerRepo;
+            _customerService = customerService;
+            _customerRepo = customerRepo; // Kept for listing only
             _ticketRepo = ticketRepo;
             _policyRepo = policyRepo;
             _historyRepo = historyRepo;
+            _timeProvider = timeProvider;
             _logger = logger;
         }
 
@@ -35,12 +40,8 @@ namespace Parking.Services.Services
                 customerInfo.CustomerId = $"KH-{randomId}";
             }
 
-            var existingCustomer = await _customerRepo.FindByPhoneAsync(customerInfo.Phone);
-            if (existingCustomer == null)
-            {
-                await _customerRepo.AddAsync(customerInfo);
-                existingCustomer = customerInfo;
-            }
+            // [P3] Use CustomerService to Get or Create
+            var existingCustomer = await _customerService.GetOrCreateCustomerAsync(customerInfo);
 
             var existingTicket = await _ticketRepo.FindActiveByPlateAsync(vehicle.LicensePlate);
             if (existingTicket != null)
@@ -82,8 +83,8 @@ namespace Parking.Services.Services
                 VehicleType = vehicleType,
                 VehicleBrand = brand,
                 VehicleColor = color,
-                StartDate = DateTime.Now,
-                ExpiryDate = DateTime.Now.AddMonths(months),
+                StartDate = _timeProvider.Now,
+                ExpiryDate = _timeProvider.Now.AddMonths(months),
                 Status = "PendingPayment",
                 MonthlyFee = fee,
                 PaymentStatus = "PendingExternal",
@@ -103,7 +104,7 @@ namespace Parking.Services.Services
                 Months = months,
                 Amount = fee,
                 PerformedBy = performedBy ?? GetActor(customerInfo),
-                Time = DateTime.Now,
+                Time = _timeProvider.Now,
                 Note = $"Plan {planId} - Generated Card: {simulatedCardUid}"
             });
             return newTicket;
@@ -111,16 +112,16 @@ namespace Parking.Services.Services
 
         public async Task<MonthlyTicket> ExtendMonthlyTicketAsync(string ticketId, int months, string performedBy, string? note = null)
         {
-            if (months <= 0) throw new ArgumentException("months must be positive", nameof(months));
+            if (months <= 0) throw new ArgumentException("Số tháng gia hạn phải lớn hơn 0", nameof(months));
 
             var ticket = await _ticketRepo.GetByIdAsync(ticketId);
-            if (ticket == null) throw new KeyNotFoundException("Không tìm thấy vé tháng");
+            if (ticket == null) throw new KeyNotFoundException($"Không tìm thấy vé tháng với ID: {ticketId}");
             if (string.Equals(ticket.Status, "Cancelled", StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidOperationException("Vé tháng đã bị hủy, không thể gia hạn");
             }
 
-            var now = DateTime.Now;
+            var now = _timeProvider.Now;
             var baseDate = ticket.ExpiryDate > now ? ticket.ExpiryDate : now;
             var fee = await CalculateFeeAsync(ticket.VehicleType, months);
 
@@ -136,7 +137,7 @@ namespace Parking.Services.Services
                 Months = months,
                 Amount = fee,
                 PerformedBy = string.IsNullOrWhiteSpace(performedBy) ? "system" : performedBy,
-                Time = DateTime.Now,
+                Time = _timeProvider.Now,
                 Note = note
             });
 
@@ -146,7 +147,7 @@ namespace Parking.Services.Services
         public async Task<MonthlyTicket> CancelMonthlyTicketAsync(string ticketId, string performedBy, bool isAdmin, string? note = null)
         {
             var ticket = await _ticketRepo.GetByIdAsync(ticketId);
-            if (ticket == null) throw new KeyNotFoundException("Không tìm thấy vé tháng");
+            if (ticket == null) throw new KeyNotFoundException($"Không tìm thấy vé tháng với ID: {ticketId}");
 
             if (isAdmin)
             {
@@ -168,7 +169,7 @@ namespace Parking.Services.Services
                 Months = 0,
                 Amount = 0,
                 PerformedBy = string.IsNullOrWhiteSpace(performedBy) ? "system" : performedBy,
-                Time = DateTime.Now,
+                Time = _timeProvider.Now,
                 Note = isAdmin ? note : $"Request Cancel: {note}"
             });
 
@@ -178,7 +179,7 @@ namespace Parking.Services.Services
         public async Task<MonthlyTicket> ApproveCancellationAsync(string ticketId, string adminId)
         {
             var ticket = await _ticketRepo.GetByIdAsync(ticketId);
-            if (ticket == null) throw new KeyNotFoundException("Không tìm thấy vé tháng");
+            if (ticket == null) throw new KeyNotFoundException($"Không tìm thấy vé tháng với ID: {ticketId}");
 
             if (!string.Equals(ticket.Status, "PendingCancellation", StringComparison.OrdinalIgnoreCase))
             {
@@ -197,7 +198,7 @@ namespace Parking.Services.Services
                 Months = 0,
                 Amount = 0,
                 PerformedBy = adminId,
-                Time = DateTime.Now,
+                Time = _timeProvider.Now,
                 Note = "Admin approved cancellation request"
             });
 
@@ -211,7 +212,7 @@ namespace Parking.Services.Services
             var customers = (await _customerRepo.GetAllAsync())
                 .Where(c => !string.IsNullOrWhiteSpace(c.CustomerId))
                 .ToDictionary(c => c.CustomerId, StringComparer.OrdinalIgnoreCase);
-            var now = DateTime.Now;
+            var now = _timeProvider.Now;
 
             // [MODIFIED] Return ALL tickets so the Frontend can filter (Active vs Pending vs Expired)
             return tickets

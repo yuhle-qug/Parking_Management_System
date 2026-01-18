@@ -114,12 +114,28 @@ builder.Services.AddScoped<IAuditService, AuditService>();
 builder.Services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
+// [P3] CheckOut Domain Services
+builder.Services.AddScoped<IPricingService, PricingService>();
+builder.Services.AddScoped<IValidationService, ValidationService>();
+builder.Services.AddScoped<ICheckOutService, CheckOutService>();
+
+// [P3] Membership Split
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+
+// Validators
+builder.Services.AddScoped<IMembershipValidator, Parking.Services.Validators.MembershipValidator>();
+builder.Services.AddScoped<IQrPlateValidator, Parking.Services.Validators.QrPlateValidator>();
+
 // Report System (Strategy Pattern)
 builder.Services.AddScoped<IReportFactory, ReportFactory>();
 builder.Services.AddScoped<RevenueReportStrategy>();
+builder.Services.AddScoped<RevenueChartStrategy>();
 builder.Services.AddScoped<TrafficReportStrategy>();
 
 // 3. Infrastructure / External (Device, Payment)
+builder.Services.AddSingleton<ITimeProvider, Parking.Infrastructure.Services.SystemTimeProvider>();
+builder.Services.AddScoped<IUnitOfWork, Parking.Infrastructure.Persistence.UnitOfWork>();
+builder.Services.AddScoped<IParkingSessionFactory, ParkingSessionFactory>();
 builder.Services.AddSingleton<IGateDevice, MockGateDevice>(); // Singleton vì thiết bị là duy nhất
 builder.Services.AddSingleton<IPaymentGateway, MockPaymentGatewayAdapter>();
 

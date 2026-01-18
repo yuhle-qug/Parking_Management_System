@@ -15,8 +15,8 @@ ParkingManagementSystem/
 │   ├── src/config/           # API Config
 │   ├── src/layouts/          # Layout Components
 │   └── src/pages/            # Application Pages (Dashboard, Membership, etc.)
-├── ocr-service/              # Python utilities for plate recognition
-├── licens/                   # Licensing-related assets
+├── documentation/            # Analysis & test artifacts
+├── licens/LicensePlateRecognitionVNAPI/ # Python OCR service
 ├── ngrok.yml                 # Tunnel configuration
 ├── SeedData.ps1              # Helper to seed JSON datastore
 ├── StartAll.(bat|ps1)        # Launch scripts
@@ -38,6 +38,7 @@ A modular REST API built with **ASP.NET Core**.
   - **Security**: JWT Authentication + BCrypt Password Hashing.
 
 ### 2. Frontend (React + Vite)
+> **[Detailed Documentation](frontend/README.md)**
 A modern, responsive dashboard built with **React 19** and **Vite**.
 - **Tech Stack**:
   - **Styling**: TailwindCSS v4.
@@ -90,3 +91,6 @@ Use the helper script to launch both:
 1. Fork/branch from `main`.
 2. Keep backend and frontend changes separated where possible.
 3. Review `backend/README.md` for specific backend architecture guidelines.
+
+## Báo cáo tổ chức mã nguồn
+- Xem báo cáo chi tiết: [documentation/codebase_report.md](documentation/codebase_report.md)

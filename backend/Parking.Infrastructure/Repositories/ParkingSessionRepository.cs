@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,10 +13,21 @@ namespace Parking.Infrastructure.Repositories
 	{
 		public ParkingSessionRepository(IHostEnvironment hostEnvironment) : base(hostEnvironment, "sessions.json") { }
 
+		private static string NormalizePlate(string? plate)
+		{
+			if (string.IsNullOrWhiteSpace(plate)) return string.Empty;
+			var normalized = new string(plate.Where(char.IsLetterOrDigit).ToArray());
+			return normalized.Trim().ToUpperInvariant();
+		}
+
 		public async Task<IEnumerable<ParkingSession>> FindActiveByPlateAsync(string plateNumber)
 		{
 			var list = await GetAllAsync();
-			var result = list.Where(s => s.Vehicle?.LicensePlate == plateNumber && s.Status == "Active");
+			var target = NormalizePlate(plateNumber);
+			// Include both Active and PendingPayment for lost ticket scenarios
+			var result = list.Where(s =>
+				NormalizePlate(s.Vehicle?.LicensePlate?.Value) == target &&
+				(s.Status == "Active" || s.Status == "PendingPayment"));
 			return result;
 		}
 
@@ -30,6 +42,15 @@ namespace Parking.Infrastructure.Repositories
 		{
 			var list = await GetAllAsync();
 			return list.FirstOrDefault(s => s.Ticket?.TicketId == ticketId);
+		}
+
+		public async Task<ParkingSession?> GetActiveSessionByCardIdAsync(string cardId)
+		{
+			if (string.IsNullOrEmpty(cardId)) return null;
+			var list = await GetAllAsync();
+			return list.FirstOrDefault(s => 
+				(s.Status == "Active" || s.Status == "PendingPayment") && 
+				(s.CardId == cardId || s.Ticket?.CardId == cardId));
 		}
 	}
 }

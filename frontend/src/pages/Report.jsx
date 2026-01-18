@@ -36,24 +36,28 @@ export default function Report() {
     if (!dateRange.start || !dateRange.end) return
     setLoading(true)
     try {
-      const [revenueRes, trafficRes, lostTicketRes, membershipRes, summaryRes] = await Promise.all([
-        axios.get(`${API_BASE}/Report`, { params: { type: 'REVENUE', from: dateRange.start, to: dateRange.end } }), // [Refactor] Use Strategy Endpoint
-        axios.get(`${API_BASE}/Report`, { params: { type: 'TRAFFIC', from: dateRange.start, to: dateRange.end } }), // [Refactor] Use Strategy Endpoint
+      const [revenueRes, trafficRes, lostTicketRes, membershipRes] = await Promise.all([
+        axios.get(`${API_BASE}/Report`, { params: { type: 'REVENUE', from: dateRange.start, to: dateRange.end } }),
+        axios.get(`${API_BASE}/Report`, { params: { type: 'TRAFFIC', from: dateRange.start, to: dateRange.end } }),
         axios.get(`${API_BASE}/Report/lost-tickets`, { params: { from: dateRange.start, to: dateRange.end } }),
-        axios.get(`${API_BASE}/Report/membership`, { params: { from: dateRange.start, to: dateRange.end } }),
-        axios.get(`${API_BASE}/Report/revenue/summary`)
+        axios.get(`${API_BASE}/Report/membership`, { params: { from: dateRange.start, to: dateRange.end } })
       ])
       
       const rev = revenueRes.data
       const traf = trafficRes.data
       const lost = lostTicketRes.data
       const mem = membershipRes.data
-      setRevenueSummary({
-        today: summaryRes.data.today || summaryRes.data.Today || 0,
-        thisWeek: summaryRes.data.thisWeek || summaryRes.data.ThisWeek || 0,
-        thisMonth: summaryRes.data.thisMonth || summaryRes.data.ThisMonth || 0,
-        thisYear: summaryRes.data.thisYear || summaryRes.data.ThisYear || 0
-      })
+      
+      // [Refactor] Use Summary from Revenue Report
+      if (rev.summary || rev.Summary) {
+          const s = rev.summary || rev.Summary
+          setRevenueSummary({
+            today: s.today || s.Today || 0,
+            thisWeek: s.thisWeek || s.ThisWeek || 0,
+            thisMonth: s.thisMonth || s.ThisMonth || 0,
+            thisYear: s.thisYear || s.ThisYear || 0
+          })
+      }
       
       setSummary({
         revenue: rev.totalRevenue || 0,
@@ -64,13 +68,6 @@ export default function Report() {
 
       // Revenue Chart Data (Simplify: just show total revenue by day if backend supported daily breakdown, 
       // but backend currently sends aggregate. For now, let's just show Payment Method breakdown in a Pie)
-      // If we want daily revenue, backend needs update. 
-      // Reuse existing chart logic loosely or switch to Payment Method chart.
-      // Let's repurpose the Revenue Chart to show mock daily distribution of the REAL total (since backend doesn't give daily series yet)
-      // OR better: Visualize Payment Methods which WE HAVE real data for.
-      
-      // Show Total Revenue by Day (if backend provides daily series) logic... 
-      // Currently just showing Total.
       setRevenueData([
         { date: 'Tổng', revenue: rev.totalRevenue || 0 }
       ])
@@ -103,10 +100,35 @@ export default function Report() {
 
   const fetchChartData = async (view, date) => {
       try {
-          const res = await axios.get(`${API_BASE}/Report/revenue/chart`, { 
+          // Calculate Range for Chart Strategy
+          let fromStr, toStr;
+          const anchor = new Date(date);
+          
+          if (view === 'WEEK') {
+            // Find start of week (Monday)
+            const day = anchor.getDay(); // 0=Sun
+            // Mon=1 ... Sun=7 mechanism
+            // If Sun(0), diff is -6. If Mon(1), diff is 0.
+            const diff = anchor.getDate() - day + (day === 0 ? -6 : 1);
+            const startOfWeek = new Date(anchor.setDate(diff));
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            
+            fromStr = startOfWeek.toISOString();
+            toStr = endOfWeek.toISOString();
+          } else {
+             // YEAR
+             const startOfYear = new Date(anchor.getFullYear(), 0, 1);
+             const endOfYear = new Date(anchor.getFullYear(), 11, 31);
+             fromStr = startOfYear.toISOString();
+             toStr = endOfYear.toISOString();
+          }
+
+          const res = await axios.get(`${API_BASE}/Report`, { 
               params: { 
-                  type: view,
-                  date: date.toISOString() // Send full date
+                  type: 'REVENUE_CHART',
+                  from: fromStr,
+                  to: toStr
               } 
           })
           const data = Array.isArray(res.data) ? res.data : []

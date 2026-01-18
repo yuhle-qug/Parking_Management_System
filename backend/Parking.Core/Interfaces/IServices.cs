@@ -9,9 +9,6 @@ namespace Parking.Core.Interfaces
 	public interface IParkingService
 	{
 		Task<ParkingSession> CheckInAsync(string plateNumber, string vehicleType, string gateId, string? cardId = null);
-		Task<ParkingSession> CheckOutAsync(string ticketIdOrPlate, string gateId, string? plateNumber = null, string? cardId = null);
-		Task<ParkingSession> ProcessLostTicketAsync(string plateNumber, string vehicleType, string gateId);
-		Task<PaymentResult> ConfirmPaymentAsync(string sessionId, string transactionCode, bool success, string? providerLog = null, string? exitGateId = null);
 	}
 
 	public interface IPaymentService
@@ -53,5 +50,33 @@ namespace Parking.Core.Interfaces
 	public interface ITicketTemplateService
 	{
 		TicketPrintResult RenderHtml(TicketPrintData data);
+	}
+
+	// [P3] Domain Services for CheckOut
+	public interface IPricingService
+	{
+		Task<double> CalculateFeeAsync(ParkingSession session);
+	}
+
+	public interface IValidationService
+	{
+		// Validates request matches session (Plate, Card)
+		void ValidateCheckOut(ParkingSession session, string plateNumber, string? cardId);
+	}
+
+	public interface ICheckOutService
+	{
+		Task<ParkingSession> CheckOutAsync(string ticketIdOrPlate, string gateId, string? plateNumber = null, string? cardId = null);
+		Task<ParkingSession> ProcessLostTicketAsync(string plateNumber, string vehicleType, string gateId);
+		Task<PaymentResult> ConfirmPaymentAsync(string sessionId, string transactionCode, bool success, string? providerLog = null, string? exitGateId = null);
+	}
+
+	// [P3] Membership Logic Split
+	public interface ICustomerService
+	{
+		Task<Customer> GetOrCreateCustomerAsync(Customer customerInfo);
+		Task<Customer?> GetCustomerByIdAsync(string customerId);
+		Task<Customer?> GetCustomerByPhoneAsync(string phone);
+		Task UpdateCustomerAsync(Customer customer);
 	}
 }

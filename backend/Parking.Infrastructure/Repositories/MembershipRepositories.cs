@@ -25,9 +25,20 @@ namespace Parking.Infrastructure.Repositories
 
         public async Task<MonthlyTicket> FindActiveByPlateAsync(string plate)
         {
+            if (string.IsNullOrWhiteSpace(plate)) return null;
+            
+            // Normalize input: Remove spaces, dashes, dots, etc. Keep only alphanumeric.
+            string Normalize(string input) 
+            {
+                if (string.IsNullOrEmpty(input)) return string.Empty;
+                return new string(input.Where(c => char.IsLetterOrDigit(c)).ToArray()).ToUpperInvariant();
+            }
+
+            var cleanPlate = Normalize(plate);
             var list = await GetAllAsync();
+            
             return list.FirstOrDefault(t =>
-                t.VehiclePlate.Equals(plate, StringComparison.OrdinalIgnoreCase) &&
+                Normalize(t.VehiclePlate) == cleanPlate &&
                 t.Status == "Active" &&
                 t.ExpiryDate >= DateTime.Now);
         }

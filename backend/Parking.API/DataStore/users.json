@@ -2,7 +2,7 @@
   {
     "userId": "USER001",
     "username": "admin",
-    "passwordHash": "123",
+    "passwordHash": "$2a$11$XqWtbMpl7p6geRxgZDhwgeuo9/AnMoHZKSYefRSXf98355TIJKBpa",
     "role": "ADMIN",
     "status": "Active"
   },

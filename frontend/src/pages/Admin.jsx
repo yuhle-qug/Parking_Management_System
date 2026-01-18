@@ -64,7 +64,9 @@ export default function Admin() {
   }
 
   const openEditModal = (user) => {
-    alert('Backend chưa hỗ trợ cập nhật user. Hiện chỉ hỗ trợ tạo user và xem danh sách.')
+    setEditUser(user)
+    setForm({ username: user.username, password: '', role: user.role, fullName: user.fullName || '', email: user.email || '', phone: user.phone || '' })
+    setShowModal(true)
   }
 
   const handleSubmit = async (e) => {
@@ -74,8 +76,14 @@ export default function Admin() {
     }
     try {
       if (editUser) {
-        alert('Backend chưa hỗ trợ cập nhật user. Hiện chỉ hỗ trợ tạo user và xem danh sách.')
-        return
+        // Gọi API backend để cập nhật user
+        await axios.put(`${API_BASE}/UserAccount/${editUser.userId}`, {
+          fullName: form.fullName,
+          email: form.email,
+          phone: form.phone,
+          password: form.password || undefined // Chỉ gửi password nếu có nhập
+        })
+        await fetchUsers()
       } else {
         // Gọi API backend để tạo user mới
         await axios.post(`${API_BASE}/UserAccount/create`, {

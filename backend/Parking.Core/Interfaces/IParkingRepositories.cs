@@ -8,6 +8,7 @@ namespace Parking.Core.Interfaces
 	{
 		Task<IEnumerable<ParkingSession>> FindActiveByPlateAsync(string plateNumber);
 		Task<ParkingSession?> FindByTicketIdAsync(string ticketId);
+		Task<ParkingSession?> GetActiveSessionByCardIdAsync(string cardId);
 		Task<int> CountActiveByZoneAsync(string zoneId);
 	}
 

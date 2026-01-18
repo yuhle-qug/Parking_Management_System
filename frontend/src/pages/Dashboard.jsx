@@ -139,6 +139,7 @@ export default function Dashboard() {
     if (isMonthlyCheckout && !cardOut) return alert('Vé tháng cần thẻ (cardId) khi ra')
     if (!isMonthlyCheckout && !isLostTicket && !ticketIdOut) return alert('Vé lượt cần nhập mã vé giấy')
     setCheckingOut(true)
+    let reportWindow = null
     try {
       let url = `${API_BASE}/CheckOut`
       let payload = {};
@@ -146,6 +147,7 @@ export default function Dashboard() {
       if (isLostTicket) {
         url = `${API_BASE}/CheckOut/lost-ticket`
         payload = { plateNumber: plateOut, vehicleType: typeIn, gateId: currentGate, printReport: true }
+        reportWindow = window.open('', '_blank')
       } else if (isMonthlyCheckout) {
         payload = { ticketIdOrPlate: cardOut, gateId: currentGate, plateNumber: plateOut, cardId: cardOut }
       } else {
@@ -157,10 +159,25 @@ export default function Dashboard() {
       setPaymentQr(null)
       addLog(`ℹ️ Xe ra (${currentGate}${isLostTicket ? ' - mất vé' : ''}): ${res.data.licensePlate} - Phí: ${formatCurrency(res.data.amount)}đ`)
 
+      if (isLostTicket) {
+        const baseAmount = res.data.baseAmount ?? res.data.BaseAmount ?? 0
+        const lostPenalty = res.data.lostPenalty ?? res.data.LostPenalty ?? 0
+        addLog(`💸 Chi tiết phí: Gửi xe ${formatCurrency(baseAmount)}đ + Mất vé ${formatCurrency(lostPenalty)}đ`)
+      }
+
       if (isLostTicket && res.data.reportUrl) {
-        window.open(res.data.reportUrl, '_blank')
+        if (reportWindow) {
+          reportWindow.location.href = res.data.reportUrl
+        } else {
+          window.open(res.data.reportUrl, '_blank')
+        }
+      } else if (reportWindow) {
+        reportWindow.close()
       }
     } catch (err) {
+      if (reportWindow) {
+        try { reportWindow.close() } catch { /* no-op */ }
+      }
       addLog('❌ ' + (err.response?.data?.error || 'Không tìm thấy xe'))
     } finally {
       setCheckingOut(false)
@@ -291,9 +308,14 @@ export default function Dashboard() {
 
   const filteredSessions = useMemo(() => {
     return sessions.filter(s => {
+      // Filter by vehicle type
       const rawType = s.vehicle?.vehicleType || s.vehicleType || s.VehicleType || ''
       const type = rawType.toUpperCase().replace(/_/g, '')
-      return normalizedAllowed.includes(type)
+      if (!normalizedAllowed.includes(type)) return false
+      
+      // Filter out completed sessions (safety check)
+      const status = s.status || s.Status || ''
+      return status !== 'Completed'
     })
   }, [sessions, normalizedAllowed])
 

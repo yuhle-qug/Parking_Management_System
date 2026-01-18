@@ -30,10 +30,14 @@ backend/
 │   │   ├── UserAccountController.cs
 │   │   └── ZonesController.cs
 │   ├── DataStore/                 # JSON files that act as persistence layer (seeded at runtime)
+│   │   ├── audit_logs.json
 │   │   ├── customers.json
+│   │   ├── gates.json
 │   │   ├── incidents.json
+│   │   ├── membership_history.json
 │   │   ├── membership_policies.json
 │   │   ├── monthly_tickets.json
+│   │   ├── price_policies.json
 │   │   ├── sessions.json
 │   │   ├── tickets.json
 │   │   ├── users.json
@@ -45,6 +49,10 @@ backend/
 │   └── obj/                       # Intermediate build files (gitignored)
 ├── Parking.Core/                  # Domain entities + interface contracts
 │   ├── Parking.Core.csproj
+│   ├── Configuration/
+│   │   └── PlateRecognitionOptions.cs
+│   ├── Constants/
+│   ├── DTOs/
 │   ├── Entities/
 │   │   ├── AuditLog.cs
 │   │   ├── CoreEntities.cs
@@ -60,8 +68,7 @@ backend/
 │   │   ├── UserEntities.cs
 │   │   ├── Vehicle.cs
 │   │   └── PlateRecognitionResult.cs
-│   ├── Configuration/
-│   │   └── PlateRecognitionOptions.cs
+│   ├── Factories/
 │   ├── Interfaces/
 │   │   ├── IIncidentRepository.cs
 │   │   ├── IMembershipRepositories.cs
@@ -69,6 +76,8 @@ backend/
 │   │   ├── IRepository.cs
 │   │   ├── IServices.cs
 │   │   └── IUserRepository.cs
+│   ├── JsonConverters/
+│   ├── ValueObjects/
 │   ├── bin/
 │   └── obj/
 ├── Parking.Infrastructure/        # JSON repositories + external adapters (payment, hardware)
@@ -79,9 +88,11 @@ backend/
 │   │   ├── MockGateDevice.cs
 │   │   ├── MockPaymentGatewayAdapter.cs
 │   │   └── LicensePlateRecognitionClient.cs
+│   ├── Persistence/
 │   ├── Repositories/
 │   │   ├── AuditLogRepository.cs
 │   │   ├── BaseJsonRepository.cs
+│   │   ├── GateRepository.cs
 │   │   ├── IncidentRepository.cs
 │   │   ├── MembershipPolicyRepository.cs
 │   │   ├── MembershipRepositories.cs
@@ -90,17 +101,23 @@ backend/
 │   │   ├── PricePolicyRepository.cs
 │   │   ├── TicketRepository.cs
 │   │   └── UserRepository.cs
+│   ├── Services/
 │   ├── Templates/
 │   │   └── TicketTemplateService.cs
 │   ├── bin/
 │   └── obj/
 └── Parking.Services/              # Application/business services coordinating repositories
 	├── Parking.Services.csproj
+	├── Factories/
+	├── Interfaces/
+	├── Policies/
 	├── Services/
 	│   ├── IncidentService.cs
 	│   ├── MembershipService.cs
 	│   ├── ParkingService.cs
 	│   └── PaymentService.cs
+	├── Strategies/
+	├── Validators/
 	├── bin/
 	└── obj/
 ```

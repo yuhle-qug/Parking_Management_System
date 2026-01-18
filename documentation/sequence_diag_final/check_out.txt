@@ -1,0 +1,116 @@
+@startuml
+skinparam lifelineStrategy solid
+skinparam responseMessageBelowArrow true
+
+actor Attendant
+entity "PaymentGateway" as PG 
+boundary ExitUI
+boundary GateDevice
+control CheckOutController
+control MembershipController
+control PaymentController
+entity ParkingSession
+entity PricePolicy
+entity Payment
+
+'==================== CHECK-OUT (mới) ====================
+
+' 0) ExitUI luôn có sẵn danh sách xe đang gửi
+ExitUI -> CheckOutController : loadOpenSessions()
+CheckOutController -> ParkingSession : listOpenSessions()
+ParkingSession --> CheckOutController : openSessions
+CheckOutController --> ExitUI : showOpenSessions(openSessions)
+
+' 1) Xe tới cổng - nhân viên chọn xe theo biển số trên danh sách
+Attendant -> ExitUI : chọn xe theo biển số (selectedSessionId)
+ExitUI -> CheckOutController : selectSession(selectedSessionId)
+
+CheckOutController -> ParkingSession : getById(selectedSessionId)
+ParkingSession --> CheckOutController : selectedSession(plateSelected,...)
+
+' 2) Quét QR trên vé (vé lượt)
+Attendant -> ExitUI : quét QR trên vé
+ExitUI -> CheckOutController : submitQR(qrData)
+
+CheckOutController -> CheckOutController : plateFromQR = parsePlate(qrData)
+
+alt KHÔNG KHỚP biển số (plateFromQR != plateSelected)
+  CheckOutController --> ExitUI : showError("Biển số KHÔNG khớp với vé QR\nKhông cho xuất bãi")
+  return
+else KHỚP biển số
+
+  '--- kiểm tra vé tháng (vé tháng quẹt thẻ/card)
+alt CÓ VÉ THÁNG (hợp lệ)
+  Attendant -> ExitUI :  quẹt thẻ vé tháng
+  ExitUI -> GateDevice : readCardOrPlate()
+  GateDevice --> ExitUI : cardOrPlateId
+
+  ExitUI -> CheckOutController : verifyMembership(cardOrPlateId)
+
+  CheckOutController -> MembershipController : verifyMembershipByCardOrPlate(cardOrPlateId)
+  MembershipController --> CheckOutController : membershipInfo(hasMonthlyTicket true/false)
+
+  
+    CheckOutController -> ParkingSession : setExitTime(now)  
+    CheckOutController -> ParkingSession : close()           
+    CheckOutController -> GateDevice : openGate(gateId)
+    GateDevice --> ExitUI : opened
+
+  else KHÔNG CÓ VÉ THÁNG
+    '--- xử lý vé lượt hoặc mất vé (giữ ý tưởng gộp thanh toán)
+    ' ưu tiên dùng selectedSession đã chọn
+    CheckOutController -> CheckOutController : sessionToPay = selectedSession
+
+    alt CÓ VÉ LƯỢT (selectedSession != null)
+      CheckOutController -> ParkingSession : setExitTime(now)
+
+      CheckOutController -> PricePolicy : calculateFee(selectedSession)
+      PricePolicy --> CheckOutController : feeAmount
+
+    else MẤT VÉ (không có session phù hợp)
+      CheckOutController -> ExitUI : printLostTicketForm()
+      Attendant -> ExitUI : chọn tính hợp lệ của giấy tờ xe
+
+      alt Giấy tờ KHÔNG hợp lệ
+        CheckOutController --> ExitUI : showError("Thông tin xe/giấy tờ không hợp lệ,\nkhông cho xuất bãi")
+      else Giấy tờ hợp lệ
+        CheckOutController -> PricePolicy : calculateLostTicketFee(vehicleInfo)
+        PricePolicy --> CheckOutController : lostTicketFee
+
+        CheckOutController -> PricePolicy : calculateParkingFeeForLostTicket(vehicleInfo, now)
+        PricePolicy --> CheckOutController : parkingFee
+
+        CheckOutController -> CheckOutController : feeAmount = lostTicketFee + parkingFee
+
+        CheckOutController -> ParkingSession : createLostTicketSession(vehicleInfo, feeAmount)
+        ParkingSession --> CheckOutController : lostSession
+
+        CheckOutController -> CheckOutController : sessionToPay = lostSession
+      end
+    end
+
+    '==================== THANH TOÁN CHUNG (giữ nguyên) ====================
+    CheckOutController -> ExitUI : showFeeInfo(feeAmount)
+
+    ExitUI -> PaymentController : processPayment(sessionToPay, feeAmount, paymentInfo)
+
+    PaymentController -> PG : requestPayment(feeAmount, paymentInfo)
+    PG --> PaymentController : paymentResult(success/fail)
+
+    alt Thanh toán thành công
+      PaymentController -> Payment : create(amount)
+      Payment --> PaymentController : paymentCreated
+      PaymentController -> Payment : markedCompleted()
+
+      PaymentController -> ParkingSession : attachPayment(paymentCreated)
+      PaymentController -> ParkingSession : close()
+
+      CheckOutController -> GateDevice : openGate(gateId)
+      GateDevice --> ExitUI : opened
+    else Thanh toán thất bại
+      PaymentController --> ExitUI : showError("Thanh toán thất bại,\nvui lòng thử lại")
+    end
+  end
+end
+
+@enduml

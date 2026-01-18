@@ -1,380 +1,188 @@
 [
   {
-    "CustomerId": "9a2fe47a-c7af-4620-805c-2005679c1158",
-    "Name": "Vu Binh",
-    "Phone": "056836797",
-    "IdentityNumber": "599378375"
+    "CustomerId": "KH-100001",
+    "Name": "Nguy\u1EC5n V\u0103n An",
+    "Phone": "0901234567",
+    "IdentityNumber": "079201001234"
   },
   {
-    "CustomerId": "71e74766-3fde-4563-a555-fd8c8343c619",
-    "Name": "Vu Giang",
-    "Phone": "038568219",
+    "CustomerId": "KH-100002",
+    "Name": "Tr\u1EA7n Th\u1ECB B\u00ECnh",
+    "Phone": "0912345678",
+    "IdentityNumber": "079201002345"
+  },
+  {
+    "CustomerId": "KH-100003",
+    "Name": "L\u00EA Ho\u00E0ng C\u01B0\u1EDDng",
+    "Phone": "0923456789",
+    "IdentityNumber": "079201003456"
+  },
+  {
+    "CustomerId": "KH-100004",
+    "Name": "Ph\u1EA1m Th\u1ECB Dung",
+    "Phone": "0934567890",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "d2c6019c-2daf-4898-8f66-dfb7c4297887",
-    "Name": "Pham Nga",
-    "Phone": "059042595",
+    "CustomerId": "KH-100005",
+    "Name": "Ho\u00E0ng V\u0103n Em",
+    "Phone": "0945678901",
+    "IdentityNumber": "079201005678"
+  },
+  {
+    "CustomerId": "KH-100006",
+    "Name": "V\u0169 Th\u1ECB Ph\u01B0\u01A1ng",
+    "Phone": "0956789012",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "13beb09a-3b7e-4d9b-a747-caa8b306e338",
-    "Name": "Bui Chi",
-    "Phone": "073852977",
+    "CustomerId": "KH-100007",
+    "Name": "\u0110\u1EB7ng Minh Giang",
+    "Phone": "0967890123",
+    "IdentityNumber": "079201007890"
+  },
+  {
+    "CustomerId": "KH-100008",
+    "Name": "B\u00F9i Th\u1ECB H\u00E0",
+    "Phone": "0978901234",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "7a6909cd-550c-49d0-a984-dd7acf36a941",
-    "Name": "Le Yen",
-    "Phone": "079186185",
+    "CustomerId": "KH-100009",
+    "Name": "Ng\u00F4 V\u0103n H\u00F9ng",
+    "Phone": "0989012345",
+    "IdentityNumber": "079201009012"
+  },
+  {
+    "CustomerId": "KH-100010",
+    "Name": "L\u00FD Th\u1ECB Kim",
+    "Phone": "0990123456",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "64ea468a-719d-46b9-94b9-fee9bf27f77c",
-    "Name": "Bui Giang",
-    "Phone": "086636572",
-    "IdentityNumber": "183368041"
+    "CustomerId": "KH-100011",
+    "Name": "Tr\u01B0\u01A1ng V\u0103n Long",
+    "Phone": "0381234567",
+    "IdentityNumber": "079201011234"
   },
   {
-    "CustomerId": "dc92d9d7-73fd-492c-8db3-9655221e1d29",
-    "Name": "Ho Ha",
-    "Phone": "084255990",
+    "CustomerId": "KH-100012",
+    "Name": "\u0110inh Th\u1ECB Mai",
+    "Phone": "0392345678",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "0202989a-f5be-46fa-ac09-bea257044c82",
-    "Name": "Do Giang",
-    "Phone": "055063223",
+    "CustomerId": "KH-100013",
+    "Name": "Phan V\u0103n Nam",
+    "Phone": "0353456789",
+    "IdentityNumber": "079201013456"
+  },
+  {
+    "CustomerId": "KH-100014",
+    "Name": "Hu\u1EF3nh Th\u1ECB Oanh",
+    "Phone": "0364567890",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "8d12b763-dd17-435a-bd4b-54b26150ef0f",
-    "Name": "Pham Binh",
-    "Phone": "085669688",
+    "CustomerId": "KH-100015",
+    "Name": "D\u01B0\u01A1ng V\u0103n Phong",
+    "Phone": "0375678901",
+    "IdentityNumber": "079201015678"
+  },
+  {
+    "CustomerId": "KH-100016",
+    "Name": "H\u1ED3 Th\u1ECB Qu\u1EF3nh",
+    "Phone": "0386789012",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "b41060d6-e210-4a30-b751-e8b7c11e8287",
-    "Name": "Le Hung",
-    "Phone": "071208554",
+    "CustomerId": "KH-100017",
+    "Name": "Mai V\u0103n R\u1ED3ng",
+    "Phone": "0397890123",
+    "IdentityNumber": "079201017890"
+  },
+  {
+    "CustomerId": "KH-100018",
+    "Name": "Cao Th\u1ECB Sen",
+    "Phone": "0708901234",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "d94f00c8-e196-4e58-9a8f-57f2c2a75baa",
-    "Name": "Pham Quan",
-    "Phone": "052372112",
-    "IdentityNumber": "489186567"
+    "CustomerId": "KH-100019",
+    "Name": "V\u00F5 V\u0103n T\u00F9ng",
+    "Phone": "0719012345",
+    "IdentityNumber": "079201019012"
   },
   {
-    "CustomerId": "5c0d715e-249d-4da1-8456-11f0228ecaa8",
-    "Name": "Do Nga",
-    "Phone": "038060765",
+    "CustomerId": "KH-100020",
+    "Name": "\u0110o\u00E0n Th\u1ECB Uy\u00EAn",
+    "Phone": "0790123456",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "454be5f5-f908-4538-a927-7cbc30fef211",
-    "Name": "Dang Minh",
-    "Phone": "093416312",
+    "CustomerId": "KH-100021",
+    "Name": "L\u01B0\u01A1ng V\u0103n Vinh",
+    "Phone": "0561234567",
+    "IdentityNumber": "079201021234"
+  },
+  {
+    "CustomerId": "KH-100022",
+    "Name": "T\u1EA1 Th\u1ECB Xuy\u1EBFn",
+    "Phone": "0572345678",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "c48ed8a9-61dc-421a-8d59-41cff38a00b8",
-    "Name": "Bui Phong",
-    "Phone": "031324904",
+    "CustomerId": "KH-100023",
+    "Name": "Ch\u00E2u V\u0103n Y\u00EAn",
+    "Phone": "0583456789",
+    "IdentityNumber": "079201023456"
+  },
+  {
+    "CustomerId": "KH-100024",
+    "Name": "La Th\u1ECB Zoan",
+    "Phone": "0594567890",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "18118f5c-d881-4c12-bac6-60e10d905830",
-    "Name": "Pham Tuan",
-    "Phone": "033859223",
+    "CustomerId": "KH-100025",
+    "Name": "Tr\u1ECBnh V\u0103n Anh",
+    "Phone": "0285678901",
+    "IdentityNumber": "079201025678"
+  },
+  {
+    "CustomerId": "KH-100026",
+    "Name": "Ki\u1EC1u Th\u1ECB B\u1EA3o",
+    "Phone": "0296789012",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "c4c73fe0-4602-4d92-bc17-f5084ca6ae8c",
-    "Name": "Duong Khanh",
-    "Phone": "089508273",
-    "IdentityNumber": "567721016"
+    "CustomerId": "KH-100027",
+    "Name": "T\u00F4 V\u0103n C\u00F4ng",
+    "Phone": "0247890123",
+    "IdentityNumber": "079201027890"
   },
   {
-    "CustomerId": "566cdeb1-d635-4a52-9d65-b4637c1318cc",
-    "Name": "Ho Nga",
-    "Phone": "092944328",
+    "CustomerId": "KH-100028",
+    "Name": "\u0110\u1ED7 Th\u1ECB Di\u1EC5m",
+    "Phone": "0258901234",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "6ce995da-9227-472b-ae72-d73dae6d2e41",
-    "Name": "Nguyen Chi",
-    "Phone": "072880553",
+    "CustomerId": "KH-100029",
+    "Name": "Th\u00E1i V\u0103n \u0110\u1EE9c",
+    "Phone": "0269012345",
+    "IdentityNumber": "079201029012"
+  },
+  {
+    "CustomerId": "KH-100030",
+    "Name": "L\u00E2m Th\u1ECB G\u1EA5m",
+    "Phone": "0830123456",
     "IdentityNumber": ""
   },
   {
-    "CustomerId": "f4e3af50-f770-42b7-ba20-261e895135c9",
-    "Name": "Le Nam",
-    "Phone": "036458927",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "be7c004a-743d-4d0e-b70a-0fd86f409d08",
-    "Name": "Phan Lan",
-    "Phone": "054342185",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "9c274979-1378-4c48-9159-28538db9fe6a",
-    "Name": "Do Ha",
-    "Phone": "075374420",
-    "IdentityNumber": "586323917"
-  },
-  {
-    "CustomerId": "cdc10af8-98b1-48af-a672-5a9889214f64",
-    "Name": "Huynh Hung",
-    "Phone": "052450419",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "52937c21-7701-4c24-a503-cb844ef3ff10",
-    "Name": "Ho An",
-    "Phone": "054906668",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "1144f5fb-eedb-46ee-b555-5eede21d312e",
-    "Name": "Ngo Quan",
-    "Phone": "057344079",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "36ec3493-4312-4a27-8e43-500fe7a88529",
-    "Name": "Hoang Giang",
-    "Phone": "095735758",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "700c60d9-5a89-437a-8a4c-ea9e2d134205",
-    "Name": "Huynh Dung",
-    "Phone": "072132667",
-    "IdentityNumber": "427165342"
-  },
-  {
-    "CustomerId": "215a0541-e67c-450f-8fc9-0c20fabe9e90",
-    "Name": "Ngo Quan",
-    "Phone": "036934345",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "f09940e0-7368-4460-8288-579ed22bea4a",
-    "Name": "Ngo Thao",
-    "Phone": "051674477",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "e7b0a285-2f6a-4e07-acd4-716dc5ba2270",
-    "Name": "Bui Khanh",
-    "Phone": "054733507",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "3f08a547-b536-44c9-afa3-9b3630e64c8f",
-    "Name": "Le An",
-    "Phone": "032579104",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "0dc2c27b-7268-4b63-9974-5a36ea4c938e",
-    "Name": "Bui Giang",
-    "Phone": "034082866",
-    "IdentityNumber": "290823868"
-  },
-  {
-    "CustomerId": "d19609e4-d16f-4f2a-82dc-c8a0a7b44d15",
-    "Name": "Vo Trang",
-    "Phone": "072151315",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "8618d05f-2435-4f31-8a4e-78c26f1d37c9",
-    "Name": "Dang Son",
-    "Phone": "087255305",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "428d80bc-a85d-4ccf-9a13-8e1a44a2a4d0",
-    "Name": "Ly Binh",
-    "Phone": "094591026",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "2299ebff-acc8-4871-a8d8-f1a8ebf823fb",
-    "Name": "Ly Ha",
-    "Phone": "093669588",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "22947c4e-bfb2-4fca-b2fe-682ada0d32e7",
-    "Name": "Ngo Lan",
-    "Phone": "072589083",
-    "IdentityNumber": "594183190"
-  },
-  {
-    "CustomerId": "e8326f0d-9d1c-41d4-ad83-3186afd79e7a",
-    "Name": "Ly An",
-    "Phone": "096046893",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "1681d15a-5796-4ae6-82b6-af05c68a5e47",
-    "Name": "Hoang Nam",
-    "Phone": "089405285",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "182f59dc-3391-4eb9-b19a-a7faf6b06be7",
-    "Name": "Bui Phong",
-    "Phone": "073897739",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "6b041166-f029-41e6-9c8a-a356c70f3e8d",
-    "Name": "Duong Nga",
-    "Phone": "036034957",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "74d74fba-36c0-4410-9754-9e9856a9c694",
-    "Name": "Pham Khanh",
-    "Phone": "058859329",
-    "IdentityNumber": "231805469"
-  },
-  {
-    "CustomerId": "e0726513-3979-4c4b-89d5-6b5847a227fb",
-    "Name": "Ho Van",
-    "Phone": "079433525",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "8dc9d163-115f-4484-9411-98fe7711dd63",
-    "Name": "Le Quan",
-    "Phone": "088512878",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "d10cb06d-b4e4-4721-aa96-c1d9973be3be",
-    "Name": "Pham An",
-    "Phone": "032927263",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "134e5d0b-b306-4114-9505-ceb05e87ba03",
-    "Name": "Ho Chi",
-    "Phone": "092913057",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "3666a60c-f24e-46db-a590-eada9304a776",
-    "Name": "Duong Ha",
-    "Phone": "073337996",
-    "IdentityNumber": "515883821"
-  },
-  {
-    "CustomerId": "e044087a-e45d-432b-9b61-3e664ae9e486",
-    "Name": "Bui Giang",
-    "Phone": "097085993",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "fc4accd2-31d1-4594-b078-fda733995c96",
-    "Name": "Do Quan",
-    "Phone": "094653771",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "608355e0-160b-43f4-95c4-61b82f02e30a",
-    "Name": "Pham Phong",
-    "Phone": "051740198",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "ddcd0de2-9656-4079-86ec-b5d4cc389945",
-    "Name": "Ho Thao",
-    "Phone": "093640080",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "8461cdc8-37c6-4edb-9337-e5b153ad1492",
-    "Name": "Nguyen Khanh",
-    "Phone": "072927714",
-    "IdentityNumber": "616418342"
-  },
-  {
-    "CustomerId": "0125e008-3c15-43d7-aa5e-a4d63f07d94f",
-    "Name": "Ho Dung",
-    "Phone": "072714766",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "7f0062e7-6356-4826-aa7b-c40f052439d2",
-    "Name": "Vu Binh",
-    "Phone": "059763789",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "f4b5ce6a-0679-4c00-b1ea-33f09627dfec",
-    "Name": "Vo Trang",
-    "Phone": "078681664",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "9a14aefd-f8c8-4757-8232-49a8c7cbe57c",
-    "Name": "Duong Tuan",
-    "Phone": "072095014",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "23d07a91-3d33-4a4a-8744-b38320a83c52",
-    "Name": "Phan Hung",
-    "Phone": "039783729",
-    "IdentityNumber": "543108532"
-  },
-  {
-    "CustomerId": "cb3230c8-3bbe-417f-8e72-53886de8db35",
-    "Name": "Huynh Giang",
-    "Phone": "035118017",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "20259839-748f-44e7-8f3c-9258250ebc6f",
-    "Name": "Nguyen Nga",
-    "Phone": "073853928",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "582ef923-8939-4850-aae0-fe088720d886",
-    "Name": "Vu Son",
-    "Phone": "098264424",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "38b81886-8c18-49ad-9373-53fd19a09a35",
-    "Name": "Ngo Minh",
-    "Phone": "037822230",
-    "IdentityNumber": ""
-  },
-  {
-    "CustomerId": "KH-896545",
-    "Name": "l\u00EA quang huy",
-    "Phone": "0392687956",
-    "IdentityNumber": "01231245123"
-  },
-  {
-    "CustomerId": "KH-816159",
-    "Name": "thu\u1EF3 d\u01B0\u01A1ng ",
-    "Phone": "012312312313",
-    "IdentityNumber": "123123123"
-  },
-  {
-    "CustomerId": "KH-512075",
-    "Name": "\u0111o\u00E0n v\u0129nh nh\u00E2n",
-    "Phone": "123123131",
-    "IdentityNumber": "1231231231231"
+    "CustomerId": "cd33edf5-9454-426a-8f21-6d9849725dd7",
+    "Name": "L\u00EA Quang Huy",
+    "Phone": "0392789678",
+    "IdentityNumber": "05502201111"
   }
 ]

@@ -8,8 +8,10 @@ using Parking.Core.Interfaces;
 
 namespace Parking.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    // [DISABLED] Plate Recognition feature not integrated with frontend
+    // Uncomment to re-enable if UI is implemented
+    // [ApiController]
+    // [Route("api/[controller]")]
     public class PlateRecognitionController : ControllerBase
     {
         private readonly IPlateRecognitionClient _plateRecognitionClient;

@@ -63,6 +63,8 @@ namespace Parking.Core.Entities
         public DateTime EntryTime { get; set; }
         public DateTime? ExitTime { get; set; } // Nullable vì xe đang gửi chưa ra
         public double FeeAmount { get; set; }
+        public double? BaseFee { get; set; }
+        public double? LostTicketFee { get; set; }
         public string Status { get; set; } // Active, Completed, LostTicket
         public string? CardId { get; set; }
 
